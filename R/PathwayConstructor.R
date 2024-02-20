@@ -23,8 +23,6 @@ PathwayConstructor <- R6::R6Class(
       private$cohorts <- cohorts
       private$cohortTableName <- cohortTableName
       private$cdmInterface <- cdmInterface
-      
-      self$validate()
 
       private$settings$targetCohortIds <- cohorts %>%
         filter(.data$type == "target") %>%
@@ -44,147 +42,7 @@ PathwayConstructor <- R6::R6Class(
       
       return(invisible(self))
     },
-    
-    #' @description
-    #' Validation method
-    #'
-    #' @return (`invisible(self)`)
-    validate = function() {
-      private$cdmInterface$validate()
-      
-      if (private$settings$minEraDuration > private$settings$minPostCombinationDuration) {
-        warning("The `minPostCombinationDuration` is set lower than the `minEraDuration`, this might result in unexpected behavior")
-      }
-      
-      if (private$settings$minEraDuration > private$settings$combinationWindow) {
-        warning("The `combinationWindow` is set lower than the `minEraDuration`, this might result in unexpected behavior")
-      }
-      
-      errorMessages <- checkmate::makeAssertCollection()
-      
-      checkmate::assertCharacter(
-        x = private$settings$includeTreatments,
-        len = 1,
-        add = errorMessages
-      )
-      
-      checkmate::assertSubset(
-        x = private$settings$includeTreatments,
-        choices = c("startDate", "endDate"),
-        add = errorMessages
-      )
-      
-      checkmate::assertNumeric(
-        x = private$settings$periodPriorToIndex,
-        len = 1,
-        finite = TRUE,
-        null.ok = FALSE,
-        add = errorMessages
-      )
-      
-      checkmate::assertNumeric(
-        x = private$settings$minEraDuration,
-        lower = 0,
-        finite = TRUE,
-        len = 1,
-        null.ok = FALSE,
-        add = errorMessages
-      )
-      
-      checkmate::assertIntegerish(
-        x = private$settings$splitEventCohorts,
-        null.ok = TRUE,
-        add = errorMessages
-      )
-      
-      checkmate::assertIntegerish(
-        x = private$settings$splitTime,
-        lower = 0,
-        null.ok = TRUE,
-        add = errorMessages
-      )
-      
-      checkmate::assertNumeric(
-        x = private$settings$eraCollapseSize,
-        lower = 0,
-        finite = TRUE,
-        len = 1,
-        null.ok = FALSE,
-        add = errorMessages
-      )
-      
-      checkmate::assertNumeric(
-        x = private$settings$combinationWindow,
-        lower = 0,
-        finite = TRUE,
-        len = 1,
-        null.ok = FALSE,
-        add = errorMessages
-      )
-      
-      checkmate::assertNumeric(
-        x = private$settings$minPostCombinationDuration,
-        lower = 0,
-        finite = TRUE,
-        len = 1,
-        null.ok = FALSE,
-        add = errorMessages
-      )
-      
-      checkmate::assertCharacter(
-        x = private$settings$filterTreatments,
-        len = 1,
-        add = errorMessages
-      )
-      
-      checkmate::assertSubset(
-        x = private$settings$filterTreatments,
-        choices = c("First", "Changes", "All"),
-        add = errorMessages
-      )
-      
-      checkmate::assertNumeric(
-        x = private$settings$maxPathLength,
-        lower = 0,
-        upper = 5,
-        finite = TRUE,
-        len = 1,
-        null.ok = FALSE,
-        add = errorMessages
-      )
-      
-      checkmate::assertDataFrame(
-        x = private$cohorts,
-        types = c("integerish", "character", "character"),
-        any.missing = FALSE,
-        all.missing = FALSE,
-        ncols = 3,
-        min.rows = 1,
-        col.names = "named",
-        add = errorMessages
-      )
-      
-      checkmate::assertSubset(
-        x = names(private$cohorts),
-        choices = c("cohortId", "cohortName", "type"),
-        add = errorMessages
-      )
-      
-      checkmate::assertSubset(
-        x = private$cohorts$type,
-        choices = c("event", "target", "exit"),
-        add = errorMessages
-      )
-      
-      checkmate::assertCharacter(
-        x = private$cohortTableName,
-        len = 1, null.ok = FALSE
-      )
-      
-      checkmate::reportAssertions(collection = errorMessages)
-      return(invisible(self))
-    },
-    
+
     #' @description
     #' Construct the pathways. Generates `Andromeda::andromeda()` objects,
     #' which can be fetched using `self$getAndromeda()`.
@@ -261,7 +119,6 @@ PathwayConstructor <- R6::R6Class(
         )
       )
       private$settings <- utils::modifyList(private$settings, settings)
-      self$validate()
     },
     
     #' @description

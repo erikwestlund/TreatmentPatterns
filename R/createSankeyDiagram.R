@@ -126,6 +126,8 @@ getColorPalette <- function(treatmentPathways) {
 #' 
 #' createSankeyDiagram(treatmentPathways)
 createSankeyDiagram <- function(treatmentPathways, groupCombinations = FALSE, colors = NULL, ...) {
+  validateCreateSankeyDiagram()
+
   treatmentPathways <- doGroupCombinations(
     treatmentPathways = treatmentPathways,
     groupCombinations = groupCombinations
@@ -157,6 +159,38 @@ createSankeyDiagram <- function(treatmentPathways, groupCombinations = FALSE, co
     colourScale = colors,
     ...
   )
+}
+
+validateCreateSankeyDiagram <- function() {
+  args <- eval(
+    expr = expression(mget(names(formals()))),
+    envir = sys.frame(sys.nframe() - 1)
+  )
+  
+  assertCol <- checkmate::makeAssertCollection()
+  checkmate::assertNames(
+    x = names(args$treatmentPathways),
+    type = "named",
+    must.include = c("path", "freq"),
+    .var.name = "treatmentPathways"
+  )
+  
+  checkmate::assertLogical(
+    x = args$groupCombinations,
+    len = 1,
+    null.ok = FALSE,
+    add = assertCol,
+    .var.name = "groupCombinations"
+  )
+  
+  checkmate::assertCharacter(
+    x = args$colors,
+    null.ok = TRUE,
+    add = assertCol,
+    .var.name = "groupCombinations"
+  )
+  
+  checkmate::reportAssertions(assertCol)
 }
 
 #' createSankeyDiagram2
