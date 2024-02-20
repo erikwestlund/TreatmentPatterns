@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TreatmentPatterns</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.6.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.6.5</span>
       </span>
     </div>
 
@@ -35,7 +35,7 @@
       <a href="../articles/ComputingTreatmentPathways.html">Computing Treatment Pathways</a>
     </li>
     <li>
-      <a href="../articles/PareReport.html">PaRe Report: TreatmentPatterns [2.6.1]</a>
+      <a href="../articles/PareReport.html">PaRe Report: TreatmentPatterns [2.6.5]</a>
     </li>
     <li>
       <a href="../articles/usingTreatmentPatternsShinyModules.html">Using TreatmentPatterns' Shiny Modules</a>
@@ -67,7 +67,17 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="2.6.4" id="id_-treatmentpatterns-264"># TreatmentPatterns 2.6.4<a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-264"></a></h2>
+<h2 class="page-header" data-toc-text="2.6.5" id="id_-treatmentpatterns-265"># TreatmentPatterns 2.6.5<a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-265"></a></h2>
+<ul><li>Removed stringi, rjson, and googleVis as dependencies.</li>
+<li>Fixed unit tests that had dummy data outside of observation data.</li>
+<li>Fix for complex edge-case paths with re-occuring treatments.</li>
+<li>Added unit tests for edge-cases.</li>
+<li>Added warning when <code>minEraDuration</code> &gt; <code>minPostCombinationWindow</code> or <code>combinationWindow</code>.</li>
+<li>Fixed issue when <code>filterTreatments</code> was set to <code>"changes"</code>, age and sex columns were dropped from output.</li>
+<li>datatypes of cohort_table are now checked.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.6.4" id="id_-treatmentpatterns-264"># TreatmentPatterns 2.6.4<small>2024-01-26</small><a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-264"></a></h2>
 <ul><li>Fixed issue with minPostCombinationWindow broken by the fix for re-occurring treatments.</li>
 <li>Added unit tests for minPostCombinationWindow.</li>
 </ul></div>
