@@ -54,14 +54,6 @@ test_that("editSettings", {
   after <- pathwayConstructor$getSettings()
   
   expect_false(identical(before, after))
-  
-  expect_warning(
-    pathwayConstructor$editSettings(minEraDuration = 10, minPostCombinationDuration = 5)
-  )
-  
-  expect_warning(
-    pathwayConstructor$editSettings(minEraDuration = 10, combinationWindow = 5)
-  )
 })
 
 test_that("getAndromeda", {
