@@ -91,8 +91,12 @@ computePathways <- function(
     minPostCombinationDuration = 30,
     filterTreatments = "First",
     maxPathLength = 5) {
-  
   validateComputePathways()
+  
+  args <- eval(
+    expr = expression(mget(names(formals()))),
+    envir = sys.frame(sys.nframe())
+  )
   
   cdmInterface <- CDMInterface$new(
     connectionDetails = connectionDetails,
@@ -101,31 +105,35 @@ computePathways <- function(
     tempEmulationSchema = tempEmulationSchema,
     cdm = cdm
   )
-  
+
   withr::defer({
     cdmInterface$disconnect()
   })
-  
-  pathwayConstructor <- PathwayConstructor$new(
+
+  andromeda <- Andromeda::andromeda()
+  andromeda <- cdmInterface$fetchMetadata(andromeda)
+  andromeda <- cdmInterface$fetchCohortTable(
     cohorts = cohorts,
     cohortTableName = cohortTableName,
-    cdmInterface = cdmInterface
+    andromeda = andromeda,
+    andromedaTableName = "cohortTable",
+    minEraDuration = minEraDuration
   )
-
-  pathwayConstructor$editSettings(
-    includeTreatments = includeTreatments,
-    periodPriorToIndex = periodPriorToIndex,
-    minEraDuration = minEraDuration,
-    splitEventCohorts = splitEventCohorts,
-    splitTime = splitTime,
-    eraCollapseSize = eraCollapseSize,
-    combinationWindow = combinationWindow,
-    minPostCombinationDuration = minPostCombinationDuration,
-    filterTreatments = filterTreatments,
-    maxPathLength = maxPathLength
+  
+  checkCohortTable(andromeda)
+  
+  andromeda$cohortTable <- andromeda$cohortTable %>%
+    dplyr::rename(
+      cohortId = "cohort_definition_id",
+      personId = "subject_id",
+      startDate = "cohort_start_date",
+      endDate = "cohort_end_date"
+    )
+  
+  andromeda <- constructPathways(
+    settings = args,
+    andromeda = andromeda
   )
-  pathwayConstructor$construct()
-  andromeda <- pathwayConstructor$getAndromeda()
 
   andromeda$metadata <- andromeda$metadata %>%
     dplyr::collect() %>%
@@ -329,4 +337,17 @@ validateComputePathways <- function() {
   )
   
   checkmate::reportAssertions(collection = assertCol)
+}
+
+checkCohortTable = function(andromeda) {
+  cohortTableHead <- andromeda[["cohortTable"]] %>%
+    head() %>%
+    dplyr::collect()
+  
+  assertions <- checkmate::makeAssertCollection()
+  checkmate::assertIntegerish(cohortTableHead$cohort_definition_id, add = assertions)
+  checkmate::assertIntegerish(cohortTableHead$subject_id, add = assertions)
+  checkmate::assertDate(cohortTableHead$cohort_start_date, add = assertions)
+  checkmate::assertDate(cohortTableHead$cohort_end_date, add = assertions)
+  checkmate::reportAssertions(assertions)
 }
