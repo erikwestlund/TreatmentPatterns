@@ -147,16 +147,31 @@ InputHandler <- R6::R6Class(
     
     ### Server ----
     fetchFile = function(fileName) {
-      n <- length(private$.reactiveValues$dataPath)
-      
-      lapply(seq_len(n), function(i) {
-        read.csv(unzip(
-          zipfile = private$.reactiveValues$dataPath[[i]],
-          files = fileName, exdir = tempdir()
-        )) %>%
-          dplyr::mutate(db = private$.reactiveValues$dbNames[[i]])
-      }) %>%
-        dplyr::bind_rows()
+      lapply(self$reactiveValues$dataPath, function(path) {
+        if (endsWith(path, ".zip")) {
+          return(private$fetchZip(fileName, path))
+        } else if (dir.exists(path)) {
+          return(private$fetchCSV(fileName, path))
+        } else {
+          return(NULL)
+        }
+      }) %>% dplyr::bind_rows()
+    },
+    
+    fetchZip = function(fileName, path) {
+      read.csv(unzip(
+        zipfile = path,
+        files = fileName,
+        exdir = tempdir()
+      )) %>%
+      dplyr::mutate(db = basename(!!path)) %>%
+      dplyr::bind_rows()
+    },
+
+    fetchCSV = function(fileName, path) {
+      read.csv(file.path(path, fileName)) %>%
+        dplyr::mutate(db = basename(!!path)) %>%
+      dplyr::bind_rows()
     },
     
     fetchTreatmentPathways = function() {
