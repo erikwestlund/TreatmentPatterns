@@ -78,11 +78,11 @@ createLinkedData <- function(data) {
 
 nameToId <- function(item, names) {
   item <- item %>%
-    stringr::str_replace(pattern = "\\(", replacement = "\\\\(") %>%
-    stringr::str_replace(pattern = "\\)", replacement = "\\\\)") %>%
-    stringr::str_replace(pattern = "\\+", replacement = "\\\\+") %>%
-    stringr::str_replace(pattern = "\\&", replacement = "\\\\&") %>%
-    stringr::str_replace(pattern = "\\.", replacement = "\\\\.")
+    stringr::str_replace_all(pattern = "\\(", replacement = "\\\\(") %>%
+    stringr::str_replace_all(pattern = "\\)", replacement = "\\\\)") %>%
+    stringr::str_replace_all(pattern = "\\+", replacement = "\\\\+") %>%
+    stringr::str_replace_all(pattern = "\\&", replacement = "\\\\&") %>%
+    stringr::str_replace_all(pattern = "\\.", replacement = "\\\\.")
   return(grep(sprintf("^%s$",item), names) - 1)
 }
 
