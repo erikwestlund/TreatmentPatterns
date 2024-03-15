@@ -78,9 +78,36 @@ test_that("colors", {
   
   p <- createSankeyDiagram(treatmentPathways = dummyData, colors = actualColors)
   
-  pColors <- p$x$options$colourScale
+  pColors <- unlist(stringr::str_extract_all(string = p$x$options$colourScale, "\\#\\w{6}"))
   
-  expect_identical(pColors, actualColors)
+  expect_true(all(pColors %in% actualColors))
+  
+  actualColors <- list(
+    A = "#0FFFF0",
+    B = "#F0F0F0",
+    C = "#FF0000",
+    D = "#FFF000",
+    E = "#00FF00",
+    `F` = "#F000FF",
+    `A+Z` = "#0000FF",
+    `D+Z` = "#0FF0F0"
+  )
+
+  p <- createSankeyDiagram(treatmentPathways = dummyData, colors = actualColors)
+  
+  pColors <- unlist(stringr::str_extract_all(string = p$x$options$colourScale, "\\#\\w{6}"))
+  labels <- unlist(stringr::str_extract_all(string = p$x$options$colourScale, "\\'\\d\\.[\\w\\+\\-]+\\'"))
+  labels <- stringr::str_remove_all(string = labels, pattern = "[\\'|\\d{1}\\.]")
+  labels <- unique(labels)
+  
+  l <- as.list(unique(pColors))
+  names(l) <- labels
+  l <- l[names(l) != "Stopped"]
+  
+  expect_identical(
+    actualColors[order(names(actualColors))],
+    l[order(names(l))]
+  )
 })
 
 test_that("2 path levels", {
