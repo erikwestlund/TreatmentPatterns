@@ -86,19 +86,70 @@ nameToId <- function(item, names) {
   return(grep(sprintf("^%s$",item), names) - 1)
 }
 
-getColorPalette <- function(treatmentPathways) {
-  palette <- c(
-    "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
-    "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"
+validateCreateSankeyDiagram <- function() {
+  args <- eval(
+    expr = expression(mget(names(formals()))),
+    envir = sys.frame(sys.nframe() - 1)
   )
   
-  n <- treatmentPathways$path |> 
-    stringr::str_split(pattern = "-") |>
-    unlist() |>
-    unique() |>
-    length()
+  assertCol <- checkmate::makeAssertCollection()
+  checkmate::assertNames(
+    x = names(args$treatmentPathways),
+    type = "named",
+    must.include = c("path", "freq"),
+    .var.name = "treatmentPathways"
+  )
   
-  return(palette[0:n])
+  checkmate::assertLogical(
+    x = args$groupCombinations,
+    len = 1,
+    null.ok = FALSE,
+    add = assertCol,
+    .var.name = "groupCombinations"
+  )
+  
+  # checkmate::assertCharacter(
+  #   x = args$colors,
+  #   null.ok = TRUE,
+  #   add = assertCol,
+  #   .var.name = "colors"
+  # )
+  
+  checkmate::reportAssertions(assertCol)
+}
+
+setColourScale <- function(linkedData, colors) {
+  domain <- stringr::str_split_i(linkedData$nodes$names, "\\d\\.", i = 2)
+
+  labels <- if (!is.null(colors)) {
+    labels <- if (is.list(colors)) {
+      data.frame(
+        name = c(names(colors), "Stopped"),
+        col = c(unlist(colors), "#555555")
+      )
+    } else {
+      labels <- data.frame(
+        name = unique(domain),
+        col = colors[c(0:length(unique(domain)))]
+      )
+    }
+    
+    if (length(labels$col) < length(unique(domain))) {
+      warning(sprintf("Missing %s colour(s)", length(unique(domain)) - length(labels$col)))
+    }
+    
+    linkedData$nodes$range <- labels$col[match(domain, labels$name)]
+    
+    return(
+      sprintf(
+        'd3.scaleOrdinal().domain([%s]).range([%s])',
+        paste0("'", linkedData$nodes$names, "'", collapse = ", "),
+        paste0("'", linkedData$nodes$range, "'", collapse = ", ")
+      )
+    )
+  } else {
+    return("d3.scaleOrdinal(d3.schemeCategory20)")
+  }
 }
 
 #' createSankeyDiagram
@@ -133,13 +184,6 @@ createSankeyDiagram <- function(treatmentPathways, groupCombinations = FALSE, co
     groupCombinations = groupCombinations
   )
   
-  if (is.null(colors)) {
-    colors <- sprintf(
-      'd3.scaleOrdinal([%s])',
-      paste0('"', getColorPalette(treatmentPathways),'"', collapse = ", ")
-    )
-  }
-  
   data <- splitPathItems(treatmentPathways)
   
   if (ncol(data) <= 2) {
@@ -156,41 +200,9 @@ createSankeyDiagram <- function(treatmentPathways, groupCombinations = FALSE, co
     Value = "value",
     NodeID = "names",
     units = "%",
-    colourScale = colors,
+    colourScale = setColourScale(linkedData, colors),
     ...
   )
-}
-
-validateCreateSankeyDiagram <- function() {
-  args <- eval(
-    expr = expression(mget(names(formals()))),
-    envir = sys.frame(sys.nframe() - 1)
-  )
-  
-  assertCol <- checkmate::makeAssertCollection()
-  checkmate::assertNames(
-    x = names(args$treatmentPathways),
-    type = "named",
-    must.include = c("path", "freq"),
-    .var.name = "treatmentPathways"
-  )
-  
-  checkmate::assertLogical(
-    x = args$groupCombinations,
-    len = 1,
-    null.ok = FALSE,
-    add = assertCol,
-    .var.name = "groupCombinations"
-  )
-  
-  checkmate::assertCharacter(
-    x = args$colors,
-    null.ok = TRUE,
-    add = assertCol,
-    .var.name = "groupCombinations"
-  )
-  
-  checkmate::reportAssertions(assertCol)
 }
 
 #' createSankeyDiagram2

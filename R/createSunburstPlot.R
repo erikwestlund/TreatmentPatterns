@@ -28,10 +28,6 @@ createSunburstPlot <- function(treatmentPathways, groupCombinations = FALSE, ...
     groupCombinations = groupCombinations
   )
   
-  if (is.null(colors)) {
-    colors <- getColorPalette(treatmentPathways)
-  }
-  
   sunburstR::sunburst(
     data = treatmentPathways,
     sortFunction = htmlwidgets::JS("function (a, b) {return a.value - b.value;}"),
