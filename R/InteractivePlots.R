@@ -1,5 +1,7 @@
 #' @title InteractivePlot
 #' 
+#' @include ShinyModule.R
+#' 
 #' @description
 #' Class to handle the interactive plots of TreatmentPatterns (Sunburst plot &
 #' Sankey diagram)
@@ -7,7 +9,7 @@
 #' @noRd
 InteracitvePlot <- R6::R6Class(
   classname = "InteracitvePlot",
-  inherit = Module,
+  inherit = ShinyModule,
 
   # Public ----
   public = list(

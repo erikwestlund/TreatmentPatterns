@@ -7,7 +7,7 @@
 Class to handle the Sunburst plot of TreatmentPatterns.
 }
 \section{Super classes}{
-\code{\link[TreatmentPatterns:Module]{TreatmentPatterns::Module}} -> \code{TreatmentPatterns::InteracitvePlot} -> \code{SunburstPlot}
+\code{\link[TreatmentPatterns:ShinyModule]{TreatmentPatterns::ShinyModule}} -> \code{TreatmentPatterns::InteracitvePlot} -> \code{SunburstPlot}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -18,7 +18,7 @@ Class to handle the Sunburst plot of TreatmentPatterns.
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="TreatmentPatterns" data-topic="Module" data-id="validate"><a href='../../TreatmentPatterns/html/Module.html#method-Module-validate'><code>TreatmentPatterns::Module$validate()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="TreatmentPatterns" data-topic="ShinyModule" data-id="validate"><a href='../../TreatmentPatterns/html/ShinyModule.html#method-ShinyModule-validate'><code>TreatmentPatterns::ShinyModule$validate()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="TreatmentPatterns" data-topic="InteracitvePlot" data-id="initialize"><a href='../../TreatmentPatterns/html/InteracitvePlot.html#method-InteracitvePlot-initialize'><code>TreatmentPatterns::InteracitvePlot$initialize()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="TreatmentPatterns" data-topic="InteracitvePlot" data-id="server"><a href='../../TreatmentPatterns/html/InteracitvePlot.html#method-InteracitvePlot-server'><code>TreatmentPatterns::InteracitvePlot$server()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="TreatmentPatterns" data-topic="InteracitvePlot" data-id="uiBody"><a href='../../TreatmentPatterns/html/InteracitvePlot.html#method-InteracitvePlot-uiBody'><code>TreatmentPatterns::InteracitvePlot$uiBody()</code></a></span></li>

@@ -1,5 +1,7 @@
 #' @title SankeyDiagram
 #' 
+#' @include InteractivePlots.R
+#' 
 #' @description
 #' Class to handle the Sankey diagram of TreatmentPatterns.
 #' 

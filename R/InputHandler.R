@@ -1,5 +1,7 @@
 #' @title InputHandler
 #'
+#' @include ShinyModule.R
+#'
 #' @description
 #' Class to handle input from the user. Supports direct paths or input fields
 #' through `setDataPath()`.\cr\cr
@@ -10,7 +12,7 @@
 #' @export
 InputHandler <- R6::R6Class(
   classname = "InputHandler",
-  inherit = Module,
+  inherit = ShinyModule,
   
   # Public ----
   public = list(

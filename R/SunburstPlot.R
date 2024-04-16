@@ -1,5 +1,7 @@
 #' @title SunburstPlot
 #' 
+#' @include InteractivePlots.R
+#' 
 #' @description
 #' Class to handle the Sunburst plot of TreatmentPatterns.
 #' 
