@@ -58,8 +58,8 @@ ShinyApp <- R6::R6Class(
       shinydashboard::dashboardSidebar(
         shinydashboard::sidebarMenu(
           private$.inputHandler$uiMenu(),
-          private$.sunburstPlot$uiMenu(),
-          private$.sankeyDiagram$uiMenu(),
+          private$.sunburstPlot$uiMenu(tabName = "sunburst"),
+          private$.sankeyDiagram$uiMenu(tabName = "sankey"),
           private$.characterizationPlots$uiMenu()
         ),
         private$.inputHandler$uiDatabaseSelector()
@@ -74,8 +74,8 @@ ShinyApp <- R6::R6Class(
       shinydashboard::dashboardBody(
         shinydashboard::tabItems(
           private$.inputHandler$uiBody(),
-          private$.sunburstPlot$uiBody(),
-          private$.sankeyDiagram$uiBody(),
+          private$.sunburstPlot$uiBody(tabName = "sunburst"),
+          private$.sankeyDiagram$uiBody(tabName = "sankey"),
           private$.characterizationPlots$uiBody()
         )
       )
