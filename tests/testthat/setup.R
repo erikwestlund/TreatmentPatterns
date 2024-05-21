@@ -5,5 +5,5 @@ withr::local_envvar(
 )
 
 tryCatch({
-  if (Sys.getenv("skip_eunomia_download_test") != "TRUE") downloadEunomiaData(overwrite = TRUE)
+  if (Sys.getenv("skip_eunomia_download_test") != "TRUE") CDMConnector::downloadEunomiaData(overwrite = TRUE)
 }, error = function(e) NA)
