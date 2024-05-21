@@ -4,10 +4,10 @@
     <loc>/404.html</loc>
   </url>
   <url>
-    <loc>/articles/ComputingTreatmentPathways.html</loc>
+    <loc>/articles/bestPractices.html</loc>
   </url>
   <url>
-    <loc>/articles/CreatingCohorts.html</loc>
+    <loc>/articles/ComputingTreatmentPathways.html</loc>
   </url>
   <url>
     <loc>/articles/DefiningCohorts.html</loc>
@@ -17,9 +17,6 @@
   </url>
   <url>
     <loc>/articles/PareReport.html</loc>
-  </url>
-  <url>
-    <loc>/articles/RunningTreatmentPatterns.html</loc>
   </url>
   <url>
     <loc>/articles/usingTreatmentPatternsShinyModules.html</loc>
@@ -34,34 +31,10 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/addChild.html</loc>
-  </url>
-  <url>
-    <loc>/reference/addLabels.html</loc>
-  </url>
-  <url>
-    <loc>/reference/buildHierarchy.html</loc>
-  </url>
-  <url>
-    <loc>/reference/CDMInterface.html</loc>
-  </url>
-  <url>
     <loc>/reference/CharacterizationPlots.html</loc>
   </url>
   <url>
-    <loc>/reference/computeCounts.html</loc>
-  </url>
-  <url>
     <loc>/reference/computePathways.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeStatsTherapy.html</loc>
-  </url>
-  <url>
-    <loc>/reference/computeTreatmentPathways.html</loc>
-  </url>
-  <url>
-    <loc>/reference/constructPathways.html</loc>
   </url>
   <url>
     <loc>/reference/createSankeyDiagram.html</loc>
@@ -76,30 +49,6 @@
     <loc>/reference/createSunburstPlot2.html</loc>
   </url>
   <url>
-    <loc>/reference/createTreatmentHistory.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createTreatmentPathways.html</loc>
-  </url>
-  <url>
-    <loc>/reference/depth.html</loc>
-  </url>
-  <url>
-    <loc>/reference/doCombinationWindow.html</loc>
-  </url>
-  <url>
-    <loc>/reference/doEraCollapse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/doEraDuration.html</loc>
-  </url>
-  <url>
-    <loc>/reference/doFilterTreatments.html</loc>
-  </url>
-  <url>
-    <loc>/reference/doSplitEventCohorts.html</loc>
-  </url>
-  <url>
     <loc>/reference/executeTreatmentPatterns.html</loc>
   </url>
   <url>
@@ -112,37 +61,16 @@
     <loc>/reference/InputHandler.html</loc>
   </url>
   <url>
-    <loc>/reference/InteractivePlots.html</loc>
-  </url>
-  <url>
     <loc>/reference/launchResultsExplorer.html</loc>
   </url>
   <url>
-    <loc>/reference/Module.html</loc>
+    <loc>/reference/SankeyDiagram.html</loc>
   </url>
   <url>
-    <loc>/reference/PathwayConstructor.html</loc>
+    <loc>/reference/ShinyModule.html</loc>
   </url>
   <url>
-    <loc>/reference/prepData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/selectRowsCombinationWindow.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stratisfy.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stripname.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toFile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toList.html</loc>
-  </url>
-  <url>
-    <loc>/reference/transformCSVtoJSON.html</loc>
+    <loc>/reference/SunburstPlot.html</loc>
   </url>
   <url>
     <loc>/reference/TreatmentPatterns-package.html</loc>
