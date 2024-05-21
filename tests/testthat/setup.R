@@ -4,6 +4,6 @@ withr::local_envvar(
   EUNOMIA_DATA_FOLDER = Sys.getenv("EUNOMIA_DATA_FOLDER", unset = tempfile())
 )
 
-if (require("Eunomia", character.only = TRUE, quietly = TRUE)) {
-  CDMConnector::downloadEunomiaData(overwrite = TRUE)
-}
+tryCatch({
+  if (Sys.getenv("skip_eunomia_download_test") != "TRUE") downloadEunomiaData(overwrite = TRUE)
+}, error = function(e) NA)
