@@ -73,3 +73,6 @@ Collate:
     'createSunburstPlot.R'
     'executeTreatmentPatterns.R'
     'export.R'
+    'Module.R'
+    'R6-CDMInterface.R'
+    'R6-PathwayConstructor.R'
