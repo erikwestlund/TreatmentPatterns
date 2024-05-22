@@ -9,7 +9,7 @@
 
 [![CRAN](https://www.r-pkg.org/badges/version/TreatmentPatterns)](https://cran.r-project.org/web/packages/TreatmentPatterns/index.html)
 [![Codecov test
-coverage](https://codecov.io/gh/darwin-eu-dev/TreatmentPatterns/branch/master/graph/badge.svg)](https://app.codecov.io/gh/darwin-eu-dev/TreatmentPatterns?branch=master)
+coverage](https://codecov.io/gh/darwin-eu/TreatmentPatterns/branch/master/graph/badge.svg)](https://app.codecov.io/gh/darwin-eu/TreatmentPatterns?branch=master)
 
 <!-- badges: end -->
 
