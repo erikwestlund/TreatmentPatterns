@@ -27,7 +27,9 @@
 #'   )
 #'
 #'   tryCatch({
-#'     if (Sys.getenv("skip_eunomia_download_test") != "TRUE") CDMConnector::downloadEunomiaData(overwrite = TRUE)
+#'     if (Sys.getenv("skip_eunomia_download_test") != "TRUE") {
+#'       CDMConnector::downloadEunomiaData(overwrite = TRUE)
+#'     }
 #'   }, error = function(e) NA)
 #'
 #'   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
