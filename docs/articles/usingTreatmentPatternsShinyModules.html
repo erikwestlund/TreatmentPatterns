@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TreatmentPatterns</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.6.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.6.6</span>
       </span>
     </div>
 
@@ -50,10 +50,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/bestPractices.html">Best practices</a>
+    </li>
+    <li>
       <a href="../articles/ComputingTreatmentPathways.html">Computing Treatment Pathways</a>
     </li>
     <li>
-      <a href="../articles/PareReport.html">PaRe Report: TreatmentPatterns [2.6.5]</a>
+      <a href="../articles/PareReport.html">PaRe Report: TreatmentPatterns [2.6.6]</a>
     </li>
     <li>
       <a href="../articles/usingTreatmentPatternsShinyModules.html">Using TreatmentPatterns' Shiny Modules</a>
@@ -69,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/darwin-eu-dev/TreatmentPatterns/" class="external-link">
+  <a href="https://github.com/darwin-eu/TreatmentPatterns/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -90,7 +93,7 @@
       <h1 data-toc-skip>Using TreatmentPatterns’ Shiny Modules</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/darwin-eu-dev/TreatmentPatterns/blob/HEAD/vignettes/articles/usingTreatmentPatternsShinyModules.Rmd" class="external-link"><code>vignettes/articles/usingTreatmentPatternsShinyModules.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/darwin-eu/TreatmentPatterns/blob/HEAD/vignettes/articles/usingTreatmentPatternsShinyModules.Rmd" class="external-link"><code>vignettes/articles/usingTreatmentPatternsShinyModules.Rmd</code></a></small>
       <div class="hidden name"><code>usingTreatmentPatternsShinyModules.Rmd</code></div>
 
     </div>
@@ -143,7 +146,7 @@ used to setup your TreatmentPatterns shiny application quickly. First we
 need to create an object of the class <code>InputHandler</code> which we
 do like so:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/darwin-eu-dev/TreatmentPatterns" class="external-link">TreatmentPatterns</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/darwin-eu/TreatmentPatterns" class="external-link">TreatmentPatterns</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">inputHandler</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/InputHandler.html">InputHandler</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"app"</span><span class="op">)</span></span></code></pre></div>
 <p>Now that our <code>InputHandler</code> is initialized and ready to
@@ -210,7 +213,8 @@ file.</p>
 </h2>
 <p>Lets first create an <code>InteractivePlots</code> module object.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">interactivePlots</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/InteractivePlots.html">InteractivePlots</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"app"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">sunburstPlot</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/SunburstPlot.html">SunburstPlot</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"app"</span><span class="op">)</span></span>
+<span><span class="va">sankeyDiagram</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/SankeyDiagram.html">SankeyDiagram</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"app"</span><span class="op">)</span></span></code></pre></div>
 <p>We can now add our UI by calling the <code>uiMenu()</code> and
 <code>uiBody()</code> methods.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -221,7 +225,8 @@ file.</p>
 <span>    <span class="va">inputHandler</span><span class="op">$</span><span class="fu">uiMenu</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    </span>
 <span>    <span class="co"># InteractivePlots menu item</span></span>
-<span>    <span class="va">interactivePlots</span><span class="op">$</span><span class="fu">uiMenu</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="va">sunburstPlot</span><span class="op">$</span><span class="fu">uiMenu</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="va">sankeyDiagram</span><span class="op">$</span><span class="fu">uiMenu</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    </span>
 <span>    <span class="co"># Database Selection</span></span>
 <span>    <span class="va">inputHandler</span><span class="op">$</span><span class="fu">uiDatabaseSelector</span><span class="op">(</span><span class="op">)</span></span>
@@ -231,7 +236,8 @@ file.</p>
 <span>    <span class="va">inputHandler</span><span class="op">$</span><span class="fu">uiBody</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    </span>
 <span>    <span class="co"># InteractivePlots body</span></span>
-<span>    <span class="va">interactivePlots</span><span class="op">$</span><span class="fu">uiBody</span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="va">sunburstPlot</span><span class="op">$</span><span class="fu">uiBody</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="va">sankeyDiagram</span><span class="op">$</span><span class="fu">uiBody</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Finally we can add our server back-end to the server function.
@@ -247,7 +253,8 @@ as an input.</strong></p>
 <span>    <span class="va">inputHandler</span><span class="op">$</span><span class="fu">server</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span></span>
 <span>    </span>
 <span>    <span class="co"># InteracitvePlots back-end</span></span>
-<span>    <span class="va">interactivePlots</span><span class="op">$</span><span class="fu">server</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">inputHandler</span><span class="op">)</span></span>
+<span>    <span class="va">sunburstPlot</span><span class="op">$</span><span class="fu">server</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">inputHandler</span><span class="op">)</span></span>
+<span>    <span class="va">sankeyDiagram</span><span class="op">$</span><span class="fu">server</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="va">inputHandler</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -271,7 +278,8 @@ object.</p>
 <span>    <span class="va">inputHandler</span><span class="op">$</span><span class="fu">uiMenu</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    </span>
 <span>    <span class="co"># InteractivePlots menu item</span></span>
-<span>    <span class="va">interactivePlots</span><span class="op">$</span><span class="fu">uiMenu</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="va">sunburstPlot</span><span class="op">$</span><span class="fu">uiMenu</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="va">sankeyDiagram</span><span class="op">$</span><span class="fu">uiMenu</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    </span>
 <span>    <span class="co"># CharacterizationPlots menu item</span></span>
 <span>    <span class="va">characterizationPlots</span><span class="op">$</span><span class="fu">uiMenu</span><span class="op">(</span><span class="op">)</span>,</span>
@@ -284,7 +292,8 @@ object.</p>
 <span>    <span class="va">inputHandler</span><span class="op">$</span><span class="fu">uiBody</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    </span>
 <span>    <span class="co"># InteractivePlots body</span></span>
-<span>    <span class="va">interactivePlots</span><span class="op">$</span><span class="fu">uiBody</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="va">sunburstPlot</span><span class="op">$</span><span class="fu">uiBody</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="va">sankeyDiagram</span><span class="op">$</span><span class="fu">uiBody</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    </span>
 <span>    <span class="co"># CharacterizationPlots body</span></span>
 <span>    <span class="va">characterizationPlots</span><span class="op">$</span><span class="fu">uiBody</span><span class="op">(</span><span class="op">)</span></span>

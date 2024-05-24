@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TreatmentPatterns</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.6.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.6.6</span>
       </span>
     </div>
 
@@ -32,10 +32,13 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/bestPractices.html">Best practices</a>
+    </li>
+    <li>
       <a href="../articles/ComputingTreatmentPathways.html">Computing Treatment Pathways</a>
     </li>
     <li>
-      <a href="../articles/PareReport.html">PaRe Report: TreatmentPatterns [2.6.5]</a>
+      <a href="../articles/PareReport.html">PaRe Report: TreatmentPatterns [2.6.6]</a>
     </li>
     <li>
       <a href="../articles/usingTreatmentPatternsShinyModules.html">Using TreatmentPatterns' Shiny Modules</a>
@@ -48,7 +51,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/darwin-eu-dev/TreatmentPatterns/" class="external-link">
+  <a href="https://github.com/darwin-eu/TreatmentPatterns/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -63,11 +66,22 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/darwin-eu-dev/TreatmentPatterns/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/darwin-eu/TreatmentPatterns/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="2.6.5" id="id_-treatmentpatterns-265"># TreatmentPatterns 2.6.5<a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-265"></a></h2>
+<h2 class="page-header" data-toc-text="2.6.7" id="id_-treatmentpatterns-267"># TreatmentPatterns 2.6.7<a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-267"></a></h2>
+<ul><li>Updated URLs in description</li>
+<li>Updated examples to fix compatibility with CDMConnector &gt;1.4.0</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.6.6" id="id_-treatmentpatterns-266"># TreatmentPatterns 2.6.6<small>2024-04-16</small><a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-266"></a></h2>
+<ul><li>Internal update to shinyApp.</li>
+<li>Update to createSankeyDiagram() to properly handle combinations consisting of &gt;2.</li>
+<li>Added article to package website about best practices.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.6.5" id="id_-treatmentpatterns-265"># TreatmentPatterns 2.6.5<small>2024-02-19</small><a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-265"></a></h2>
 <ul><li>Removed stringi, rjson, and googleVis as dependencies.</li>
 <li>Fixed unit tests that had dummy data outside of observation data.</li>
 <li>Fix for complex edge-case paths with re-occuring treatments.</li>
