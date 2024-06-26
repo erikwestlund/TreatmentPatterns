@@ -203,15 +203,27 @@ createTreatmentHistory <- function(
     andromeda$cohortTable <- dplyr::full_join(
       x = andromeda$eventCohorts,
       y = andromeda$targetCohorts,
-      by = dplyr::join_by("personId", y$indexDate <= x$startDate, x$startDate < y$endDate)
-    )
+      by = dplyr::join_by(
+        "personId",
+        y$indexDate <= x$startDate,
+        x$startDate <= y$endDate,
+        x$endDate <= y$endDate
+      ))
   } else if (includeTreatments == "endDate") {
     andromeda$cohortTable <- dplyr::full_join(
       x = andromeda$eventCohorts,
       y = andromeda$targetCohorts,
-      by = dplyr::join_by("personId", y$indexDate <= x$endDate, x$endDate < y$endDate)) %>%
+      by = dplyr::join_by(
+        "personId",
+        y$indexDate <= x$endDate,
+        x$endDate <= y$endDate
+      )) %>%
       dplyr::mutate(
-        startDate.x = pmax(.data$startDate.y - periodPriorToIndex, .data$startDate.x, na.rm = TRUE)
+        startDate.x = pmax(
+          .data$startDate.y - periodPriorToIndex,
+          .data$startDate.x,
+          na.rm = TRUE
+        )
       )
   }
   

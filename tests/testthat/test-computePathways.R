@@ -24,7 +24,7 @@ test_that("computePathways DatabaseConnector", {
       ),
       "After combinationWindow: 555"
     ),
-    "Original number of rows: 8352"
+    "Original number of rows: 8366"
   )
 })
 
@@ -43,7 +43,7 @@ test_that("computePathways CDMConnector", {
       ),
       "After combinationWindow: 555"
     ),
-    "Original number of rows: 8352"
+    "Original number of rows: 8366"
   )
   
   DBI::dbDisconnect(globals$con, shutdown = TRUE)
