@@ -1273,3 +1273,57 @@ test_that("start event > end target", {
   
   DBI::dbDisconnect(con)
 })
+
+test_that("collapse A-B-B-B to A-A+B-B", {
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
+  
+  cohorts <- data.frame(
+    cohortId = c(1, 2, 3),
+    cohortName = c("X", "A", "B"),
+    type = c("target", "event", "event")
+  )
+  
+  cohort_table <- dplyr::tribble(
+    ~cohort_definition_id, ~subject_id, ~cohort_start_date,    ~cohort_end_date,
+    1,                     5,           as.Date("2014-01-01"), as.Date("2015-12-31"),
+    2,                     5,           as.Date("2014-05-20"), as.Date("2014-08-17"),
+    3,                     5,           as.Date("2014-07-08"), as.Date("2014-08-25"),
+    3,                     5,           as.Date("2014-10-19"), as.Date("2015-02-22"),
+    3,                     5,           as.Date("2015-02-28"), as.Date("2015-09-26")
+  )
+  
+  copy_to(con, cohort_table, overwrite = TRUE)
+  
+  cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main", cohortTables = "cohort_table")
+  
+  andromeda <- TreatmentPatterns::computePathways(
+    cohorts = cohorts,
+    cohortTableName = 'cohort_table',
+    cdm = cdm,
+    tempEmulationSchema = NULL,
+    includeTreatments = "startDate",
+    periodPriorToIndex = 0,
+    minEraDuration = 30,
+    eraCollapseSize = 30,
+    combinationWindow = 30,
+    minPostCombinationDuration = 30,
+    filterTreatments = "All",
+    maxPathLength = 5
+  )
+  
+  tempDir <- tempdir()
+  TreatmentPatterns::export(andromeda, tempDir, minCellCount = 1)
+  
+  treatmentPaths <- read.csv(file.path(tempDir, "treatmentPathways.csv"))
+  
+  path <- treatmentPaths %>%
+    dplyr::filter(
+      .data$age == "all",
+      .data$sex == "all",
+      .data$indexYear == "all") %>%
+    dplyr::pull(.data$path)
+  
+  expect_identical(path, "A-A+B-B")
+  
+  DBI::dbDisconnect(con)
+})

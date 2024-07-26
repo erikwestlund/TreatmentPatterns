@@ -339,7 +339,7 @@ doEraCollapse <- function(andromeda, eraCollapseSize) {
       dplyr::select(-"needsMerge", -"rowNumber") %>%
       dplyr::mutate(durationEra = .data$eventEndDate - .data$eventStartDate)
   } else {
-    blockEnd <- needsMerge$rowNumber[seq_len(n)] != needsMerge$rowNumber[seq_len(n)] + 1
+    blockEnd <- as.numeric(needsMerge$rowNumber[seq_len(n)] != needsMerge$rowNumber[seq_len(n)]) + 1
     needsMerge$blockId <- cumsum(blockEnd)
     needsMerge <- needsMerge %>%
       dplyr::group_by(.data$blockId) %>%
@@ -360,10 +360,21 @@ doEraCollapse <- function(andromeda, eraCollapseSize) {
         newEndDates,
         by = dplyr::join_by("rowNumber" == "startRowNumber")) %>%
       dplyr::mutate(
-        eventEndDate = if_else(
-          is.null(.data$newEndDate), 
-          .data$eventEndDate, 
-          .data$newEndDate)) %>%
+        eventEndDate = dplyr::case_when(
+          !is.na(.data$newEndDate) ~ .data$newEndDate,
+          .default = .data$eventEndDate
+        ),
+        needsMerge = dplyr::case_when(
+          !is.na(.data$newEndDate) ~ NA,
+          .default = .data$needsMerge
+        )
+      ) %>% 
+      dplyr::mutate(durationEra = .data$eventEndDate - eventStartDate) %>%
+      # dplyr::mutate(
+      #   eventEndDate = if_else(
+      #     is.null(.data$newEndDate), 
+      #     .data$eventEndDate, 
+      #     .data$newEndDate)) %>%
       dplyr::filter(is.na(.data$needsMerge)) %>%
       dplyr::select(-"newEndDate", -"needsMerge", -"rowNumber") %>%
       dplyr::mutate(durationEra = .data$eventEndDate - .data$eventStartDate)
