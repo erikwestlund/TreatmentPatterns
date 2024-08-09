@@ -1,3 +1,10 @@
+# TreatmentPatterns 2.6.8
+---------
+* Updated some tests to work with later versions of omopgenerics.
+* Fixed issue with where combinations sometimes got miss-classified.
+* Fixed issue when event starts and ends on end-date of target.
+* Fixed issue when collapsing events when there is also a combination, when `filterTreatments = "All"`.
+
 # TreatmentPatterns 2.6.7
 ---------
 * Updated URLs in description
