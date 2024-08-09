@@ -369,7 +369,7 @@ doEraCollapse <- function(andromeda, eraCollapseSize) {
           .default = .data$needsMerge
         )
       ) %>% 
-      dplyr::mutate(durationEra = .data$eventEndDate - eventStartDate) %>%
+      dplyr::mutate(durationEra = .data$eventEndDate - .data$eventStartDate) %>%
       # dplyr::mutate(
       #   eventEndDate = if_else(
       #     is.null(.data$newEndDate), 
@@ -435,18 +435,21 @@ doCombinationWindow <- function(
     # treatmentHistory[r, event_end_date] ->
     # add column combination first received, first stopped
     treatmentHistory <- treatmentHistory %>%
+      dplyr::group_by(.data$personId) %>%
       dplyr::mutate(combinationFRFS = case_when(
         .data$selectedRows == 1 &
           switch == 0 &
           dplyr::lag(eventEndDate, order_by = .data$sortOrder) < eventEndDate ~ 1,
         .default = 0
-      ))
+      )) %>%
+      dplyr::ungroup()
     
     # For rows selected not in column switch ->
     # if treatmentHistory[r - 1, event_end_date] >
     # treatmentHistory[r, event_end_date] ->
     # add column combination last received, first stopped
     andromeda$treatmentHistory <- treatmentHistory %>%
+      dplyr::group_by(.data$personId) %>%
       dplyr::mutate(combinationLRFS = dplyr::case_when(
         .data$selectedRows == 1 &
           .data$switch == 0 &
@@ -455,8 +458,9 @@ doCombinationWindow <- function(
                 dplyr::lead(.data$eventEndDate, order_by = .data$sortOrder) == .data$eventEndDate &
                 dplyr::lead(.data$eventStartDate, order_by = .data$sortOrder) == .data$eventStartDate)) ~ 1,
         .default = 0
-      ))
-    
+      )) %>%
+      dplyr::ungroup()
+
     message(sprintf(
       "Selected %s \nout of %s rows\nIteration: %s\nSwitches: %s\nFRFS Combinations: %s\nLRFS Combinations: %s\n",
       andromeda$treatmentHistory %>%
