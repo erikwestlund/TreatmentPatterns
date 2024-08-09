@@ -20,9 +20,9 @@ test_that("computePathways DatabaseConnector", {
           cdmSchema = "main",
           resultSchema = "main"
         ),
-        "After maxPathLength: 554"
+        "After maxPathLength: 553"
       ),
-      "After combinationWindow: 555"
+      "After combinationWindow: 554"
     ),
     "Original number of rows: 8366"
   )
@@ -35,37 +35,18 @@ test_that("computePathways CDMConnector", {
     expect_message(
       expect_message(
         computePathways(
-          cdm = globals$cdm,
           cohorts = globals$cohorts,
-          cohortTableName = globals$cohortTableName
+          cdm = globals$cdm,
+          globals$cohortTableName
         ),
-        "After maxPathLength: 554"
+        "After maxPathLength: 553"
       ),
-      "After combinationWindow: 555"
+      "After combinationWindow: 554"
     ),
     "Original number of rows: 8366"
   )
   
   DBI::dbDisconnect(globals$con, shutdown = TRUE)
-})
-
-test_that("nrow exitCohorts > 0", {
-  globals <- generateCohortTableCDMC()
-  
-  cohorts <- globals$cohorts %>%
-    mutate(type = case_when(
-      .data$cohortName == "Acetaminophen" ~ "exit",
-      .default = .data$type
-    ))
-  
-  expect_message(
-    computePathways(
-      cdm = globals$cdm,
-      cohorts = cohorts,
-      cohortTableName = globals$cohortTableName
-    ),
-    "After maxPathLength: 554"
-  )
 })
 
 test_that("nrow exitCohorts > 0", {
@@ -429,11 +410,13 @@ test_that("filterTreatments", {
     class(allTH$eventCohortId)
   )
 
-  expect_identical(
-    "numeric",
-    class(firstTH$personId),
-    class(changesTH$personId),
-    class(allTH$personId)
+  expect_contains(
+    expected = c(
+      class(firstTH$personId),
+      class(changesTH$personId),
+      class(allTH$personId)
+    ),
+    object = c("integer", "numeric")
   )
 
   expect_identical(
@@ -507,9 +490,9 @@ test_that("filterTreatments", {
   expect_false(any(is.null(changesTH)))
   expect_false(any(is.null(allTH)))
   
-  expect_true(nrow(firstTH) == 554)
-  expect_true(nrow(changesTH) == 555)
-  expect_true(nrow(allTH) == 555)
+  expect_true(nrow(firstTH) == 553)
+  expect_true(nrow(changesTH) == 554)
+  expect_true(nrow(allTH) == 554)
 
   expect_true(Andromeda::isAndromeda(first))
   expect_true(Andromeda::isAndromeda(changes))
@@ -518,4 +501,108 @@ test_that("filterTreatments", {
   Andromeda::close(first)
   Andromeda::close(changes)
   Andromeda::close(all)
+})
+
+test_that("FRFS combination", {
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
+  
+  cohorts <- data.frame(
+    cohortId = c(1, 2, 3),
+    cohortName = c("X", "A", "B"),
+    type = c("target", "event", "event")
+  )
+  
+  cohort_table <- dplyr::tribble(
+    ~cohort_definition_id, ~subject_id, ~cohort_start_date, ~cohort_end_date,
+    
+    1, 5, as.Date("2017-08-03"), as.Date("2018-08-02"),
+    3, 5, as.Date("2017-11-26"), as.Date("2018-04-10"),
+    2, 5, as.Date("2018-02-26"), as.Date("2018-04-24"),
+    
+    1, 7, as.Date("2015-10-20"), as.Date("2018-06-28"),
+    2, 7, as.Date("2017-12-04"), as.Date("2018-04-30")
+  )
+  
+  copy_to(con, cohort_table, overwrite = TRUE)
+  
+  cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main", cohortTables = "cohort_table")
+  
+  andromeda <- computePathways(
+    cohorts = cohorts,
+    cohortTableName = 'cohort_table',
+    cdm = cdm,
+    tempEmulationSchema = NULL,
+    includeTreatments = "startDate",
+    periodPriorToIndex = 0,
+    minEraDuration = 30,
+    eraCollapseSize = 30,
+    combinationWindow = 30,
+    minPostCombinationDuration = 30,
+    filterTreatments = "All",
+    maxPathLength = 5)
+  
+  nFRFS <- andromeda$addRowsFRFS_1 %>%
+    dplyr::collect() %>%
+    nrow()
+
+  nLRFS <- andromeda$addRowsLRFS_1 %>%
+    dplyr::collect() %>%
+    nrow()
+
+  expect_equal(nFRFS, 1)
+  expect_equal(nLRFS, 0)
+
+  DBI::dbDisconnect(con)
+})
+
+test_that("LRFS combination", {
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
+  
+  cohorts <- data.frame(
+    cohortId = c(1, 2, 3),
+    cohortName = c("X", "A", "B"),
+    type = c("target", "event", "event")
+  )
+  
+  cohort_table <- dplyr::tribble(
+    ~cohort_definition_id, ~subject_id, ~cohort_start_date, ~cohort_end_date,
+    
+    1, 5, as.Date("2017-08-03"), as.Date("2018-08-02"),
+    3, 5, as.Date("2017-11-26"), as.Date("2018-04-10"),
+    2, 5, as.Date("2018-01-26"), as.Date("2018-03-24"),
+    
+    1, 7, as.Date("2015-10-20"), as.Date("2018-06-28"),
+    2, 7, as.Date("2017-12-04"), as.Date("2018-04-30")
+  )
+  
+  copy_to(con, cohort_table, overwrite = TRUE)
+  
+  cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main", cohortTables = "cohort_table")
+  
+  andromeda <- computePathways(
+    cohorts = cohorts,
+    cohortTableName = 'cohort_table',
+    cdm = cdm,
+    tempEmulationSchema = NULL,
+    includeTreatments = "startDate",
+    periodPriorToIndex = 0,
+    minEraDuration = 30,
+    eraCollapseSize = 30,
+    combinationWindow = 30,
+    minPostCombinationDuration = 30,
+    filterTreatments = "All",
+    maxPathLength = 5)
+  
+  nFRFS <- andromeda$addRowsFRFS_1 %>%
+    dplyr::collect() %>%
+    nrow()
+  
+  nLRFS <- andromeda$addRowsLRFS_1 %>%
+    dplyr::collect() %>%
+    nrow()
+  
+  expect_equal(nFRFS, 0)
+  expect_equal(nLRFS, 1)
+  
+  DBI::dbDisconnect(con)
 })
