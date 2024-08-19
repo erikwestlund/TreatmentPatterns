@@ -3,11 +3,10 @@ library(testthat)
 library(TreatmentPatterns)
 library(dplyr)
 library(stringr)
-library(CDMConnector)
 
 test_that("computePathways DatabaseConnector", {
   skip("Eunomia [2.0.0] bug")
-
+  skip_if_not(ableToRun()$CG)
   globals <- generateCohortTableCG()
   
   expect_message(
@@ -29,6 +28,7 @@ test_that("computePathways DatabaseConnector", {
 })
 
 test_that("computePathways CDMConnector", {
+  skip_if_not(ableToRun()$CDMC)
   globals <- generateCohortTableCDMC()
   
   expect_message(
@@ -51,6 +51,7 @@ test_that("computePathways CDMConnector", {
 
 test_that("nrow exitCohorts > 0", {
   skip("Eunomia [2.0.0] bug")
+  skip_if_not(ableToRun()$CG)
   globals <- generateCohortTableCG()
   
   cohorts <- globals$cohorts %>%
@@ -73,6 +74,7 @@ test_that("nrow exitCohorts > 0", {
 
 # Parameter sweep ----
 test_that("includeTreatments", {
+  skip_if_not(ableToRun()$CDMC)
   globals <- generateCohortTableCDMC()
 
   andromeda_startDate <- computePathways(
@@ -116,8 +118,9 @@ test_that("includeTreatments", {
 })
 
 test_that("periodPriorToIndex", {
+  skip_if_not(ableToRun()$CDMC)
   globals <- generateCohortTableCDMC()
-  
+
   expect_error(
     computePathways(
       cohorts = globals$cohorts,
@@ -130,8 +133,9 @@ test_that("periodPriorToIndex", {
 })
 
 test_that("minEraDuration", {
+  skip_if_not(ableToRun()$CDMC)
   globals <- generateCohortTableCDMC()
-  
+
   expect_error(
     computePathways(
       cohorts = globals$cohorts,
@@ -144,8 +148,9 @@ test_that("minEraDuration", {
 })
 
 test_that("splitEventCohorts", {
+  skip_if_not(ableToRun()$CDMC)
   globals <- generateCohortTableCDMC()
-  
+
   andromeda_empty <- computePathways(
     cohorts = globals$cohorts,
     cohortTableName = globals$cohortTableName,
@@ -181,8 +186,9 @@ test_that("splitEventCohorts", {
 })
 
 test_that("splitTime", {
+  skip_if_not(ableToRun()$CDMC)
   globals <- generateCohortTableCDMC()
-  
+
   expect_error(
     computePathways(
       cohorts = globals$cohorts,
@@ -195,6 +201,7 @@ test_that("splitTime", {
 })
 
 test_that("eraCollapseSize", {
+  skip_if_not(ableToRun()$CDMC)
   globals <- generateCohortTableCDMC()
 
   andromeda_0 <- computePathways(
@@ -226,8 +233,9 @@ test_that("eraCollapseSize", {
 })
 
 test_that("combinationWindow", {
+  skip_if_not(ableToRun()$CDMC)
   globals <- generateCohortTableCDMC()
-  
+
   expect_error(
     suppressWarnings(
       computePathways(
@@ -242,6 +250,7 @@ test_that("combinationWindow", {
 })
 
 test_that("minPostCombinationDuration: 30", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -353,6 +362,7 @@ test_that("minPostCombinationDuration: 30", {
 })
 
 test_that("filterTreatments", {
+  skip_if_not(ableToRun()$CDMC)
   globals <- generateCohortTableCDMC()
 
   expect_error(
@@ -504,6 +514,7 @@ test_that("filterTreatments", {
 })
 
 test_that("FRFS combination", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -556,6 +567,7 @@ test_that("FRFS combination", {
 })
 
 test_that("LRFS combination", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
