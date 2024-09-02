@@ -524,6 +524,7 @@ test_that("censorType", {
 
 test_that("counts", {
   skip_on_cran()
+  skip_if_not(ableToRun()$CDMC)
   
   globals <- generateCohortTableCDMC()
   
