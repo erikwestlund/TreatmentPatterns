@@ -104,7 +104,12 @@ library(TreatmentPatterns)
 library(CDMConnector)
 library(dplyr)
 
-if (require("CirceR", character.only = TRUE, quietly = TRUE)) {
+ableToRun <- all(
+  require("CirceR", character.only = TRUE, quietly = TRUE),
+  require("CDMConnector", character.only = TRUE, quietly = TRUE)
+)
+
+if (ableToRun) {
   withr::local_envvar(
     R_USER_CACHE_DIR = tempfile(),
     EUNOMIA_DATA_FOLDER = Sys.getenv("EUNOMIA_DATA_FOLDER", unset = tempfile())
