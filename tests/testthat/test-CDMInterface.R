@@ -23,7 +23,7 @@ test_that("fetchCohortTable", {
   
   minEraDuration <- 120
   
-  dbcInterface$fetchCohortTable(
+  x <- dbcInterface$fetchCohortTable(
     cohorts = cg$cohorts,
     cohortTableName = cg$cohortTableName,
     andromeda = aCG,
@@ -31,7 +31,7 @@ test_that("fetchCohortTable", {
     minEraDuration = minEraDuration
   )
   
-  cdmcInterface$fetchCohortTable(
+  x <- cdmcInterface$fetchCohortTable(
     cohorts = cdmc$cohorts,
     cohortTableName = cdmc$cohortTableName,
     andromeda = aCDMC,

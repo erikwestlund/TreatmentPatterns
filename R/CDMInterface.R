@@ -28,7 +28,7 @@ CDMInterface <- R6::R6Class(
       private$.resultSchema <- resultSchema
       private$.tempEmulationSchema <- tempEmulationSchema
       private$.cdm <- cdm
-
+      
       if (!is.null(cdm)) {
         private$.type <- "CDMConnector"
       } else if (!is.null(connectionDetails)) {
@@ -202,7 +202,18 @@ CDMInterface <- R6::R6Class(
           "cohort_start_date",
           "cohort_end_date",
           "age",
-          "sex")
+          "sex"
+        ) %>%
+        dplyr::group_by(.data$subject_id) %>%
+        dplyr::mutate(
+          subject_id_origin = as.character(.data$subject_id)
+        ) %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(.data$subject_id_origin) %>%
+        dplyr::mutate(
+          subject_id = as.integer(.data$subject_id_origin)
+        ) %>%
+        dplyr::ungroup()
       return(andromeda)
     },
     
