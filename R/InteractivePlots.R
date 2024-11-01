@@ -105,7 +105,7 @@ InteracitvePlot <- R6::R6Class(
     .indexYearOption = "",
     .noneOption = "",
     .groupCombiOption = "",
-    .reactiveValues = reactiveValues(
+    .reactiveValues = shiny::reactiveValues(
       filteredData = NULL
     ),
 

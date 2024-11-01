@@ -9,8 +9,6 @@
 #' @import Andromeda
 #' @import R6
 #' @import sunburstR
-#' @import shiny
-#' @import shinydashboard
 #' @importFrom networkD3 sankeyNetwork
 #' @importFrom htmlwidgets JS
 #' @importFrom stats sd median

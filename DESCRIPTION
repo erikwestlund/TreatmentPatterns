@@ -27,8 +27,6 @@ Imports:
     sunburstR,
     networkD3,
     htmlwidgets,
-    shiny,
-    shinydashboard
 Suggests:
     knitr,
     rmarkdown,
@@ -47,7 +45,9 @@ Suggests:
     withr,
     plotly,
     ggplot2,
-    Capr
+    Capr,
+    shiny,
+    shinydashboard
 License: Apache License 2.0
 Encoding: UTF-8
 LazyData: true
