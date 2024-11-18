@@ -114,7 +114,7 @@ executeTreatmentPatterns <- function(
     resultSchema = resultSchema,
     tempEmulationSchema = tempEmulationSchema,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = minEraDuration,
     splitEventCohorts = NULL,
     splitTime = NULL,
