@@ -81,7 +81,7 @@ InputHandler <- R6::R6Class(
       private$fetchCountsSex()
       private$fetchCountsYear()
       private$fetchMetadata()
-      private$fetchSummaryStatsTherapyDuration()
+      private$fetchSummaryEventDuration()
     },
     
     #' @description
@@ -134,7 +134,7 @@ InputHandler <- R6::R6Class(
       countsAge = NULL,
       countsSex = NULL,
       countsYear = NULL,
-      summaryStatsTherapyDuration = NULL,
+      summaryEventDuration = NULL,
       metadata = NULL
     ),
     
@@ -236,10 +236,10 @@ InputHandler <- R6::R6Class(
       })
     },
     
-    fetchSummaryStatsTherapyDuration = function() {
+    fetchSummaryEventDuration = function() {
       shiny::observeEvent(private$.reactiveValues$dataPath, {
         if (!is.null(private$.reactiveValues$dataPath)) {
-          private$.reactiveValues$summaryStatsTherapyDuration <- private$fetchFile("summaryStatsTherapyDuration.csv")
+          private$.reactiveValues$summaryEventDuration <- private$fetchFile("summaryEventDuration.csv")
         }
       })
     }

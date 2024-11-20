@@ -29,7 +29,7 @@
 #' @import shinydashboard
 #' @importFrom networkD3 sankeyNetwork
 #' @importFrom htmlwidgets JS
-#' @importFrom stats sd median
+#' @importFrom stats sd median quantile
 #' @importFrom tidyr pivot_wider
 ## usethis namespace: end
 NULL
@@ -42,6 +42,9 @@ utils::globalVariables(
     "rowNumber",
     "path",
     "personId",
-    "freq"
+    "freq",
+    "Q1",
+    "Q2",
+    "eventName"
   )
 )
