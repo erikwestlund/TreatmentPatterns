@@ -280,6 +280,7 @@ computeStatsTherapy <- function(treatmentHistory) {
       select(-"eventSeq"),
     
     treatmentHistory %>%
+      dplyr::filter(.data$eventCohortName != "None") %>%
       dplyr::group_by(.data$eventCohortName) %>%
       dplyr::summarise(
         min = min(.data$durationEra, na.rm = TRUE),
@@ -295,6 +296,7 @@ computeStatsTherapy <- function(treatmentHistory) {
       dplyr::rename(eventName = "eventCohortName"),
     
     treatmentHistory %>%
+      dplyr::filter(.data$eventCohortName != "None") %>%
       dplyr::group_by(.data$eventSeq, .data$eventCohortName) %>%
       dplyr::summarise(
         min = min(.data$durationEra, na.rm = TRUE),

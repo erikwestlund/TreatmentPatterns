@@ -196,8 +196,19 @@ CDMInterface <- R6::R6Class(
         dplyr::pull()
       
       cohortIds <- cohorts$cohortId
-      
       andromeda[[andromedaTableName]] <- private$.cdm[[cohortTableName]] %>%
+        dplyr::group_by(.data$subject_id) %>%
+        dplyr::mutate(
+          subject_id_origin = .data$subject_id
+        ) %>%
+        dplyr::ungroup() %>%
+        mutate(r = dplyr::row_number()) %>%
+        dplyr::group_by(.data$subject_id_origin) %>%
+        dplyr::mutate(
+          subject_id = min(.data$r, na.rm = TRUE)
+        ) %>%
+        dplyr::select(-"r") %>%
+        dplyr::ungroup() %>%
         dplyr::filter(.data$cohort_definition_id %in% cohortIds) %>%
         dplyr::filter(!!CDMConnector::datediff("cohort_start_date", "cohort_end_date") >= minEraDuration) %>%
         dplyr::group_by(.data$subject_id) %>%
@@ -205,29 +216,27 @@ CDMInterface <- R6::R6Class(
         dplyr::ungroup() %>%
         dplyr::inner_join(
           private$.cdm$person,
-          by = dplyr::join_by(subject_id == person_id)) %>%
+          by = dplyr::join_by(subject_id_origin == person_id)
+        ) %>%
         dplyr::inner_join(
           private$.cdm$concept,
           by = dplyr::join_by(gender_concept_id == concept_id)) %>%
-        dplyr::mutate(date_of_birth = as.Date(paste0(as.integer(year_of_birth), "-01-01"))) %>%
-        dplyr::mutate(age = !!CDMConnector::datediff("date_of_birth", "cohort_start_date", interval = "year")) %>%
+        dplyr::mutate(
+          date_of_birth = as.Date(paste0(as.integer(year_of_birth), "-01-01"))) %>%
+        dplyr::mutate(
+          age = !!CDMConnector::datediff("date_of_birth", "cohort_start_date", interval = "year")) %>%
+        dplyr::mutate(
+          subject_id_origin = as.character(subject_id_origin)
+        ) %>%
         dplyr::rename(sex = "concept_name") %>%
         dplyr::select(
           "cohort_definition_id",
           "subject_id",
+          "subject_id_origin",
           "cohort_start_date",
           "cohort_end_date",
           "age",
           "sex"
-        ) %>%
-        dplyr::group_by(.data$subject_id) %>%
-        dplyr::mutate(
-          subject_id_origin = as.character(.data$subject_id)
-        ) %>%
-        dplyr::ungroup() %>%
-        dplyr::group_by(.data$subject_id_origin) %>%
-        dplyr::mutate(
-          subject_id = as.integer(.data$subject_id_origin)
         ) %>%
         dplyr::ungroup()
       return(andromeda)

@@ -74,3 +74,4 @@ Collate:
     'executeTreatmentPatterns.R'
     'export.R'
     'plotEventDuration.R'
+    'attrition.R'

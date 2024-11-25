@@ -1,3 +1,18 @@
+# TreatmentPatterns 2.6.10
+---------
+* Converted subjet_id's to pseudo_subject_id's when pulling in data from the database. Actual subject_id's are stored as `character()`.
+* Added copyright statements in R-files.
+* Renamed `periodPriorToIndex` to `indexDateOffset`.
+* Added life cycle badge to ReadMe
+* Added more informative error / warning messaging when no data is available to compute pathways.
+* Extended output for event duration in pathways.
+* Renamed `summaryStatsTherapyDuration.csv` to `summaryEventDuration.csv`.
+
+# TreatmentPatterns 2.6.9
+---------
+* Disabled tests when required suggested packages are not available.
+* Updated examples to only run when required suggested packages are available.
+
 # TreatmentPatterns 2.6.8
 ---------
 * Updated some tests to work with later versions of omopgenerics.
@@ -5,6 +20,7 @@
 * Fixed issue when event starts and ends on end-date of target.
 * Fixed issue when collapsing events when there is also a combination, when `filterTreatments = "All"`.
 * Added check in tests to only run if packages are availible. (noSuggests, M1).
+* `createSankeyDiagram()` now supports pathways over 3 levels long.
 
 # TreatmentPatterns 2.6.7
 ---------
