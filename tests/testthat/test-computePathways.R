@@ -39,11 +39,11 @@ test_that("computePathways CDMConnector", {
           cdm = globals$cdm,
           globals$cohortTableName
         ),
-        "After maxPathLength: 553"
+        "Records: 553"
       ),
-      "After combinationWindow: 554"
+      "Records: 554"
     ),
-    "Original number of rows: 8366"
+    "Records: 8366"
   )
   
   DBI::dbDisconnect(globals$con, shutdown = TRUE)
@@ -148,7 +148,7 @@ test_that("indexDateOffset", {
       cdm = globals$cdm,
       indexDateOffset = 0
     ),
-    "Original number of rows: 8366"
+    "Records: 8366"
   )
 
   expect_message(
@@ -158,7 +158,7 @@ test_that("indexDateOffset", {
       cdm = globals$cdm,
       indexDateOffset = -30
     ),
-    "Original number of rows: 8366"
+    "Records: 8366"
   )
 
   expect_message(
@@ -168,7 +168,7 @@ test_that("indexDateOffset", {
       cdm = globals$cdm,
       indexDateOffset = 30
     ),
-    "Original number of rows: 6267"
+    "Records: 6267"
   )
 })
 
@@ -711,4 +711,34 @@ test_that("No target defined", {
   })
 
   DBI::dbDisconnect(params$con, shutdown = TRUE)
+})
+
+test_that("Attrition", {
+  params <- suppressWarnings(generateCohortTableCDMC())
+  outputEnvCDMC <- computePathways(
+    cohorts = params$cohorts,
+    cohortTableName = params$cohortTableName,
+    cdm = params$cdm
+  )
+
+  params <- suppressWarnings(generateCohortTableCG())
+  outputEnvCG <- computePathways(
+    cohorts = params$cohorts,
+    cohortTableName = params$cohortTableName,
+    connectionDetails = params$connectionDetails,
+    cdmSchema = params$cdmSchema,
+    resultSchema = params$resultSchema
+  )
+
+  expect_identical(
+    outputEnvCDMC$attrition %>%
+      collect() %>%
+      select(-"time"),
+    outputEnvCG$attrition %>%
+      collect() %>%
+      select(-"time")
+  )
+
+  Andromeda::close(outputEnvCG)
+  Andromeda::close(outputEnvCDMC)
 })

@@ -14,12 +14,15 @@ initAttrition <- function(andromeda) {
     number_records = numeric(0),
     number_subject = numeric(0),
     reason_id = numeric(0),
-    reason = character(0)
+    reason = character(0),
+    time = numeric(0)
   )
 }
 
 appendAttrition <- function(toAdd, andromeda) {
   if (is.null(andromeda$attrition)) initAttrition(andromeda)
+  
+  toAdd$time <- as.numeric(Sys.time())
 
   andromeda$attrition <- dplyr::rows_append(
     x = andromeda$attrition,
@@ -27,5 +30,5 @@ appendAttrition <- function(toAdd, andromeda) {
     copy = TRUE
   )
 
-  message(sprintf("%s: %s records; %subjects", toAdd$reason, toAdd$nRecords, toAdd$nSubjects))
+  message(sprintf("-- %s\n\tRecords: %s\n\tSubjects: %s", toAdd$reason, toAdd$number_records, toAdd$number_subject))
 }

@@ -159,6 +159,17 @@ computePathways <- function(
   andromeda$metadata <- andromeda$metadata %>%
     dplyr::collect() %>%
     dplyr::mutate(execution_end_date = as.character(Sys.Date()))
+
+  attrCounts <- fetchAttritionCounts(andromeda, "treatmentHistory")
+  appendAttrition(
+    toAdd = data.frame(
+      number_records = attrCounts$nRecords,
+      number_subject = attrCounts$nSubjects,
+      reason_id = 9,
+      reason = sprintf("treatment construction done")
+    ),
+    andromeda = andromeda
+  )
   return(andromeda)
 }
 

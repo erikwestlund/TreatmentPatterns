@@ -45,6 +45,7 @@ utils::globalVariables(
     "freq",
     "Q1",
     "Q2",
-    "eventName"
+    "eventName",
+    "subject_id_origin"
   )
 )

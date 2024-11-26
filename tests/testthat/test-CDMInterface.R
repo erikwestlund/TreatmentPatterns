@@ -52,13 +52,17 @@ test_that("fetchCohortTable", {
       summarize(n = n()) %>%
       filter(n > 1) %>%
       collect() %>%
-      mutate(subject_id = as.numeric(subject_id)),
+      mutate(subject_id = as.numeric(subject_id)) %>%
+      pull(n) %>%
+      sum(),
     aCDMC$cohort_table %>%
       group_by(.data$subject_id) %>%
       summarize(n = n()) %>%
       filter(n > 1) %>%
       collect() %>%
-      mutate(subject_id = as.numeric(subject_id))
+      mutate(subject_id = as.numeric(subject_id)) %>%
+      pull(n) %>%
+      sum()
   )
 
   # check n == 1 treatments
@@ -68,13 +72,17 @@ test_that("fetchCohortTable", {
       summarize(n = n()) %>%
       filter(n == 1) %>%
       collect() %>%
-      mutate(subject_id = as.numeric(subject_id)),
+      mutate(subject_id = as.numeric(subject_id)) %>%
+      pull(n) %>%
+      sum(),
     aCDMC$cohort_table %>%
       group_by(.data$subject_id) %>%
       summarize(n = n()) %>%
       filter(n == 1) %>%
       collect() %>%
-      mutate(subject_id = as.numeric(subject_id))
+      mutate(subject_id = as.numeric(subject_id)) %>%
+      pull(n) %>%
+      sum()
   )
   
   dbcInterface$disconnect()

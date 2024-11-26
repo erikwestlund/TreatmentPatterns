@@ -67,6 +67,7 @@ Collate:
     'ShinyApp.R'
     'SunburstPlot.R'
     'TreatmentPatterns-package.R'
+    'attrition.R'
     'computePathways.R'
     'constructPathways.R'
     'createSankeyDiagram.R'
@@ -74,4 +75,3 @@ Collate:
     'executeTreatmentPatterns.R'
     'export.R'
     'plotEventDuration.R'
-    'attrition.R'

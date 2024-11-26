@@ -123,12 +123,40 @@ CDMInterface <- R6::R6Class(
       self$disconnect()
     },
     
+    dbAppendAttrition = function(n, andromeda, cohortIds) {
+      appendAttrition(
+        toAdd = data.frame(
+          number_records = sum(n),
+          number_subject = length(n),
+          reason_id = 1,
+          reason = sprintf("Qualifying records for cohort definitions: %s", paste(cohortIds, collapse = ", ")),
+          time = as.numeric(Sys.time())
+        ),
+        andromeda = andromeda
+      )
+    },
+
     #### DatabaseConnector ----
     # cohortIds (`integer(n)`)
     # cohortTableName (`character(1)`)
     dbconFetchCohortTable = function(cohorts, cohortTableName, andromeda, andromedaTableName, minEraDuration) {
       targetCohortId <- getCohortIds(cohorts, "target")
+      n <- DatabaseConnector::renderTranslateQuerySql(
+        connection = private$.connection,
+        sql = "
+        SELECT COUNT(*)
+        FROM @resultSchema.@cohortTable
+        WHERE cohort_definition_id IN (@cohortIds)
+        GROUP BY subject_id;",
+        resultSchema = private$.resultSchema,
+        cohortTable = cohortTableName,
+        cohortIds = cohorts$cohortId
+      ) |>
+        unlist() |>
+        as.numeric()
       
+      private$dbAppendAttrition(n, andromeda, sort(cohorts$cohortId))
+
       # Select relevant data
       sql <- SqlRender::loadRenderTranslateSql(
         sqlFilename = "selectData.sql",
@@ -149,9 +177,25 @@ CDMInterface <- R6::R6Class(
         andromeda = andromeda,
         andromedaTableName = andromedaTableName
       )
+      
+      n <- andromeda[[andromedaTableName]] %>%
+        dplyr::group_by(.data$subject_id) %>% 
+        dplyr::summarise(n = dplyr::n()) %>%
+        dplyr::pull()
+
+      appendAttrition(
+        toAdd = data.frame(
+          number_records = sum(n),
+          number_subject = length(n),
+          reason_id = 2,
+          reason = sprintf("Removing records < minEraDuration (%s)", minEraDuration),
+          time = as.numeric(Sys.time())
+        ),
+        andromeda = andromeda
+      )
       return(andromeda)
     },
-    
+
     dbconFetchMetadata = function(andromeda) {
       renderedSql <- SqlRender::render(
         sql = "
@@ -164,12 +208,12 @@ CDMInterface <- R6::R6Class(
       ;",
         cdmSchema = private$.cdmSchema
       )
-      
+
       translatedSql <- SqlRender::translate(
         sql = renderedSql,
         targetDialect = private$.connection@dbms
       )
-      
+
       andromeda$metadata <- DatabaseConnector::querySql(
         connection = private$.connection,
         sql = translatedSql,
@@ -194,7 +238,14 @@ CDMInterface <- R6::R6Class(
         dplyr::filter(.data$type == "target") %>%
         dplyr::select("cohortId") %>%
         dplyr::pull()
-      
+
+      n <- private$.cdm[[cohortTableName]] %>%
+        dplyr::group_by(.data$subject_id) %>% 
+        dplyr::summarise(n = dplyr::n()) %>%
+        dplyr::pull()
+
+      private$dbAppendAttrition(n, andromeda, sort(cohorts$cohortId))
+
       cohortIds <- cohorts$cohortId
       andromeda[[andromedaTableName]] <- private$.cdm[[cohortTableName]] %>%
         dplyr::group_by(.data$subject_id) %>%
@@ -239,6 +290,22 @@ CDMInterface <- R6::R6Class(
           "sex"
         ) %>%
         dplyr::ungroup()
+      
+      n <- andromeda[[andromedaTableName]] %>%
+        dplyr::group_by(.data$subject_id) %>% 
+        dplyr::summarise(n = dplyr::n()) %>%
+        dplyr::pull()
+      
+      appendAttrition(
+        toAdd = data.frame(
+          number_records = sum(n),
+          number_subject = length(n),
+          reason_id = 2,
+          reason = sprintf("Removing records < minEraDuration (%s)", minEraDuration),
+          time = as.numeric(Sys.time())
+        ),
+        andromeda = andromeda
+      )
       return(andromeda)
     },
     

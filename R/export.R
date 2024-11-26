@@ -118,6 +118,13 @@ export <- function(
     getFilteredSubjects(andromeda)
   )
   
+  # attrition
+  attritionPath <- file.path(outputPath, "attrition.csv")
+  message(sprintf("Writing attrition to %s", attritionPath))
+  andromeda$attrition %>%
+    dplyr::collect() %>%
+    write.csv(file = attritionPath, row.names = FALSE)
+  
   # metadata
   metadataPath <- file.path(outputPath, "metadata.csv")
   message(sprintf("Writing metadata to %s", metadataPath))
