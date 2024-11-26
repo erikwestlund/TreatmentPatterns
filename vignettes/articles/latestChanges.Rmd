@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Subject ID conversion
-As of TreatmentPatterns `2.6.10` TreatmentPatterns will assign it's own pseudo subject ID's. This is due to subject ID's in the database may be 64 bit integers, or may contain letters. This can lead to strange edge cases where ID's get rounded, and results of different individuals will be grouped together.
+As of TreatmentPatterns `2.7.0` TreatmentPatterns will assign it's own pseudo subject ID's. This is due to subject ID's in the database may be 64 bit integers, or may contain letters. This can lead to strange edge cases where ID's get rounded, and results of different individuals will be grouped together.
 
 The real ID's that exist in the database will be stored as a `character(1)` in the `cohortTable` table, in the patient level result object from `computePathways()`
 
@@ -301,3 +301,61 @@ plotEventDuration(
   includeOverall = TRUE
 )
 ```
+
+## Attrition
+Status messages have been updated when running `computePathways()`. All messages are now also recorded in an attrition table. Which keeps track of the number of records and subjects left in the analysis.
+```{r}
+library(TreatmentPatterns)
+library(CDMConnector)
+library(dplyr)
+
+con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
+cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main")
+cohortSet <- readCohortSet(
+ path = system.file(package = "TreatmentPatterns", "exampleCohorts")
+)
+
+cdm <- generateCohortSet(
+ cdm = cdm,
+ cohortSet = cohortSet,
+ name = "cohort_table"
+)
+
+# convert subject_id to subject_id + 1e16 as 64 bit integer
+cdm$cohort_table <- cdm$cohort_table %>%
+  mutate(subject_id = bit64::as.integer64(.data$subject_id + 1e16)) %>%
+  compute()
+
+cdm$person <- cdm$person %>%
+  mutate(person_id = bit64::as.integer64(.data$person_id + 1e16)) %>%
+  compute()
+
+cohorts <- cohortSet %>%
+ # Remove 'cohort' and 'json' columns
+ select(-"cohort", -"json") %>%
+ mutate(type = c("event", "event", "event", "event", "exit", "event", "event", "target")) %>%
+ rename(
+   cohortId = "cohort_definition_id",
+   cohortName = "cohort_name",
+ ) %>%
+ select("cohortId", "cohortName", "type")
+
+outputEnv <- computePathways(
+ cohorts = cohorts,
+ cohortTableName = "cohort_table",
+ cdm = cdm
+)
+
+tempDir <- file.path(tempdir(), "tp")
+export(outputEnv, outputPath = tempDir)
+
+attrition <- read.csv(file.path(tempDir, "attrition.csv"))
+
+attrition
+```
+The attrition table has the following columns:
+  - number_records: Number of records left in the analysis, at any given stage.
+  - number_subjects: Number of subjects in the analysis, at any given stage.
+  - reason_id: Identification field per stage of the analysis.
+  - reason: Description of why records were removed.
+  - time: Time stamp as in number of seconds since 1970-01-01 (time since epoch).
