@@ -34,6 +34,7 @@ pkgdown::build_site()
 # Release package -------------------------------------------------------------
 devtools::check_win_devel()
 devtools::check_win_release()
+devtools::check_win_release(args = "_R_CHECK_DEPENDS_ONLY_=true")
 devtools::check_win_oldrelease()
 
 devtools::check_rhub(

@@ -1,4 +1,4 @@
-# TreatmentPatterns 2.6.10
+# TreatmentPatterns 2.7.0
 ---------
 * Converted subjet_id's to pseudo_subject_id's when pulling in data from the database. Actual subject_id's are stored as `character()`.
 * Added copyright statements in R-files.
