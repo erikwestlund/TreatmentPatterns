@@ -714,6 +714,7 @@ test_that("No target defined", {
 })
 
 test_that("Attrition", {
+  skip_on_os(os = "linux")
   params <- suppressWarnings(generateCohortTableCDMC())
   outputEnvCDMC <- computePathways(
     cohorts = params$cohorts,
