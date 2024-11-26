@@ -7,6 +7,8 @@
 * Added more informative error / warning messaging when no data is available to compute pathways.
 * Extended output for event duration in pathways.
 * Renamed `summaryStatsTherapyDuration.csv` to `summaryEventDuration.csv`.
+* Updated status messaging in the console.
+* Added `attrition.csv` that capture status messaging and time stamps. 
 
 # TreatmentPatterns 2.6.9
 ---------
