@@ -660,6 +660,8 @@ test_that("LRFS combination", {
 })
 
 test_that("No target records", {
+  skip_if_not(ableToRun()$CDMC)
+
   params <- suppressWarnings(generateCohortTableCDMC())
   
   params$cohorts$cohortId[8] <- 9
@@ -678,6 +680,8 @@ test_that("No target records", {
 })
 
 test_that("Empty cohort table", {
+  skip_if_not(ableToRun()$CDMC)
+
   params <- suppressWarnings(generateCohortTableCDMC())
   
   params$cdm$cohort_table <- params$cdm$cohort_table %>%
@@ -698,6 +702,8 @@ test_that("Empty cohort table", {
 })
 
 test_that("No target defined", {
+  skip_if_not(ableToRun()$CDMC)
+
   params <- suppressWarnings(generateCohortTableCDMC())
   
   params$cohorts$type <- rep("event", 8)
@@ -715,6 +721,9 @@ test_that("No target defined", {
 
 test_that("Attrition", {
   skip_on_os(os = "linux")
+  skip_if_not(ableToRun()$CDMC)
+  skip_if_not(ableToRun()$CG)
+
   params <- suppressWarnings(generateCohortTableCDMC())
   outputEnvCDMC <- computePathways(
     cohorts = params$cohorts,
