@@ -601,7 +601,8 @@ test_that("counts", {
 
 test_that("attrition", {
   skip_on_cran()
-  
+  skip_if_not(ableToRun()$CDMC)
+
   globals <- generateCohortTableCDMC()
   
   andromeda <- TreatmentPatterns::computePathways(
