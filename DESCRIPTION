@@ -28,7 +28,8 @@ Imports:
     networkD3,
     htmlwidgets,
     shiny,
-    shinydashboard
+    shinydashboard,
+    ggplot2
 Suggests:
     knitr,
     rmarkdown,
@@ -46,7 +47,6 @@ Suggests:
     DBI,
     withr,
     plotly,
-    ggplot2,
     Capr
 License: Apache License (>= 2)
 Encoding: UTF-8

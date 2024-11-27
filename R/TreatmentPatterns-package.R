@@ -27,6 +27,7 @@
 #' @import sunburstR
 #' @import shiny
 #' @import shinydashboard
+#' @import ggplot2
 #' @importFrom networkD3 sankeyNetwork
 #' @importFrom htmlwidgets JS
 #' @importFrom stats sd median quantile
