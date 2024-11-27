@@ -1,6 +1,6 @@
 # TreatmentPatterns 2.7.0
 ---------
-* Converted subjet_id's to pseudo_subject_id's when pulling in data from the database. Actual subject_id's are stored as `character()`.
+* Converted subject_id's to pseudo_subject_id's when pulling in data from the database. Actual subject_id's are stored as `character()`.
 * Added copyright statements in R-files.
 * Renamed `periodPriorToIndex` to `indexDateOffset`.
 * Added life cycle badge to ReadMe
