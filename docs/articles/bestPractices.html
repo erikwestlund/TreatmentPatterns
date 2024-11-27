@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TreatmentPatterns</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0</span>
       </span>
     </div>
 
@@ -54,6 +54,9 @@
     </li>
     <li>
       <a href="../articles/ComputingTreatmentPathways.html">Computing Treatment Pathways</a>
+    </li>
+    <li>
+      <a href="../articles/latestChanges.html">UNKNOWN TITLE</a>
     </li>
     <li>
       <a href="../articles/PareReport.html">PaRe Report: TreatmentPatterns [2.6.6]</a>
@@ -87,7 +90,7 @@
 
       
 
-      </header><link href="bestPractices_files/htmltools-fill-0.5.8/fill.css" rel="stylesheet">
+      </header><link href="bestPractices_files/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
 <script src="bestPractices_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="bestPractices_files/viz-1.8.2/viz.js"></script><link href="bestPractices_files/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
 <script src="bestPractices_files/grViz-binding-1.0.11/grViz.js"></script><div class="row">
   <div class="col-md-9 contents">
@@ -96,7 +99,7 @@
                         <h4 data-toc-skip class="author">Maarten van
 Kessel</h4>
             
-            <h4 data-toc-skip class="date">2024-05-21</h4>
+            <h4 data-toc-skip class="date">2024-11-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/darwin-eu/TreatmentPatterns/blob/HEAD/vignettes/articles/bestPractices.Rmd" class="external-link"><code>vignettes/articles/bestPractices.Rmd</code></a></small>
       <div class="hidden name"><code>bestPractices.Rmd</code></div>
@@ -162,8 +165,8 @@ if a person receives penicillin and ibuprofen or ibuprofen and
 penicillin.</p>
 <p>We can draw out all possible combinations in a graph for events <span class="math inline">\(A\)</span> <span class="math inline">\(B\)</span>
 <span class="math inline">\(C\)</span>.</p>
-<div class="grViz html-widget html-fill-item" id="htmlwidget-1deaa5d9cff2a732d3f8" style="width:700px;height:432.632880098888px;"></div>
-<script type="application/json" data-for="htmlwidget-1deaa5d9cff2a732d3f8">{"x":{"diagram":"digraph {\n  graph [layout = dot, rankdir = TB, splines = line]\n  \n  A [label = <A<FONT POINT-SIZE=\"8\"><SUB>1<\/SUB><\/FONT>>]\n  B [label = <B<FONT POINT-SIZE=\"8\"><SUB>1<\/SUB><\/FONT>>]\n  C [label = <C<FONT POINT-SIZE=\"8\"><SUB>1<\/SUB><\/FONT>>]\n  D [label = <D<FONT POINT-SIZE=\"8\"><SUB>1<\/SUB><\/FONT>>]\n  \n  AB [label = <AB<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  AC [label = <AC<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  AD [label = <AD<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  BC [label = <BC<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  BD [label = <BD<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  CD [label = <CD<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  \n  ABC [label = <ABC<FONT POINT-SIZE=\"8\"><SUB>3<\/SUB><\/FONT>>]\n  ABD [label = <ABD<FONT POINT-SIZE=\"8\"><SUB>3<\/SUB><\/FONT>>]\n  ACD [label = <ACD<FONT POINT-SIZE=\"8\"><SUB>3<\/SUB><\/FONT>>]\n  BCD [label = <BCD<FONT POINT-SIZE=\"8\"><SUB>3<\/SUB><\/FONT>>]\n  \n  ABCD [label = <ABCD<FONT POINT-SIZE=\"8\"><SUB>4<\/SUB><\/FONT>>]\n  \n  subgraph cluster1 {\n    A -> AB -> ABC -> ABCD\n         AB -> ABD\n    A -> AC\n         AC -> ACD\n    A -> AD\n  }\n  \n  subgraph cluster2 {\n    B -> BC -> BCD\n    B -> BD\n  }\n  \n  subgraph cluster3 {\n    C -> CD\n  }\n  \n  subgraph cluster4 {\n    D\n  }\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><p>The subscript of the nodes are the layers where the combination
+<div class="grViz html-widget html-fill-item" id="htmlwidget-92adf125b7a487ec3255" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-92adf125b7a487ec3255">{"x":{"diagram":"digraph {\n  graph [layout = dot, rankdir = TB, splines = line]\n  \n  A [label = <A<FONT POINT-SIZE=\"8\"><SUB>1<\/SUB><\/FONT>>]\n  B [label = <B<FONT POINT-SIZE=\"8\"><SUB>1<\/SUB><\/FONT>>]\n  C [label = <C<FONT POINT-SIZE=\"8\"><SUB>1<\/SUB><\/FONT>>]\n  D [label = <D<FONT POINT-SIZE=\"8\"><SUB>1<\/SUB><\/FONT>>]\n  \n  AB [label = <AB<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  AC [label = <AC<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  AD [label = <AD<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  BC [label = <BC<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  BD [label = <BD<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  CD [label = <CD<FONT POINT-SIZE=\"8\"><SUB>2<\/SUB><\/FONT>>]\n  \n  ABC [label = <ABC<FONT POINT-SIZE=\"8\"><SUB>3<\/SUB><\/FONT>>]\n  ABD [label = <ABD<FONT POINT-SIZE=\"8\"><SUB>3<\/SUB><\/FONT>>]\n  ACD [label = <ACD<FONT POINT-SIZE=\"8\"><SUB>3<\/SUB><\/FONT>>]\n  BCD [label = <BCD<FONT POINT-SIZE=\"8\"><SUB>3<\/SUB><\/FONT>>]\n  \n  ABCD [label = <ABCD<FONT POINT-SIZE=\"8\"><SUB>4<\/SUB><\/FONT>>]\n  \n  subgraph cluster1 {\n    A -> AB -> ABC -> ABCD\n         AB -> ABD\n    A -> AC\n         AC -> ACD\n    A -> AD\n  }\n  \n  subgraph cluster2 {\n    B -> BC -> BCD\n    B -> BD\n  }\n  \n  subgraph cluster3 {\n    C -> CD\n  }\n  \n  subgraph cluster4 {\n    D\n  }\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><p>The subscript of the nodes are the layers where the combination
 exists in. I.e. combination <span class="math inline">\(AB\)</span> is
 in layer 2, and combinations <span class="math inline">\(ABCD\)</span>
 is in layer 4. The layer coincides with the number of events in the
