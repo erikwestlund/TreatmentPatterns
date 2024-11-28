@@ -28,6 +28,7 @@
 #' @import shiny
 #' @import shinydashboard
 #' @import ggplot2
+#' @importFrom dbplyr window_order
 #' @importFrom networkD3 sankeyNetwork
 #' @importFrom htmlwidgets JS
 #' @importFrom stats sd median quantile

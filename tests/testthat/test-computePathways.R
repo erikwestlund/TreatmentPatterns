@@ -535,11 +535,11 @@ test_that("filterTreatments", {
   expect_false(any(is.na(firstTH)))
   expect_false(any(is.na(changesTH)))
   expect_false(any(is.na(allTH)))
-  
+
   expect_false(any(is.null(firstTH)))
   expect_false(any(is.null(changesTH)))
   expect_false(any(is.null(allTH)))
-  
+
   expect_true(nrow(firstTH) == 553)
   expect_true(nrow(changesTH) == 554)
   expect_true(nrow(allTH) == 554)

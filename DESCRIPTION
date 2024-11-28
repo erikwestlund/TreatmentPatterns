@@ -29,7 +29,8 @@ Imports:
     htmlwidgets,
     shiny,
     shinydashboard,
-    ggplot2
+    ggplot2,
+    dbplyr
 Suggests:
     knitr,
     rmarkdown,

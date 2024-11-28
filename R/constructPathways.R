@@ -334,77 +334,43 @@ doSplitEventCohorts <- function(
 #' @return (`invisible(NULL)`)
 doEraCollapse <- function(andromeda, eraCollapseSize) {
   andromeda$treatmentHistory <- andromeda$treatmentHistory %>%
-    dplyr::group_by(.data$personId, .data$eventCohortId) %>%
+    dplyr::group_by(.data$eventCohortId, .data$personId) %>%
+    dbplyr::window_order(.data$eventCohortId,.data$eventStartDate, .data$eventEndDate) %>%
     dplyr::mutate(
-      lagVariable = dplyr::lag(.data$eventEndDate, order_by = .data$eventStartDate)) %>%
+      prevStart = dplyr::lag(.data$eventStartDate),
+      prevEnd = dplyr::lag(.data$eventEndDate),
+      gap = as.numeric(.data$eventStartDate - .data$prevEnd)
+    ) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(
-      needsMerge = .data$eventStartDate - .data$lagVariable < eraCollapseSize,
-      rowNumber = dplyr::row_number()) %>%
-    dplyr::select(-"lagVariable")
+    dplyr::mutate(row = row_number())
   
-  needsMerge <- andromeda$treatmentHistory %>%
-    dplyr::filter(.data$needsMerge) %>%
-    dplyr::select("rowNumber") %>%
-    dplyr::collect() %>%
-    dplyr::arrange(.data$rowNumber)
+  rows <- andromeda$treatmentHistory %>%
+    dplyr::filter(.data$gap <= eraCollapseSize) %>%
+    dplyr::pull(.data$row)
   
-  n <- nrow(needsMerge)
-  
-  # Remove all rows with gap_same < eraCollapseSize
-  if (n == 0) {
-    andromeda$treatmentHistory <- andromeda$treatmentHistory %>%
-      dplyr::select(-"needsMerge", -"rowNumber") %>%
-      dplyr::mutate(durationEra = .data$eventEndDate - .data$eventStartDate)
-  } else {
-    blockEnd <- as.numeric(needsMerge$rowNumber[seq_len(n)] != needsMerge$rowNumber[seq_len(n)]) + 1
-    needsMerge$blockId <- cumsum(blockEnd)
-    needsMerge <- needsMerge %>%
-      dplyr::group_by(.data$blockId) %>%
-      dplyr::summarise(
-        startRowNumber = min(rowNumber, na.rm = TRUE) - 1,
-        endRowNumber = max(rowNumber, na.rm = TRUE),
-        .groups = "drop")
-    
-    newEndDates <- andromeda$treatmentHistory %>%
-      dplyr::inner_join(
-        needsMerge,
-        copy = TRUE,
-        by = dplyr::join_by("rowNumber" == "endRowNumber")) %>% 
-      dplyr::select("startRowNumber", newEndDate = "eventEndDate")
+  for (row in rev(rows)) {
+    endDate <- andromeda$treatmentHistory %>%
+      dplyr::filter(dplyr::row_number() == !!row) %>%
+      dplyr::pull(.data$eventEndDate)
     
     andromeda$treatmentHistory <- andromeda$treatmentHistory %>%
-      dplyr::left_join(
-        newEndDates,
-        by = dplyr::join_by("rowNumber" == "startRowNumber")) %>%
-      dplyr::mutate(
-        eventEndDate = dplyr::case_when(
-          !is.na(.data$newEndDate) ~ .data$newEndDate,
-          .default = .data$eventEndDate
-        ),
-        needsMerge = dplyr::case_when(
-          !is.na(.data$newEndDate) ~ NA,
-          .default = .data$needsMerge
-        )
-      ) %>% 
-      dplyr::mutate(durationEra = .data$eventEndDate - .data$eventStartDate) %>%
-      # dplyr::mutate(
-      #   eventEndDate = if_else(
-      #     is.null(.data$newEndDate), 
-      #     .data$eventEndDate, 
-      #     .data$newEndDate)) %>%
-      dplyr::filter(is.na(.data$needsMerge)) %>%
-      dplyr::select(-"newEndDate", -"needsMerge", -"rowNumber") %>%
-      dplyr::mutate(durationEra = .data$eventEndDate - .data$eventStartDate)
+      dplyr::mutate(eventEndDate = dplyr::case_when(
+        dplyr::row_number() == !!row - 1 ~ endDate,
+        .default = .data$eventEndDate
+      ))
   }
-  
+
+  andromeda$treatmentHistory <- andromeda$treatmentHistory %>%
+    dplyr::filter(!dplyr::row_number() %in% rows) %>%
+    dplyr::select(-"prevStart", -"prevEnd", -"gap", -"row")
+
   attrCounts <- fetchAttritionCounts(andromeda, "treatmentHistory")
   appendAttrition(
     toAdd = data.frame(
       number_records = attrCounts$nRecords,
       number_subject = attrCounts$nSubjects,
       reason_id = 5,
-      reason = sprintf("eraCollapse (%s)", eraCollapseSize)
+      reason = sprintf("Collapsing eras, eraCollapse (%s)", eraCollapseSize)
     ),
     andromeda = andromeda
   )
@@ -616,7 +582,6 @@ doCombinationWindow <- function(
       )
     
     selectRowsCombinationWindow(andromeda)
-    
     iterations <- iterations + 1
   }
   
