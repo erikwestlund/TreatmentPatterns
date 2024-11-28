@@ -27,7 +27,7 @@ test_that("CohortGenerator", {
   )
 
   expect_true(
-    file.exists(file.path(tempDir, "summaryStatsTherapyDuration.csv"))
+    file.exists(file.path(tempDir, "summaryEventDuration.csv"))
   )
 
   expect_true(
@@ -45,6 +45,7 @@ test_that("CohortGenerator", {
 
 test_that("CDMConnector", {
   testthat::skip_on_cran()
+  skip_if_not(ableToRun()$CDMC)
   
   globals <- generateCohortTableCDMC()
   
@@ -62,7 +63,7 @@ test_that("CDMConnector", {
   )
 
   expect_true(
-    file.exists(file.path(tempDir, "summaryStatsTherapyDuration.csv"))
+    file.exists(file.path(tempDir, "summaryEventDuration.csv"))
   )
 
   expect_true(

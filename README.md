@@ -5,9 +5,9 @@
 
 <!-- badges: start -->
 
+[![Lifecycle:stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![R-CMD-check](https://github.com/darwin-eu-dev/TreatmentPatterns/actions/workflows/R-CMD-check.yaml/badge.svg?branch=dev)](https://github.com/darwin-eu-dev/TreatmentPatterns/actions/workflows/R-CMD-check.yaml)
-
-[![CRAN](https://www.r-pkg.org/badges/version/TreatmentPatterns)](https://cran.r-project.org/package=TreatmentPatterns)
+[![CRAN](https://www.r-pkg.org/badges/version/TreatmentPatterns)](https://CRAN.R-project.org/package=TreatmentPatterns)
 [![Codecov test
 coverage](https://codecov.io/gh/darwin-eu-dev/TreatmentPatterns/branch/master/graph/badge.svg)](https://app.codecov.io/gh/darwin-eu-dev/TreatmentPatterns?branch=master)
 
@@ -16,8 +16,7 @@ coverage](https://codecov.io/gh/darwin-eu-dev/TreatmentPatterns/branch/master/gr
 [*Markus A, Verhamme K, Kors J, Rijnbeek P (2022). “TreatmentPatterns:
 An R package to facilitate the standardized development and analysis of
 treatment patterns across disease domains.” Computer Methods and
-Programs in
-Biomedicine.*](https://www.sciencedirect.com/science/article/pii/S016926072200462X?via%3Dihub)
+Programs in Biomedicine.*](https://doi.org/10.1016/j.cmpb.2022.107081)
 
 This R package contains the resources for performing a treatment pathway
 analysis of a study population of interest in observational databases.

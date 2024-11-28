@@ -1,9 +1,9 @@
 library(testthat)
 library(TreatmentPatterns)
 library(dplyr)
-library(CDMConnector)
 
 test_that("A", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -27,7 +27,7 @@ test_that("A", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -54,6 +54,7 @@ test_that("A", {
 })
 
 test_that("A-B", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -78,7 +79,7 @@ test_that("A-B", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -106,6 +107,7 @@ test_that("A-B", {
 
 
 test_that("A-B-C", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -131,7 +133,7 @@ test_that("A-B-C", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -158,6 +160,7 @@ test_that("A-B-C", {
 })
 
 test_that("A-B+C", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -183,7 +186,7 @@ test_that("A-B+C", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -210,6 +213,7 @@ test_that("A-B+C", {
 })
 
 test_that("A+B-C", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -235,7 +239,7 @@ test_that("A+B-C", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -262,6 +266,7 @@ test_that("A+B-C", {
 })
 
 test_that("A-A+B", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -287,7 +292,7 @@ test_that("A-A+B", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -314,6 +319,7 @@ test_that("A-A+B", {
 })
 
 test_that("A-B-A-B", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -340,7 +346,7 @@ test_that("A-B-A-B", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -367,6 +373,7 @@ test_that("A-B-A-B", {
 })
 
 test_that("A-B-A", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -392,7 +399,7 @@ test_that("A-B-A", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -419,6 +426,7 @@ test_that("A-B-A", {
 })
 
 test_that("A-B-B, collapse to A-B", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -444,7 +452,7 @@ test_that("A-B-B, collapse to A-B", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -471,6 +479,7 @@ test_that("A-B-B, collapse to A-B", {
 })
 
 test_that("A-B-B", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -496,7 +505,7 @@ test_that("A-B-B", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -523,6 +532,7 @@ test_that("A-B-B", {
 })
 
 test_that("A+B-A", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -548,7 +558,7 @@ test_that("A+B-A", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -575,6 +585,7 @@ test_that("A+B-A", {
 })
 
 test_that("A-A-B", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -600,7 +611,7 @@ test_that("A-A-B", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -627,6 +638,7 @@ test_that("A-A-B", {
 })
 
 test_that("A-A-B, collapse to A-B", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -652,7 +664,7 @@ test_that("A-A-B, collapse to A-B", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -679,6 +691,7 @@ test_that("A-A-B, collapse to A-B", {
 })
 
 test_that("A+B-A+B, collapse to A+B", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -705,7 +718,7 @@ test_that("A+B-A+B, collapse to A+B", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -732,6 +745,7 @@ test_that("A+B-A+B, collapse to A+B", {
 })
 
 test_that("A+B-A+B", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -758,7 +772,7 @@ test_that("A+B-A+B", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 30,
@@ -785,6 +799,7 @@ test_that("A+B-A+B", {
 })
 
 test_that("A-A+B-B", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -809,7 +824,7 @@ test_that("A-A+B-B", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 5,
@@ -836,6 +851,7 @@ test_that("A-A+B-B", {
 })
 
 test_that("A-A-C-A+B+C-C", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -861,7 +877,7 @@ test_that("A-A-C-A+B+C-C", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 5,
@@ -888,6 +904,7 @@ test_that("A-A-C-A+B+C-C", {
 })
 
 test_that("A-A+B+C-A+C-C", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -913,7 +930,7 @@ test_that("A-A+B+C-A+C-C", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 1,
     eraCollapseSize = 5,
     combinationWindow = 5,
@@ -940,6 +957,7 @@ test_that("A-A+B+C-A+C-C", {
 })
 
 test_that("A-A+C-C-B+C-C", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -966,7 +984,7 @@ test_that("A-A+C-C-B+C-C", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 5,
     combinationWindow = 1,
@@ -993,6 +1011,7 @@ test_that("A-A+C-C-B+C-C", {
 })
 
 test_that("start event == start target", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -1016,7 +1035,7 @@ test_that("start event == start target", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 30,
     combinationWindow = 30,
@@ -1043,6 +1062,7 @@ test_that("start event == start target", {
 })
 
 test_that("end event == end target", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -1066,7 +1086,7 @@ test_that("end event == end target", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 30,
     combinationWindow = 30,
@@ -1093,6 +1113,7 @@ test_that("end event == end target", {
 })
 
 test_that("start-end event == start-end target", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -1116,7 +1137,7 @@ test_that("start-end event == start-end target", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 30,
     combinationWindow = 30,
@@ -1143,6 +1164,7 @@ test_that("start-end event == start-end target", {
 })
 
 test_that("start event < start target", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
 
   cohorts <- data.frame(
@@ -1166,7 +1188,7 @@ test_that("start event < start target", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 30,
     combinationWindow = 30,
@@ -1184,6 +1206,7 @@ test_that("start event < start target", {
 })
 
 test_that("start event < start target, periodPrior = 60", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -1207,7 +1230,7 @@ test_that("start event < start target, periodPrior = 60", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 60,
+    indexDateOffset = 60,
     minEraDuration = 0,
     eraCollapseSize = 30,
     combinationWindow = 30,
@@ -1234,6 +1257,7 @@ test_that("start event < start target, periodPrior = 60", {
 })
 
 test_that("start event > end target", {
+  skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   
   cohorts <- data.frame(
@@ -1257,7 +1281,7 @@ test_that("start event > end target", {
     cohortTableName = "cohort_table",
     cdm = cdm,
     includeTreatments = "startDate",
-    periodPriorToIndex = 0,
+    indexDateOffset = 0,
     minEraDuration = 0,
     eraCollapseSize = 30,
     combinationWindow = 30,
@@ -1270,6 +1294,275 @@ test_that("start event > end target", {
   expect_message(
     TreatmentPatterns::export(andromeda, tempDir, minCellCount = 1),
     "Treatment History table is empty. Nothing to export.")
+  
+  DBI::dbDisconnect(con)
+})
+
+test_that("collapse A-B-B-B to A-A+B-B", {
+  skip_if_not(ableToRun()$CDMC)
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
+  
+  cohorts <- data.frame(
+    cohortId = c(1, 2, 3),
+    cohortName = c("X", "A", "B"),
+    type = c("target", "event", "event")
+  )
+  
+  cohort_table <- dplyr::tribble(
+    ~cohort_definition_id, ~subject_id, ~cohort_start_date,    ~cohort_end_date,
+    1,                     5,           as.Date("2014-01-01"), as.Date("2015-12-31"),
+    2,                     5,           as.Date("2014-05-20"), as.Date("2014-08-17"),
+    3,                     5,           as.Date("2014-07-08"), as.Date("2014-08-25"),
+    3,                     5,           as.Date("2014-10-19"), as.Date("2015-02-22"),
+    3,                     5,           as.Date("2015-02-28"), as.Date("2015-09-26")
+  )
+  
+  copy_to(con, cohort_table, overwrite = TRUE)
+  
+  cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main", cohortTables = "cohort_table")
+  
+  andromeda <- TreatmentPatterns::computePathways(
+    cohorts = cohorts,
+    cohortTableName = 'cohort_table',
+    cdm = cdm,
+    tempEmulationSchema = NULL,
+    includeTreatments = "startDate",
+    indexDateOffset = 0,
+    minEraDuration = 30,
+    eraCollapseSize = 30,
+    combinationWindow = 30,
+    minPostCombinationDuration = 30,
+    filterTreatments = "All",
+    maxPathLength = 5
+  )
+  
+  tempDir <- tempdir()
+  TreatmentPatterns::export(andromeda, tempDir, minCellCount = 1)
+  
+  treatmentPaths <- read.csv(file.path(tempDir, "treatmentPathways.csv"))
+  
+  path <- treatmentPaths %>%
+    dplyr::filter(
+      .data$age == "all",
+      .data$sex == "all",
+      .data$indexYear == "all") %>%
+    dplyr::pull(.data$path)
+  
+  expect_identical(path, "A-A+B-B")
+  
+  DBI::dbDisconnect(con)
+})
+
+test_that("collapse A-B-B-B to A-B", {
+  skip_if_not(ableToRun()$CDMC)
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
+  
+  cohorts <- data.frame(
+    cohortId = c(1, 2, 3),
+    cohortName = c("X", "A", "B"),
+    type = c("target", "event", "event")
+  )
+  
+  cohort_table <- dplyr::tribble(
+    ~cohort_definition_id, ~subject_id, ~cohort_start_date,    ~cohort_end_date,
+    1,                     5,           as.Date("2014-01-01"), as.Date("2015-12-31"),
+    2,                     5,           as.Date("2014-01-01"), as.Date("2014-02-01"),
+    3,                     5,           as.Date("2014-02-03"), as.Date("2014-03-01"),
+    3,                     5,           as.Date("2014-03-03"), as.Date("2014-04-01"),
+    3,                     5,           as.Date("2014-04-03"), as.Date("2014-05-01")
+  )
+  
+  copy_to(con, cohort_table, overwrite = TRUE)
+  
+  cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main", cohortTables = "cohort_table")
+  
+  andromeda <- TreatmentPatterns::computePathways(
+    cohorts = cohorts,
+    cohortTableName = 'cohort_table',
+    cdm = cdm,
+    tempEmulationSchema = NULL,
+    includeTreatments = "startDate",
+    indexDateOffset = 0,
+    minEraDuration = 14,
+    eraCollapseSize = 5,
+    filterTreatments = "All",
+    maxPathLength = 5
+  )
+  
+  tempDir <- tempdir()
+  TreatmentPatterns::export(andromeda, tempDir, minCellCount = 1)
+  
+  treatmentPaths <- read.csv(file.path(tempDir, "treatmentPathways.csv"))
+  
+  path <- treatmentPaths %>%
+    dplyr::filter(
+      .data$age == "all",
+      .data$sex == "all",
+      .data$indexYear == "all") %>%
+    dplyr::pull(.data$path)
+  
+  expect_identical(path, "A-B")
+  
+  DBI::dbDisconnect(con)
+})
+
+test_that("collapse A-A-B-B to A-B", {
+  skip_if_not(ableToRun()$CDMC)
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
+  
+  cohorts <- data.frame(
+    cohortId = c(1, 2, 3),
+    cohortName = c("X", "A", "B"),
+    type = c("target", "event", "event")
+  )
+  
+  cohort_table <- dplyr::tribble(
+    ~cohort_definition_id, ~subject_id, ~cohort_start_date,    ~cohort_end_date,
+    1,                     5,           as.Date("2014-01-01"), as.Date("2015-12-31"),
+    2,                     5,           as.Date("2014-01-01"), as.Date("2014-02-01"),
+    2,                     5,           as.Date("2014-02-03"), as.Date("2014-03-01"),
+    3,                     5,           as.Date("2014-03-03"), as.Date("2014-04-01"),
+    3,                     5,           as.Date("2014-04-03"), as.Date("2014-05-01")
+  )
+  
+  copy_to(con, cohort_table, overwrite = TRUE)
+  
+  cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main", cohortTables = "cohort_table")
+  
+  andromeda <- TreatmentPatterns::computePathways(
+    cohorts = cohorts,
+    cohortTableName = 'cohort_table',
+    cdm = cdm,
+    tempEmulationSchema = NULL,
+    includeTreatments = "startDate",
+    indexDateOffset = 0,
+    minEraDuration = 14,
+    eraCollapseSize = 5,
+    filterTreatments = "All",
+    maxPathLength = 5
+  )
+  
+  tempDir <- tempdir()
+  TreatmentPatterns::export(andromeda, tempDir, minCellCount = 1)
+  
+  treatmentPaths <- read.csv(file.path(tempDir, "treatmentPathways.csv"))
+  
+  path <- treatmentPaths %>%
+    dplyr::filter(
+      .data$age == "all",
+      .data$sex == "all",
+      .data$indexYear == "all") %>%
+    dplyr::pull(.data$path)
+  
+  expect_identical(path, "A-B")
+  
+  DBI::dbDisconnect(con)
+})
+
+test_that("collapse A-A-B-B to A-B 2", {
+  skip_if_not(ableToRun()$CDMC)
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
+  
+  cohorts <- data.frame(
+    cohortId = c(1, 2, 3),
+    cohortName = c("X", "A", "B"),
+    type = c("target", "event", "event")
+  )
+  
+  cohort_table <- dplyr::tribble(
+    ~cohort_definition_id, ~subject_id, ~cohort_start_date,    ~cohort_end_date,
+    1,                     5,           as.Date("2014-01-01"), as.Date("2015-12-31"),
+    2,                     5,           as.Date("2014-02-03"), as.Date("2014-03-01"),
+    3,                     5,           as.Date("2014-03-03"), as.Date("2014-04-01"),
+    2,                     5,           as.Date("2014-01-01"), as.Date("2014-02-01"),
+    3,                     5,           as.Date("2014-04-03"), as.Date("2014-05-01")
+  )
+
+  copy_to(con, cohort_table, overwrite = TRUE)
+  
+  cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main", cohortTables = "cohort_table")
+  
+  andromeda <- TreatmentPatterns::computePathways(
+    cohorts = cohorts,
+    cohortTableName = 'cohort_table',
+    cdm = cdm,
+    tempEmulationSchema = NULL,
+    includeTreatments = "startDate",
+    indexDateOffset = 0,
+    minEraDuration = 14,
+    eraCollapseSize = 5,
+    filterTreatments = "All",
+    maxPathLength = 5
+  )
+  
+  tempDir <- tempdir()
+  TreatmentPatterns::export(andromeda, tempDir, minCellCount = 1)
+  
+  treatmentPaths <- read.csv(file.path(tempDir, "treatmentPathways.csv"))
+  
+  path <- treatmentPaths %>%
+    dplyr::filter(
+      .data$age == "all",
+      .data$sex == "all",
+      .data$indexYear == "all") %>%
+    dplyr::pull(.data$path)
+  
+  expect_identical(path, "A-B")
+  
+  DBI::dbDisconnect(con)
+})
+
+test_that("collapse A-A-B-B to A+B 2", {
+  skip_if_not(ableToRun()$CDMC)
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
+  
+  cohorts <- data.frame(
+    cohortId = c(1, 2, 3),
+    cohortName = c("X", "A", "B"),
+    type = c("target", "event", "event")
+  )
+  
+  cohort_table <- dplyr::tribble(
+    ~cohort_definition_id, ~subject_id, ~cohort_start_date,    ~cohort_end_date,
+    1,                     5,           as.Date("2014-01-01"), as.Date("2015-12-31"),
+    2,                     5,           as.Date("2014-02-01"), as.Date("2014-03-01"),
+    3,                     5,           as.Date("2014-02-05"), as.Date("2014-03-03"),
+    2,                     5,           as.Date("2014-03-05"), as.Date("2014-04-01"),
+    3,                     5,           as.Date("2014-03-05"), as.Date("2014-04-07")
+  )
+
+  copy_to(con, cohort_table, overwrite = TRUE)
+
+  cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main", cohortTables = "cohort_table")
+
+  andromeda <- TreatmentPatterns::computePathways(
+    cohorts = cohorts,
+    cohortTableName = 'cohort_table',
+    cdm = cdm,
+    tempEmulationSchema = NULL,
+    includeTreatments = "startDate",
+    indexDateOffset = 0,
+    minEraDuration = 14,
+    combinationWindow = 14,
+    minPostCombinationDuration = 14,
+    eraCollapseSize = 5,
+    filterTreatments = "All",
+    maxPathLength = 5
+  )
+  
+  tempDir <- tempdir()
+  TreatmentPatterns::export(andromeda, tempDir, minCellCount = 1)
+  
+  treatmentPaths <- read.csv(file.path(tempDir, "treatmentPathways.csv"))
+  
+  path <- treatmentPaths %>%
+    dplyr::filter(
+      .data$age == "all",
+      .data$sex == "all",
+      .data$indexYear == "all") %>%
+    dplyr::pull(.data$path)
+  
+  expect_identical(path, "A+B")
   
   DBI::dbDisconnect(con)
 })

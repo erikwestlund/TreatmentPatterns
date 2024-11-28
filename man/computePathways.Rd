@@ -13,7 +13,7 @@ computePathways(
   resultSchema = NULL,
   tempEmulationSchema = NULL,
   includeTreatments = "startDate",
-  periodPriorToIndex = 0,
+  indexDateOffset = 0,
   minEraDuration = 0,
   splitEventCohorts = NULL,
   splitTime = NULL,
@@ -56,9 +56,8 @@ Optional; In congruence with \code{connectionDetails} and \code{cdmSchema}. Igno
 \item{\code{"endDate"}}{Include treatments before target cohort end date and before.}
 }}
 
-\item{periodPriorToIndex}{(\code{integer(1)}: \code{0})\cr
-Number of days prior to the index date of the target cohort | that event
-cohorts are allowed to start}
+\item{indexDateOffset}{(\code{integer(1)}: \code{0})\cr
+Offset the index date of the \code{Target} cohort.}
 
 \item{minEraDuration}{(\code{integer(1)}: \code{0})\cr
 Minimum time an event era should last to be included in analysis}
@@ -100,17 +99,28 @@ specified cohorts.
 }
 \examples{
 \donttest{
-library(TreatmentPatterns)
-library(CDMConnector)
-library(dplyr)
+ableToRun <- all(
+  require("CirceR", character.only = TRUE, quietly = TRUE),
+  require("CDMConnector", character.only = TRUE, quietly = TRUE),
+  require("TreatmentPatterns", character.only = TRUE, quietly = TRUE),
+  require("dplyr", character.only = TRUE, quietly = TRUE)
+)
 
-if (require("CirceR", character.only = TRUE, quietly = TRUE)) {
+if (ableToRun) {
+  library(TreatmentPatterns)
+  library(CDMConnector)
+  library(dplyr)
+
   withr::local_envvar(
     R_USER_CACHE_DIR = tempfile(),
     EUNOMIA_DATA_FOLDER = Sys.getenv("EUNOMIA_DATA_FOLDER", unset = tempfile())
   )
 
-  downloadEunomiaData(overwrite = TRUE)
+  tryCatch({
+    if (Sys.getenv("skip_eunomia_download_test") != "TRUE") {
+      CDMConnector::downloadEunomiaData(overwrite = TRUE)
+    }
+  }, error = function(e) NA)
 
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main")

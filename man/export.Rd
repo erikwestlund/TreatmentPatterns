@@ -47,17 +47,28 @@ object to sharable csv-files and/or a zip archive.
 }
 \examples{
 \donttest{
-library(TreatmentPatterns)
-library(CDMConnector)
-library(dplyr)
+ableToRun <- all(
+  require("CirceR", character.only = TRUE, quietly = TRUE),
+  require("CDMConnector", character.only = TRUE, quietly = TRUE),
+  require("TreatmentPatterns", character.only = TRUE, quietly = TRUE),
+  require("dplyr", character.only = TRUE, quietly = TRUE)
+)
 
-if (require("CirceR", character.only = TRUE, quietly = TRUE)) {
+if (ableToRun) {
+  library(TreatmentPatterns)
+  library(CDMConnector)
+  library(dplyr)
+
   withr::local_envvar(
     R_USER_CACHE_DIR = tempfile(),
     EUNOMIA_DATA_FOLDER = Sys.getenv("EUNOMIA_DATA_FOLDER", unset = tempfile())
   )
 
-  downloadEunomiaData(overwrite = TRUE)
+  tryCatch({
+    if (Sys.getenv("skip_eunomia_download_test") != "TRUE") {
+      CDMConnector::downloadEunomiaData(overwrite = TRUE)
+    }
+  }, error = function(e) NA)
 
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
   cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main")

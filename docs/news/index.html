@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TreatmentPatterns</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.7.0</span>
       </span>
     </div>
 
@@ -36,6 +36,9 @@
     </li>
     <li>
       <a href="../articles/ComputingTreatmentPathways.html">Computing Treatment Pathways</a>
+    </li>
+    <li>
+      <a href="../articles/latestChanges.html">UNKNOWN TITLE</a>
     </li>
     <li>
       <a href="../articles/PareReport.html">PaRe Report: TreatmentPatterns [2.6.6]</a>
@@ -70,9 +73,37 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="2.6.7" id="id_-treatmentpatterns-267"># TreatmentPatterns 2.6.7<a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-267"></a></h2>
+<h2 class="page-header" data-toc-text="2.6.10" id="id_-treatmentpatterns-2610"># TreatmentPatterns 2.6.10<a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-2610"></a></h2>
+<ul><li>Converted subjet_id’s to pseudo_subject_id’s when pulling in data from the database. Actual subject_id’s are stored as <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>.</li>
+<li>Added copyright statements in R-files.</li>
+<li>Renamed <code>periodPriorToIndex</code> to <code>indexDateOffset</code>.</li>
+<li>Added life cycle badge to ReadMe</li>
+<li>Added more informative error / warning messaging when no data is available to compute pathways.</li>
+<li>Extended output for event duration in pathways.</li>
+<li>Renamed <code>summaryStatsTherapyDuration.csv</code> to <code>summaryEventDuration.csv</code>.</li>
+<li>Updated status messaging in the console.</li>
+<li>Added <code>attrition.csv</code> that capture status messaging and time stamps.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.6.9" id="id_-treatmentpatterns-269"># TreatmentPatterns 2.6.9<small>2024-09-02</small><a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-269"></a></h2>
+<ul><li>Disabled tests when required suggested packages are not available.</li>
+<li>Updated examples to only run when required suggested packages are available.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.6.8" id="id_-treatmentpatterns-268"># TreatmentPatterns 2.6.8<small>2024-08-29</small><a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-268"></a></h2>
+<ul><li>Updated some tests to work with later versions of omopgenerics.</li>
+<li>Fixed issue with where combinations sometimes got miss-classified.</li>
+<li>Fixed issue when event starts and ends on end-date of target.</li>
+<li>Fixed issue when collapsing events when there is also a combination, when <code>filterTreatments = "All"</code>.</li>
+<li>Added check in tests to only run if packages are availible. (noSuggests, M1).</li>
+<li>
+<code><a href="../reference/createSankeyDiagram.html">createSankeyDiagram()</a></code> now supports pathways over 3 levels long.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.6.7" id="id_-treatmentpatterns-267"># TreatmentPatterns 2.6.7<small>2024-05-24</small><a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-267"></a></h2>
 <ul><li>Updated URLs in description</li>
 <li>Updated examples to fix compatibility with CDMConnector &gt;1.4.0</li>
+<li>Updated so more tests run on CRAN</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.6.6" id="id_-treatmentpatterns-266"># TreatmentPatterns 2.6.6<small>2024-04-16</small><a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-266"></a></h2>
@@ -127,11 +158,11 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.6.1" id="id_-treatmentpatterns-261"># TreatmentPatterns 2.6.1<small>2023-12-11</small><a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-261"></a></h2>
 <ul><li>Bumped R version to 4.2.1</li>
-<li>Added additional unit-tests for <code><a href="../reference/createSunburstPlot2.html">createSunburstPlot2()</a></code> and <code><a href="../reference/createSankeyDiagram2.html">createSankeyDiagram2()</a></code>
+<li>Added additional unit-tests for <code><a href="https://rdrr.io/pkg/TreatmentPatterns/man/createSunburstPlot2.html" class="external-link">createSunburstPlot2()</a></code> and <code><a href="https://rdrr.io/pkg/TreatmentPatterns/man/createSankeyDiagram2.html" class="external-link">createSankeyDiagram2()</a></code>
 </li>
 <li>Updated to use DATEDIFF to compute difference between dates when fetching data from the database.</li>
 <li>Added functionality to choose how groups below the minimum cell count are censored.</li>
-<li>Made some parameters ambiguous for <code>createSankeyDiagram2</code> and <code><a href="../reference/createSunburstPlot2.html">createSunburstPlot2()</a></code> for more control over the figures.</li>
+<li>Made some parameters ambiguous for <code>createSankeyDiagram2</code> and <code><a href="https://rdrr.io/pkg/TreatmentPatterns/man/createSunburstPlot2.html" class="external-link">createSunburstPlot2()</a></code> for more control over the figures.</li>
 <li>Removed <code>addNoPath</code> parameter.</li>
 <li>Renamed <code>minFreq</code> parameter to <code>minCellCount</code>.</li>
 <li>Added Shiny app with exported module classes.</li>
@@ -141,7 +172,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.6.0" id="id_-treatmentpatterns-260"># TreatmentPatterns 2.6.0<small>2023-11-13</small><a class="anchor" aria-label="anchor" href="#id_-treatmentpatterns-260"></a></h2>
-<ul><li>Added <code><a href="../reference/createSunburstPlot2.html">createSunburstPlot2()</a></code> as a replacement of <code><a href="../reference/createSunburstPlot.html">createSunburstPlot()</a></code>. <code><a href="../reference/createSunburstPlot2.html">createSunburstPlot2()</a></code> will fully replace <code><a href="../reference/createSunburstPlot.html">createSunburstPlot()</a></code> in a future version.</li>
+<ul><li>Added <code><a href="https://rdrr.io/pkg/TreatmentPatterns/man/createSunburstPlot2.html" class="external-link">createSunburstPlot2()</a></code> as a replacement of <code><a href="../reference/createSunburstPlot.html">createSunburstPlot()</a></code>. <code><a href="https://rdrr.io/pkg/TreatmentPatterns/man/createSunburstPlot2.html" class="external-link">createSunburstPlot2()</a></code> will fully replace <code><a href="../reference/createSunburstPlot.html">createSunburstPlot()</a></code> in a future version.</li>
 <li>Moved <code>DatabaseConnector</code> and <code>SqlRender</code> to Suggests</li>
 <li>Removed obsolete dependencies: <code>data.table</code>, <code>fs</code>, and <code>glue</code>.</li>
 <li>Internal performance updates.</li>

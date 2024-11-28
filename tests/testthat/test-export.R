@@ -28,6 +28,7 @@ test_that("empty treatmentHistory table", {
 test_that("outputPath", {
   skip_on_ci()
   skip_on_cran()
+  skip_if_not(ableToRun()$CG)
   
   globals <- generateCohortTableCG()
   
@@ -48,7 +49,7 @@ test_that("outputPath", {
   )
 
   expect_true(
-    file.exists(file.path(tempDirLocal, "summaryStatsTherapyDuration.csv"))
+    file.exists(file.path(tempDirLocal, "summaryEventDuration.csv"))
   )
 
   expect_true(
@@ -75,6 +76,7 @@ test_that("outputPath", {
 test_that("ageWindow", {
   skip_on_ci()
   skip_on_cran()
+  skip_if_not(ableToRun()$CG)
   
   globals <- generateCohortTableCG()
   
@@ -124,6 +126,7 @@ test_that("ageWindow", {
 test_that("minCellCount", {
   skip_on_ci()
   skip_on_cran()
+  skip_if_not(ableToRun()$CG)
   
   globals <- generateCohortTableCG()
   
@@ -167,6 +170,7 @@ test_that("minCellCount", {
 test_that("archiveName", {
   skip_on_ci()
   skip_on_cran()
+  skip_if_not(ableToRun()$CG)
   
   globals <- generateCohortTableCG()
   
@@ -208,6 +212,7 @@ test_that("archiveName", {
 test_that("censorType", {
   skip_on_ci()
   skip_on_cran()
+  skip_if_not(ableToRun()$CG)
   
   globals <- generateCohortTableCG()
   
@@ -281,6 +286,7 @@ test_that("censorType", {
 # CDMConnector ----
 test_that("outputPath", {
   skip_on_cran()
+  skip_if_not(ableToRun()$CDMC)
   
   globals <- generateCohortTableCDMC()
   
@@ -299,7 +305,7 @@ test_that("outputPath", {
   )
 
   expect_true(
-    file.exists(file.path(tempDirLocal, "summaryStatsTherapyDuration.csv"))
+    file.exists(file.path(tempDirLocal, "summaryEventDuration.csv"))
   )
 
   expect_true(
@@ -326,6 +332,7 @@ test_that("outputPath", {
 
 test_that("ageWindow", {
   skip_on_cran()
+  skip_if_not(ableToRun()$CDMC)
   
   globals <- generateCohortTableCDMC()
   
@@ -372,6 +379,7 @@ test_that("ageWindow", {
 
 test_that("minCellCount", {
   skip_on_cran()
+  skip_if_not(ableToRun()$CDMC)
   
   globals <- generateCohortTableCDMC()
   
@@ -413,6 +421,7 @@ test_that("minCellCount", {
 
 test_that("archiveName", {
   skip_on_cran()
+  skip_if_not(ableToRun()$CDMC)
   
   globals <- generateCohortTableCDMC()
   
@@ -452,6 +461,7 @@ test_that("archiveName", {
 
 test_that("censorType", {
   skip_on_cran()
+  skip_if_not(ableToRun()$CDMC)
   
   globals <- generateCohortTableCDMC()
   
@@ -521,9 +531,9 @@ test_that("censorType", {
   DBI::dbDisconnect(globals$con, shutdown = TRUE)
 })
 
-
 test_that("counts", {
   skip_on_cran()
+  skip_if_not(ableToRun()$CDMC)
   
   globals <- generateCohortTableCDMC()
   
@@ -584,4 +594,33 @@ test_that("counts", {
   }) %>% unlist() %>% sum()
   
   expect_identical(totalAll, totalYears)
+  
+  Andromeda::close(andromeda)
+  DBI::dbDisconnect(globals$con, shutdown = TRUE)
+})
+
+test_that("attrition", {
+  skip_on_cran()
+  skip_if_not(ableToRun()$CDMC)
+
+  globals <- generateCohortTableCDMC()
+  
+  andromeda <- TreatmentPatterns::computePathways(
+    cohorts = globals$cohorts,
+    cohortTableName = globals$cohortTableName,
+    cdm = globals$cdm
+  )
+  
+  tempDirLocal <- file.path(tempdir(), "output")
+  suppressWarnings(
+    TreatmentPatterns::export(
+      andromeda = andromeda,
+      outputPath = tempDirLocal
+    )
+  )
+  
+  expect_true(file.exists(file.path(tempDirLocal, "attrition.csv")))
+  
+  Andromeda::close(andromeda)
+  DBI::dbDisconnect(globals$con, shutdown = TRUE)
 })
