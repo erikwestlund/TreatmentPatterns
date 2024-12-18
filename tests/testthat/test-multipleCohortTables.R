@@ -65,6 +65,7 @@ test_that("multiple cohort_tables", {
 
 test_that("multiple cohort_tables", {
   skip_if_not(ableToRun()$CG)
+  skip("Eunomia [2.0.0] bug")
   
   cohorts <- data.frame(
     cohortId = c(1, 2, 3),
