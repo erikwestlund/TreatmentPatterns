@@ -6,7 +6,7 @@ attrition;reason;varchar;yes;no;Reason description
 attrition;time;bigint;yes;no;Time stamp in seconds since epoch (1970-01-01)
 attrition;analysis_id;int;yes;no;Analysis identifier foreign key
 counts_age;age;int;yes;no;Age in years
-counts_age;n;varchar;yes;no;'Count per age, may be '<x''
+counts_age;n;varchar;yes;no;'Count per age, may be "<x"'
 counts_age;analysis_id;int;yes;no;Analysis identifier foreign key
 counts_sex;sex;varchar;yes;no;Sex group
 counts_sex;n;varchar;yes;no;'Count per sex, may be '<x''
