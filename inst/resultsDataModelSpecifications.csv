@@ -29,7 +29,7 @@ summary_event_duration;max;int;yes;no;Maximum duration in days
 summary_event_duration;average;float;yes;no;Average duration in days
 summary_event_duration;sd;float;yes;no;Standard Deviation of duration in days
 summary_event_duration;count;int;yes;no;Count of (combination) event
-summary_event_duration;line;varchar;yes;no;Position in pathway. I.e. 1 equals the first event in a pathway. 2 the second, etc. Overall indicates across the entire pathway
+summary_event_duration;line;varchar;yes;no;Position in pathway. I.e. 1 equals the first event in a pathway. 2 the second etc. Overall indicates across the entire pathway
 summary_event_duration;analysis_id;int;yes;no;Analysis identifier foreign key
 treatment_pathways;path;varchar;yes;no;Pathway
 treatment_pathways;freq;int;yes;no;Count of pathway
