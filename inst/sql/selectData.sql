@@ -15,7 +15,7 @@ INNER JOIN @cdmSchema.concept
 INNER JOIN
   (
     SELECT
-      ROW_NUMBER() OVER (PARTITION BY subject_id) AS subject_id,
+      ROW_NUMBER() OVER (PARTITION BY subject_id ORDER BY subject_id) AS subject_id,
       CAST(subject_id AS VARCHAR) AS subject_id_origin
     FROM @resultSchema.@cohortTable
     GROUP BY subject_id
