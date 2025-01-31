@@ -238,6 +238,8 @@ CDMInterface <- R6::R6Class(
           cohort_end_date = as.integer(.data$cohort_end_date)
         )
 
+      names(andromeda[[andromedaTableName]]) <- tolower(names(andromeda[[andromedaTableName]]))
+
       n <- andromeda[[andromedaTableName]] %>%
         dplyr::group_by(.data$subject_id) %>% 
         dplyr::summarise(n = dplyr::n()) %>%
