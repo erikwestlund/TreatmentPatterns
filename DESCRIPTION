@@ -1,7 +1,7 @@
 Package: TreatmentPatterns
 Type: Package
 Title: Analyzes Real-World Treatment Patterns of a Study Population of Interest
-Version: 2.7.0
+Version: 3.0.0
 Authors@R: 
     c(person("Aniek", "Markus", , role = c("aut"), comment = c(ORCID = "0000-0001-5779-4794")),
       person("Maarten", "van Kessel", email = "m.l.vankessel@erasmusmc.nl", role = c("cre"), comment = c(ORCID = "0009-0006-8832-6030")))
@@ -10,7 +10,7 @@ Description:
     Computes treatment patterns within a given cohort using the Observational
     Medical Outcomes Partnership (OMOP) common data model (CDM). As described
     in Markus, Verhamme, Kors, and Rijnbeek (2022) <doi:10.1016/j.cmpb.2022.107081>.
-URL: https://github.com/darwin-eu/TreatmentPatterns
+URL: https://github.com/darwin-eu/TreatmentPatterns, https://darwin-eu-dev.github.io/TreatmentPatterns/
 BugReports: https://github.com/darwin-eu/TreatmentPatterns/issues
 Language: en-US
 Depends:
@@ -29,7 +29,9 @@ Imports:
     htmlwidgets,
     shiny,
     shinydashboard,
-    ggplot2
+    ggplot2,
+    dbplyr,
+    jsonlite
 Suggests:
     knitr,
     rmarkdown,
@@ -41,17 +43,18 @@ Suggests:
     DatabaseConnector (>= 6.0.0),
     SqlRender,
     CohortGenerator,
+    ResultModelManager,
     webshot2,
     CirceR,
     duckdb,
     DBI,
     withr,
     plotly,
-    Capr
+    PaRe
 License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: true
@@ -67,6 +70,7 @@ Collate:
     'ShinyApp.R'
     'SunburstPlot.R'
     'TreatmentPatterns-package.R'
+    'TreatmentPatternsResults.R'
     'attrition.R'
     'computePathways.R'
     'constructPathways.R'
@@ -74,4 +78,5 @@ Collate:
     'createSunburstPlot.R'
     'executeTreatmentPatterns.R'
     'export.R'
+    'getResultsDataModelSpecification.R'
     'plotEventDuration.R'
