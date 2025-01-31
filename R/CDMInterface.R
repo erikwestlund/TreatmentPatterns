@@ -275,6 +275,7 @@ CDMInterface <- R6::R6Class(
         andromeda = andromeda,
         andromedaTableName = "cdm_source_info"
       )
+      names(andromeda$cdm_source_info) <- tolower(names(andromeda$cdm_source_info))
       return(andromeda)
     },
     
