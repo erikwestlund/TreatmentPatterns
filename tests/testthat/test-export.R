@@ -576,9 +576,10 @@ test_that("censorType", {
 
 test_that("counts", {
   skip_if_not(ableToRun()$CDMC)
-  
+  skip_on_cran()
+
   globals <- generateCohortTableCDMC()
-  
+
   andromeda <- TreatmentPatterns::computePathways(
     cohorts = globals$cohorts,
     cohortTableName = globals$cohortTableName,
@@ -670,6 +671,7 @@ test_that("attrition", {
 
 test_that("stratify, none paths", {
   skip_if_not(ableToRun()$CDMC)
+  skip_on_cran()
 
   globals <- suppressWarnings(generateCohortTableCDMC())
 
