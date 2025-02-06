@@ -28,6 +28,7 @@ test_that("empty treatmentHistory table", {
 test_that("outputPath", {
   skip_if_not(ableToRun()$CG)
   skip_on_os(os = "linux")
+  skip_on_cran()
   
   globals <- generateCohortTableCG()
   
@@ -96,6 +97,7 @@ test_that("outputPath", {
 test_that("ageWindow", {
   skip_if_not(ableToRun()$CG)
   skip_on_os(os = "linux")
+  skip_on_cran()
   
   globals <- generateCohortTableCG()
   
@@ -145,6 +147,7 @@ test_that("ageWindow", {
 test_that("minCellCount", {
   skip_if_not(ableToRun()$CG)
   skip_on_os(os = "linux")
+  skip_on_cran()
   
   globals <- generateCohortTableCG()
   
@@ -188,6 +191,7 @@ test_that("minCellCount", {
 test_that("archiveName", {
   skip_if_not(ableToRun()$CG)
   skip_on_os(os = "linux")
+  skip_on_cran()
   
   globals <- generateCohortTableCG()
   
@@ -231,6 +235,7 @@ test_that("archiveName", {
 test_that("censorType", {
   skip_if_not(ableToRun()$CG)
   skip_on_os(os = "linux")
+  skip_on_cran()
   
   globals <- generateCohortTableCG()
   
@@ -306,6 +311,7 @@ test_that("censorType", {
 # CDMConnector ----
 test_that("outputPath", {
   skip_if_not(ableToRun()$CDMC)
+  skip_on_cran()
   
   globals <- generateCohortTableCDMC()
   
@@ -372,6 +378,7 @@ test_that("outputPath", {
 
 test_that("ageWindow", {
   skip_if_not(ableToRun()$CDMC)
+  skip_on_cran()
   
   globals <- generateCohortTableCDMC()
   
@@ -418,6 +425,7 @@ test_that("ageWindow", {
 
 test_that("minCellCount", {
   skip_if_not(ableToRun()$CDMC)
+  skip_on_cran()
   
   globals <- generateCohortTableCDMC()
   
@@ -459,6 +467,7 @@ test_that("minCellCount", {
 
 test_that("archiveName", {
   skip_if_not(ableToRun()$CDMC)
+  skip_on_cran()
   
   globals <- generateCohortTableCDMC()
   
@@ -502,6 +511,7 @@ test_that("archiveName", {
 
 test_that("censorType", {
   skip_if_not(ableToRun()$CDMC)
+  skip_on_cran()
   
   globals <- generateCohortTableCDMC()
   
@@ -644,6 +654,7 @@ test_that("counts", {
 
 test_that("attrition", {
   skip_if_not(ableToRun()$CDMC)
+  skip_on_cran()
 
   globals <- generateCohortTableCDMC()
   
