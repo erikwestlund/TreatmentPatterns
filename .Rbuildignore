@@ -18,3 +18,5 @@
 ^README\.Rmd$
 ^sql$
 ^LICENSE\.md$
+^_pkgdown\.yml$
+^pkgdown$
