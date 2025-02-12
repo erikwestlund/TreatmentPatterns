@@ -30,6 +30,7 @@
 #' @importFrom dbplyr window_order
 #' @importFrom networkD3 sankeyNetwork
 #' @importFrom stats sd median quantile
+#' @importFrom htmlwidgets JS
 #' @importFrom tidyr pivot_wider
 ## usethis namespace: end
 NULL

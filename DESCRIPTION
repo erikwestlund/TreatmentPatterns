@@ -26,6 +26,7 @@ Imports:
     R6,
     sunburstR,
     networkD3,
+    htmlwidgets,
     ggplot2,
     dbplyr,
     jsonlite
