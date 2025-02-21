@@ -183,9 +183,11 @@ createTreatmentHistory <- function(
     includeTreatments) {
   andromeda$targetCohorts <- andromeda$cohortTable %>%
     dplyr::filter(.data$cohortId %in% targetCohortId) %>%
-    dplyr::mutate(type = "target") %>%
-    dplyr::mutate(indexYear = as.numeric(format(.data$startDate, "%Y"))) %>%
-    dplyr::mutate(indexDate = .data$startDate + indexDateOffset)
+    dplyr::mutate(
+      type = "target",
+      indexYear = floor(.data$startDate / 365.25 + 1970),
+      indexDate = .data$startDate + indexDateOffset
+    )
   
   # Select event cohorts for target cohort and merge with start/end date and
   # index year
@@ -521,7 +523,7 @@ doCombinationWindow <- function(
       dplyr::mutate(eventEndDate = .data$eventEndDatePrevious)
     
     andromeda[[sprintf("addRowsFRFS_%s", iterations)]] <- andromeda[[sprintf("addRowsFRFS_%s", iterations)]] %>%
-      dplyr::mutate(eventCohortId = paste0(.data$eventCohortId, "+", .data$eventCohortIdPrevious))
+      dplyr::mutate(eventCohortId = paste0(as.integer(.data$eventCohortId), "+", as.integer(.data$eventCohortIdPrevious)))
     
     andromeda$treatmentHistory <- andromeda$treatmentHistory %>%
       dplyr::mutate(
