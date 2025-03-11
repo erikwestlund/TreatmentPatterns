@@ -5,8 +5,7 @@ articles:
   articles/bestPractices: bestPractices.html
   articles/ComputingTreatmentPathways: ComputingTreatmentPathways.html
   DefiningCohorts: DefiningCohorts.html
-  articles/usingTreatmentPatternsShinyModules: usingTreatmentPatternsShinyModules.html
-last_built: 2025-02-07T08:01Z
+last_built: 2025-03-11T07:55Z
 urls:
   reference: https://darwin-eu-dev.github.io/TreatmentPatterns/reference
   article: https://darwin-eu-dev.github.io/TreatmentPatterns/articles
