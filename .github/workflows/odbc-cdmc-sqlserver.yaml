@@ -1,0 +1,79 @@
+on:
+  schedule:
+    - cron: '0 8 * * 6'
+
+name: SQL Server
+
+jobs:
+  CDMConnector-SQLServer-test:
+    runs-on: ${{ matrix.config.os }}
+    name: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: ubuntu-latest,   r: 'release'}
+    env:
+      STATUS: 0
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+      USER: ${{ secrets.SQL_SERVER_USER }}
+      PASSWORD: ${{ secrets.SQL_SERVER_PASSWORD }}
+      SERVER: ${{ secrets.SQL_SERVER_SERVER}}
+
+      CDM_SCHEMA: ${{ secrets.SQL_SERVER_CDM_SCHEMA }}
+      RESULT_SCHEMA: ${{ secrets.SQL_SERVER_RESULT_SCHEMA }}
+
+      DRIVER_PKG: 'odbc'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+          extra-repositories: 'https://OHDSI.github.io/drat'
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          dependencies: '"all"'
+
+      - name: Install unixODBC
+        run: sudo apt-get install unixodbc unixodbc-dev
+
+      - name: Install SQL Server Drivers
+        run: sudo apt-get install tdsodbc
+
+      - name: Install Driver
+        run: install.packages("odbc")
+        shell: Rscript {0}
+
+      - name: Install TreatmentPatterns
+        run: R CMD INSTALL --with-keep.source --no-multiarch ./
+
+      - name: Connection Args
+        run: |
+          saveRDS(
+            object = list(
+              drv = odbc::odbc(),
+              Driver   = "libtdsodbc.so",
+              Server = Sys.getenv("SERVER"),
+              UID = Sys.getenv("USER"),
+              PWD = Sys.getenv("PASSWORD"),
+              TrustServerCertificate = "yes",
+              Port = 1433
+            ),
+            file = "./args.rds"
+          )
+        shell: Rscript {0}
+
+      - name: Run test-database.R
+        run: |
+          Rscript -e 'testthat::test_file(
+            path = "./extras/database_tests/CDMConnector-odbc.R",
+            reporter = c("summary", "fail"),
+            package = "TreatmentPatterns"
+          )'
