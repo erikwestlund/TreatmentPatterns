@@ -1,0 +1,33 @@
+on:
+  push:
+    branches: [never]
+
+name: Test
+
+jobs:
+  CDMConnector-PostgreSQL-test:
+    runs-on: ${{ matrix.config.os }}
+    name: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: ubuntu-latest,   r: 'release'}
+    env:
+      STATUS: 0
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+      FOO: 'foo'
+      BAR: 'bar'
+      BAZ: 'baz'
+
+      A: "${FOO} ${BAR}"
+      B: '${FOO} ${BAR}'
+
+    steps:
+      - name: A
+        run: echo ${A}
+
+      - name: B
+        run: echo ${B}
