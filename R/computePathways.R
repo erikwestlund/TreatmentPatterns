@@ -312,7 +312,7 @@ validateComputePathways <- function() {
   checkmate::assertNumeric(
     x = args$maxPathLength,
     lower = 0,
-    upper = 5,
+    upper = Inf,
     finite = TRUE,
     len = 1,
     null.ok = FALSE,
