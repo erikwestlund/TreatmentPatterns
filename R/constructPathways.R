@@ -353,14 +353,14 @@ doSplitEventCohorts <- function(
 doEraCollapse <- function(andromeda, eraCollapseSize) {
   andromeda$treatmentHistory <- andromeda$treatmentHistory %>%
     dplyr::group_by(.data$eventCohortId, .data$personId) %>%
+    dbplyr::window_order(.data$eventCohortId, .data$eventStartDate, .data$eventEndDate) %>%
     dplyr::mutate(
       prevStart = dplyr::lag(.data$eventStartDate),
       prevEnd = dplyr::lag(.data$eventEndDate),
       gap = as.numeric(.data$eventStartDate - .data$prevEnd)
     ) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(row = row_number()) %>%
-    dbplyr::window_order(.data$eventCohortId, .data$eventStartDate, .data$eventEndDate)
+    dplyr::mutate(row = row_number())
 
   rows <- andromeda$treatmentHistory %>%
     dplyr::filter(.data$gap <= eraCollapseSize) %>%
