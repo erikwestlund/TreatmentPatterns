@@ -3,6 +3,8 @@
 * Added unit-testing for `CDMInterface` on Postgres, Redshift, SQL Server, Oracle, BigQuery, Spark, Snowflake
 * Fixed some SQL issues for specific databases
 * Fixed issue where a crash occurred on R 4.2.x, when saving the input arguments.
+* Uncapped pathway length from 5.
+* Fixed where TreatmentPatterns would hang on collapsing eras.
 
 # TreatmentPatterns 3.0.1
 ---------
