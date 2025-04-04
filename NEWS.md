@@ -4,7 +4,7 @@
 * Fixed some SQL issues for specific databases
 * Fixed issue where a crash occurred on R 4.2.x, when saving the input arguments.
 * Uncapped pathway length from 5.
-* Fixed where TreatmentPatterns would hang on collapsing eras.
+* Fixed edge case on long repeating events to collapse.
 
 # TreatmentPatterns 3.0.1
 ---------
