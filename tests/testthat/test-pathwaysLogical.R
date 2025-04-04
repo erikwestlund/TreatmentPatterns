@@ -457,7 +457,7 @@ test_that("A+B-A", {
     1,                     5,           as.Date("2014-01-01"), as.Date("2015-01-01"),
     2,                     5,           as.Date("2014-01-10"), as.Date("2014-03-10"),
     3,                     5,           as.Date("2014-01-10"), as.Date("2014-03-10"),
-    2,                     5,           as.Date("2014-03-12"), as.Date("2014-05-12")
+    2,                     5,           as.Date("2014-03-20"), as.Date("2014-05-12")
   )
   
   copy_to(con, cohort_table, overwrite = TRUE)
@@ -1108,7 +1108,7 @@ test_that("collapse A-B-B-B to A-A+B-B", {
     1,                     5,           as.Date("2014-01-01"), as.Date("2015-12-31"),
     2,                     5,           as.Date("2014-05-20"), as.Date("2014-08-17"),
     3,                     5,           as.Date("2014-07-08"), as.Date("2014-08-25"),
-    3,                     5,           as.Date("2014-10-19"), as.Date("2015-02-22"),
+    3,                     5,           as.Date("2014-09-19"), as.Date("2015-02-22"),
     3,                     5,           as.Date("2015-02-28"), as.Date("2015-09-26")
   )
   
@@ -1134,7 +1134,7 @@ test_that("collapse A-B-B-B to A-A+B-B", {
   result <- TreatmentPatterns::export(andromeda, minCellCount = 1)
 
   expect_identical(result$treatment_pathways$pathway, "A-A+B-B")
-  
+
   DBI::dbDisconnect(con)
 })
 
