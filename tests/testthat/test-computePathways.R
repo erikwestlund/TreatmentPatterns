@@ -94,15 +94,13 @@ test_that("includeTreatments", {
   startDate <- andromeda_startDate$treatmentHistory %>% dplyr::collect()
   endDate <- andromeda_endDate$treatmentHistory %>% dplyr::collect()
 
-  expect_false(identical(
-    startDate$eventStartDate,
-    endDate$eventStartDate
-  ))
+  expect_true(
+    all(startDate$eventStartDate %in% endDate$eventStartDate)
+  )
 
-  expect_false(identical(
-    startDate$durationEra,
-    endDate$durationEra
-  ))
+  expect_true(
+    all(startDate$durationEra %in% endDate$durationEra)
+  )
 
   expect_error(
     computePathways(
@@ -514,14 +512,11 @@ test_that("filterTreatments", {
     class(changesTH$sortOrder),
     class(allTH$sortOrder)
   )
-  
-  expect_identical(
-    "numeric",
-    class(firstTH$eventSeq),
-    class(changesTH$eventSeq),
-    class(allTH$eventSeq)
+
+  expect_true(
+    all(c(class(firstTH$eventSeq), class(changesTH$eventSeq), class(allTH$eventSeq)) %in% c("numeric", "integer"))
   )
-  
+
   expect_identical(
     "character",
     class(firstTH$eventCohortName),

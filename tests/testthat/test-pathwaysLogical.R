@@ -753,7 +753,7 @@ test_that("A-A-C-A+B+C-C", {
 test_that("A-A+B+C-A+C-C", {
   skip_if_not(ableToRun()$CDMC)
   skip_on_cran()
-  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomia_dir())
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomiaDir())
 
   cohorts <- data.frame(
     cohortId = c(1, 2, 3, 4),
