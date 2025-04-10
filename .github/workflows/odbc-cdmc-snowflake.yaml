@@ -1,0 +1,103 @@
+on:
+  schedule:
+    - cron: '0 8 * * 6'
+  push:
+    branches: [main, rc]
+  pull_request:
+    branches: [main, rc]
+
+name: Snowflake
+
+jobs:
+  CDMConnector-SQLServer-test:
+    runs-on: ${{ matrix.config.os }}
+    name: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: ubuntu-latest,   r: 'release'}
+    env:
+      STATUS: 0
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+      USER: ${{ secrets.SNOWFLAKE_USER }}
+      PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      SERVER: ${{ secrets.SNOWFLAKE_SERVER}}
+      DATABASE: ${{ secrets.SNOWFLAKE_DATABASE}}
+      WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+
+      CDM_SCHEMA: ${{ secrets.SNOWFLAKE_CDM_SCHEMA }}
+      RESULT_SCHEMA: ${{ secrets.SNOWFLAKE_RESULT_SCHEMA }}
+
+      DRIVER_PKG: 'odbc'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+          extra-repositories: 'https://OHDSI.github.io/drat'
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          dependencies: '"all"'
+
+      - name: Install unixODBC
+        run: sudo apt-get install unixodbc unixodbc-dev
+
+      - name: Install odbcinst
+        run: sudo apt-get install odbcinst
+        
+      - name: Fix symlink
+        run: sudo ln -s /usr/lib/x86_64-linux-gnu/libodbcinst.so.2 /usr/lib/x86_64-linux-gnu/libodbcinst.so.1
+
+      - name: Run odbc inst
+        run: odbcinst -j
+
+      - name: Download Driver
+        run: wget https://sfc-repo.snowflakecomputing.com/odbc/linux/3.6.0/snowflake-odbc-3.6.0.x86_64.deb
+
+      - name: Install Snowflake Driver
+        run: sudo dpkg -i snowflake-odbc-3.6.0.x86_64.deb
+
+      - name: odbcinst.ini
+        run: cat /etc/odbcinst.ini
+
+      - name: odbcini
+        run: cat /etc/odbc.ini
+
+      - name: Install Driver Package
+        run: install.packages("odbc")
+        shell: Rscript {0}
+
+      - name: Install TreatmentPatterns
+        run: R CMD INSTALL --with-keep.source --no-multiarch ./
+
+      - name: Connection Args
+        run: |
+          saveRDS(
+            object = list(
+              drv = odbc::odbc(),
+              SERVER = Sys.getenv("SERVER"),
+              UID = Sys.getenv("USER"),
+              PWD = Sys.getenv("PASSWORD"),
+              DATABASE = Sys.getenv("DATABASE"),
+              WAREHOUSE = Sys.getenv("WAREHOUSE"),
+              DRIVER = "/usr/lib/snowflake/odbc/lib/libSnowflake.so"
+            ),
+            file = "./args.rds"
+          )
+        shell: Rscript {0}
+
+      - name: Run test-database.R
+        run: |
+          Rscript -e 'testthat::test_file(
+            path = "./extras/database_tests/CDMConnector-odbc.R",
+            reporter = c("summary", "fail"),
+            package = "TreatmentPatterns"
+          )'

@@ -1,7 +1,7 @@
 Package: TreatmentPatterns
 Type: Package
 Title: Analyzes Real-World Treatment Patterns of a Study Population of Interest
-Version: 3.0.0
+Version: 3.0.2
 Authors@R: 
     c(person("Aniek", "Markus", , role = c("aut"), comment = c(ORCID = "0000-0001-5779-4794")),
       person("Maarten", "van Kessel", email = "m.l.vankessel@erasmusmc.nl", role = c("cre"), comment = c(ORCID = "0009-0006-8832-6030")))
@@ -27,8 +27,6 @@ Imports:
     sunburstR,
     networkD3,
     htmlwidgets,
-    shiny,
-    shinydashboard,
     ggplot2,
     dbplyr,
     jsonlite
@@ -61,13 +59,6 @@ Config/testthat/parallel: true
 Roxygen: list(markdown = TRUE)
 Collate: 
     'CDMInterface.R'
-    'ShinyModule.R'
-    'CharacterizationPlots.R'
-    'InputHandler.R'
-    'InteractivePlots.R'
-    'SankeyDiagram.R'
-    'ShinyApp.R'
-    'SunburstPlot.R'
     'TreatmentPatterns-package.R'
     'TreatmentPatternsResults.R'
     'attrition.R'
@@ -78,4 +69,5 @@ Collate:
     'executeTreatmentPatterns.R'
     'export.R'
     'getResultsDataModelSpecification.R'
+    'ggSunburst.R'
     'plotEventDuration.R'
