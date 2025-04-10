@@ -219,8 +219,8 @@ CDMInterface <- R6::R6Class(
         SELECT 
           #tp_dbc_cohort_table.cohort_definition_id AS cohort_definition_id,
           #tp_dbc_cohort_table.subject_id AS subject_id,
-          DATEDIFF(DAY, CAST(19700101 AS DATE), #tp_dbc_cohort_table.cohort_start_date) AS cohort_start,
-          DATEDIFF(DAY, CAST(19700101 AS DATE), #tp_dbc_cohort_table.cohort_end_date) AS cohort_end,
+          DATEDIFF(DAY, CAST('19700101' AS DATE), #tp_dbc_cohort_table.cohort_start_date) AS cohort_start,
+          DATEDIFF(DAY, CAST('19700101' AS DATE), #tp_dbc_cohort_table.cohort_end_date) AS cohort_end,
           #tp_dbc_cohort_table.age,
           #tp_dbc_cohort_table.sex,
           #tp_dbc_cohort_table.subject_id_origin
