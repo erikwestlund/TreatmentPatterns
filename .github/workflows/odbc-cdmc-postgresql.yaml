@@ -1,6 +1,10 @@
 on:
   schedule:
     - cron: '0 8 * * 6'
+  push:
+    branches: [main, rc]
+  pull_request:
+    branches: [main, rc]
 
 name: PostgreSQL
 
