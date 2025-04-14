@@ -66,7 +66,7 @@ test_that("Test Database", {
   )
 
   ## Prepare ----
-  cohortTableName <- "temp_tp_cohort_table"
+  cohortTableName <- "temp_tp_cohort_table_2"
 
   connection <- DatabaseConnector::connect(CONNECTION_DETAILS)
   DatabaseConnector::renderTranslateExecuteSql(
