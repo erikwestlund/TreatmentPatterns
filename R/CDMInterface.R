@@ -234,6 +234,8 @@ CDMInterface <- R6::R6Class(
         targetCohortId = targetCohortId
       )
 
+      names(andromeda[[andromedaTableName]]) <- tolower(names(andromeda[[andromedaTableName]]))
+
       if (utils::packageVersion("Andromeda") >= package_version("1.0.0")) {
         andromeda[[andromedaTableName]] <- andromeda[[andromedaTableName]] %>%
           dplyr::mutate(
