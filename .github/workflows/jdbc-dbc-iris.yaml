@@ -28,7 +28,7 @@ jobs:
       PASSWORD: ${{ secrets.IRIS_PASSWORD }}
       CONNECTION_STRING: ${{ secrets.IRIS_CONNECTION_STRING }}
 
-      CDM_SCHEMA: ${{ secrets.IRIS_CDM54_SCHEMA }}
+      CDM_SCHEMA: ${{ secrets.IRIS_CDM53_SCHEMA }}
       RESULT_SCHEMA: ${{ secrets.IRIS_RESULT_SCHEMA  }}
 
     steps:
