@@ -7,13 +7,15 @@
 exportPatientLevel(andromeda, outputPath)
 }
 \arguments{
-\item{andromeda}{(\code{Andromeda}) Andromeda object from \code{computePathways()}}
+\item{andromeda}{(\code{Andromeda}) Andromeda object from \code{computePathways()}.}
+
+\item{outputPath}{(\code{character(1)}) Directory where to write output files to.}
 }
 \value{
 \code{NULL}
 }
 \description{
-Exports patient-level files for custom data analysis
+Exports patient-level files for custom data analysis.
 }
 \examples{
 if (interactive()) {

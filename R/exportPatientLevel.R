@@ -47,9 +47,10 @@ writeCdmSourceInfo <- function(andromeda, outputPath) {
 
 #' exportPatientLevel
 #'
-#' Exports patient-level files for custom data analysis
+#' Exports patient-level files for custom data analysis.
 #'
-#' @param andromeda (`Andromeda`) Andromeda object from `computePathways()`
+#' @param andromeda (`Andromeda`) Andromeda object from `computePathways()`.
+#' @param outputPath (`character(1)`) Directory where to write output files to.
 #'
 #' @returns `NULL`
 #' @export
