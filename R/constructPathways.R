@@ -228,7 +228,6 @@ createTreatmentHistory <- function(
         subject_id_origin == subject_id_origin,
         y$indexDate <= x$startDate,
         x$startDate <= y$endDate,
-        x$endDate <= y$endDate,
       ), suffix = c("Event", "Target"))
   } else if (includeTreatments == "endDate") {
     andromeda[[sprintf("cohortTable_%s", targetCohortId)]] <- dplyr::full_join(
