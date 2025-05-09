@@ -529,6 +529,50 @@ test_that("A-A-B", {
   DBI::dbDisconnect(con)
 })
 
+test_that("A-A-B, collapse to A-B (Changes)", {
+  skip_if_not(ableToRun()$CDMC)
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomiaDir())
+  skip_on_cran()
+  
+  cohorts <- data.frame(
+    cohortId = c(1, 2, 3),
+    cohortName = c("X", "A", "B"),
+    type = c("target", "event", "event")
+  )
+  
+  cohort_table <- dplyr::tribble(
+    ~cohort_definition_id, ~subject_id, ~cohort_start_date,    ~cohort_end_date,
+    1,                     5,           as.Date("2014-01-01"), as.Date("2015-01-01"),
+    2,                     5,           as.Date("2014-01-10"), as.Date("2014-03-10"),
+    2,                     5,           as.Date("2014-03-12"), as.Date("2014-05-12"),
+    3,                     5,           as.Date("2014-05-14"), as.Date("2014-06-14")
+  )
+  
+  copy_to(con, cohort_table, overwrite = TRUE)
+  
+  cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main", cohortTables = "cohort_table")
+  
+  andromeda <- TreatmentPatterns::computePathways(
+    cohorts = cohorts,
+    cohortTableName = "cohort_table",
+    cdm = cdm,
+    includeTreatments = "startDate",
+    indexDateOffset = 0,
+    minEraDuration = 0,
+    eraCollapseSize = 30,
+    combinationWindow = 30,
+    minPostCombinationDuration = 30,
+    filterTreatments = "Changes",
+    maxPathLength = 5
+  )
+  
+  result <- TreatmentPatterns::export(andromeda, minCellCount = 1)
+  
+  expect_identical(result$treatment_pathways$pathway, "A-B")
+  
+  DBI::dbDisconnect(con)
+})
+
 test_that("A-A-B, collapse to A-B", {
   skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomiaDir())
@@ -706,7 +750,7 @@ test_that("A-A+B-B", {
   DBI::dbDisconnect(con)
 })
 
-test_that("A-A-C-A+B+C-C", {
+test_that("A+C-A+B+C-A+C", {
   skip_if_not(ableToRun()$CDMC)
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomiaDir())
   skip_on_cran()
@@ -1634,7 +1678,7 @@ test_that("FollowUp: A-B-C to A-B", {
   result <- TreatmentPatterns::export(andromeda, minCellCount = 1)
   
   expect_identical(result$treatment_pathways$pathway, "A-B")
-  
+
   DBI::dbDisconnect(con)
 })
 
