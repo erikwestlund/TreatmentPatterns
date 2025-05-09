@@ -403,6 +403,7 @@ validateComputePathways <- function() {
     x = args$followUp,
     len = 1,
     add = assertCol,
+    null.ok = TRUE,
     .var.name = "followUp"
   )
 
