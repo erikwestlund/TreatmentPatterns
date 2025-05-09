@@ -398,7 +398,14 @@ validateComputePathways <- function() {
     add = assertCol,
     .var.name = "cdm"
   )
-  
+
+  checkmate::assertIntegerish(
+    x = args$followUp,
+    len = 1,
+    add = assertCol,
+    .var.name = "followUp"
+  )
+
   checkmate::reportAssertions(collection = assertCol)
 }
 
