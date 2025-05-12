@@ -24,7 +24,8 @@ computePathways(
   combinationWindow = 30,
   minPostCombinationDuration = 30,
   filterTreatments = "First",
-  maxPathLength = 5
+  maxPathLength = 5,
+  concatTargets = TRUE
 )
 }
 \arguments{
@@ -96,6 +97,8 @@ event cohorts (‘All’).}
 
 \item{maxPathLength}{(\code{integer(1)}: \code{5})\cr
 Maximum number of steps included in treatment pathway}
+
+\item{concatTargets}{(\code{logical(1)}: \code{TRUE}) Should multiple target cohorts for the same person be concatenated or not?}
 }
 \value{
 (\code{Andromeda::andromeda()})

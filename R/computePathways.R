@@ -39,6 +39,7 @@
 #' @param analysisId (`character(1)`) Identifier for the TreatmentPatterns analysis.
 #' @param description (`character(1)`) Description of the analysis.
 #' @param followUp (`numeric(1)`: `NULL`) Days to follow up. Sets the cohort end date as: `cohort_end_date = index_date + offset + followUp`. When set to `NULL` the cohort end date is not altered.
+#' @param concatTargets (`logical(1)`: `TRUE`) Should multiple target cohorts for the same person be concatenated or not?
 #'
 #' @return (`Andromeda::andromeda()`)
 #' \link[Andromeda]{andromeda} object containing non-sharable patient level
@@ -124,7 +125,8 @@ computePathways <- function(
     combinationWindow = 30,
     minPostCombinationDuration = 30,
     filterTreatments = "First",
-    maxPathLength = 5) {
+    maxPathLength = 5,
+    concatTargets = TRUE) {
   validateComputePathways()
 
   args <- eval(
@@ -405,6 +407,14 @@ validateComputePathways <- function() {
     add = assertCol,
     null.ok = TRUE,
     .var.name = "followUp"
+  )
+
+  checkmate::assertLogical(
+    x = args$concatTargets,
+    len = 1,
+    add = assertCol,
+    null.ok = FALSE,
+    .var.name = "concatTargets"
   )
 
   checkmate::reportAssertions(collection = assertCol)

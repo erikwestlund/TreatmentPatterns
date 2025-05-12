@@ -130,11 +130,11 @@ export <- function(
     dplyr::select(
       "personId", "indexYear", "age", "sex", "eventCohortName", "eventCohortId",
       targetCohortName = "cohortName",
-      "targetCohortId", "eventSeq", "durationEra"
+      "targetCohortId", "eventSeq", "durationEra", "n_target"
     )
 
   targetsTH <- treatmentHistory %>%
-    dplyr::group_by(.data$targetCohortName) %>%
+    dplyr::group_by(.data$targetCohortName, .data$n_target) %>%
     dplyr::group_split()
   
   analysisId <- andromeda$analyses %>%
