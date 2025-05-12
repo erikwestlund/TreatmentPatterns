@@ -138,8 +138,8 @@ constructPathways <- function(settings, andromeda) {
         andromeda$treatmentHistory <- andromeda$treatmentHistory %>%
           dplyr::collect() %>%
           dplyr::mutate(
-            eventCohortName = eventCohortNames,
-            indexYear = floor(.data$indexYear / 365.25) + 1970)
+            eventCohortName = eventCohortNames
+          )
       }
     } else {
       warning(sprintf("No cases found for: %s (%s). Generating empty treatmentHistory table.", targetCohortId, targetCohortName))
