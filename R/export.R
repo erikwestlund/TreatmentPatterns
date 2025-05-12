@@ -614,7 +614,11 @@ computeTreatmentPathways <- function(treatmentHistory, ageWindow, minCellCount, 
       )) %>%
       dplyr::group_by(.data$n_target, .data$personId) %>%
       dplyr::arrange(.data$eventSeq) %>%
-      dplyr::distinct() %>%
+      dplyr::distinct(
+        .data$personId, .data$eventCohortName, .data$eventCohortId,
+        .data$targetCohortName, .data$targetCohortId, .data$eventSeq,
+        .data$durationEra, .data$n_target
+      ) %>%
       dplyr::reframe(
         dplyr::across(
           "eventCohortName", paste, collapse = "-"
