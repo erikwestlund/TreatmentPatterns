@@ -1982,3 +1982,56 @@ test_that("Double target 2x: A-B-B-A-A-A-A-B-A-B-B-A-A-A-A-B", {
   
   DBI::dbDisconnect(con)
 })
+
+test_that("Double target to 2x A-A+B-B", {
+  skip_if_not(ableToRun()$CDMC)
+  skip_on_cran()
+  con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomiaDir())
+  
+  cohorts <- data.frame(
+    cohortId = c(1, 2, 3),
+    cohortName = c("X", "A", "B"),
+    type = c("target", "event", "event")
+  )
+  
+  cohort_table <- dplyr::tribble(
+    ~cohort_definition_id, ~subject_id, ~cohort_start_date,    ~cohort_end_date,
+    1,                     5,           as.Date("2014-01-01"), as.Date("2014-05-30"),
+    2,                     5,           as.Date("2014-01-01"), as.Date("2014-02-01"),
+    3,                     5,           as.Date("2014-01-15"), as.Date("2014-02-15"),
+    
+    1,                     5,           as.Date("2014-06-01"), as.Date("2014-12-31"),
+    2,                     5,           as.Date("2014-06-01"), as.Date("2014-07-01"),
+    3,                     5,           as.Date("2014-06-15"), as.Date("2014-07-15"),
+    
+    1,                     1,           as.Date("2014-06-01"), as.Date("2014-12-31"),
+    1,                     3,           as.Date("2014-06-01"), as.Date("2014-12-31"),
+    1,                     7,           as.Date("2014-01-01"), as.Date("2014-05-30"),
+    1,                     7,           as.Date("2014-06-01"), as.Date("2014-12-31")
+  )
+  
+  copy_to(con, cohort_table, overwrite = TRUE)
+  
+  cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main", cohortTables = "cohort_table")
+  
+  andromeda <- TreatmentPatterns::computePathways(
+    cohorts = cohorts,
+    cohortTableName = "cohort_table",
+    cdm = cdm,
+    includeTreatments = "startDate",
+    indexDateOffset = 0,
+    minEraDuration = 0,
+    eraCollapseSize = 5,
+    combinationWindow = 5,
+    minPostCombinationDuration = 5,
+    filterTreatments = "All",
+    maxPathLength = 5,
+    concatTargets = FALSE
+  )
+  
+  result <- TreatmentPatterns::export(andromeda, minCellCount = 1, nonePaths = TRUE)
+
+  expect_identical(result$treatment_pathways$pathway, c("None", "A-A+B-B", "None", "A-A+B-B"))
+
+  DBI::dbDisconnect(con)
+})
