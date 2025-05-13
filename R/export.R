@@ -134,7 +134,7 @@ export <- function(
     )
 
   targetsTH <- treatmentHistory %>%
-    dplyr::group_by(.data$targetCohortName, .data$n_target) %>%
+    dplyr::group_by(.data$targetCohortName) %>%
     dplyr::group_split()
   
   analysisId <- andromeda$analyses %>%
