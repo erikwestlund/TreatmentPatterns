@@ -1767,7 +1767,8 @@ test_that("double Target to 2x A", {
 
   result <- TreatmentPatterns::export(andromeda, minCellCount = 1)
   
-  expect_identical(result$treatment_pathways$pathway, c("A", "A"))
+  expect_identical(result$treatment_pathways$pathway, "A")
+  expect_equal(result$treatment_pathways$freq, 2)
   
   DBI::dbDisconnect(con)
 })
@@ -1861,7 +1862,8 @@ test_that("Double target to 2x A-A+B-B", {
   
   result <- TreatmentPatterns::export(andromeda, minCellCount = 1)
   
-  expect_identical(result$treatment_pathways$pathway, c("A-A+B-B", "A-A+B-B"))
+  expect_identical(result$treatment_pathways$pathway, "A-A+B-B")
+  expect_equal(result$treatment_pathways$pathway, 2)
   
   DBI::dbDisconnect(con)
 })
@@ -1920,7 +1922,8 @@ test_that("Double target 2x: A-B-B-A-A-A-A-B to A-B-B-A-A", {
 
   result <- TreatmentPatterns::export(andromeda, minCellCount = 1)
   
-  expect_identical(result$treatment_pathways$pathway, c("A-B-B-A-A", "A-B-B-A-A"))
+  expect_identical(result$treatment_pathways$pathway, "A-B-B-A-A")
+  expect_equal(result$treatment_pathways$freq, 2)
   
   DBI::dbDisconnect(con)
 })
@@ -2031,7 +2034,8 @@ test_that("Double target to 2x A-A+B-B", {
   
   result <- TreatmentPatterns::export(andromeda, minCellCount = 1, nonePaths = TRUE)
 
-  expect_identical(result$treatment_pathways$pathway, c("None", "A-A+B-B", "None", "A-A+B-B"))
+  expect_identical(result$treatment_pathways$pathway, c("None", "A-A+B-B"))
+  expect_equal(result$treatment_pathways$freq, c(3, 2))
 
   DBI::dbDisconnect(con)
 })
