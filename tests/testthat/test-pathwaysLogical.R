@@ -1863,7 +1863,7 @@ test_that("Double target to 2x A-A+B-B", {
   result <- TreatmentPatterns::export(andromeda, minCellCount = 1)
   
   expect_identical(result$treatment_pathways$pathway, "A-A+B-B")
-  expect_equal(result$treatment_pathways$pathway, 2)
+  expect_equal(result$treatment_pathways$freq, 2)
   
   DBI::dbDisconnect(con)
 })
