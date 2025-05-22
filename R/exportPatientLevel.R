@@ -11,14 +11,14 @@ writeTreatmentHistory <- function(andromeda, outputPath) {
   writePath <- file.path(outputPath, "treatment_history.csv")
   message(sprintf("Writing treatment history to: %s", writePath))
   andromeda$treatmentHistoryFinal %>%
-    addOriginId %>%
+    addOriginId() %>%
     dplyr::select(-"sortOrder") %>%
     dplyr::collect() %>%
     dplyr::mutate(
       eventStartDate = as.Date(.data$eventStartDate),
       eventEndDate = as.Date(.data$eventEndDate)
     ) %>%
-    write.csv(writePath)
+    write.csv(writePath, row.names = FALSE)
 }
 
 writeMetadata <- function(andromeda, outputPath) {
@@ -26,7 +26,7 @@ writeMetadata <- function(andromeda, outputPath) {
   message(sprintf("Writing metadata to: %s", writePath))
   andromeda$metadata %>%
     dplyr::collect() %>%
-    write.csv(writePath)
+    write.csv(writePath, row.names = FALSE)
 }
 
 writeAttrition <- function(andromeda, outputPath) {
@@ -34,7 +34,7 @@ writeAttrition <- function(andromeda, outputPath) {
   message(sprintf("Writing attrition to: %s", writePath))
   andromeda$attrition %>%
     dplyr::collect() %>%
-    write.csv(writePath)
+    write.csv(writePath, row.names = FALSE)
 }
 
 writeCdmSourceInfo <- function(andromeda, outputPath) {
@@ -42,7 +42,7 @@ writeCdmSourceInfo <- function(andromeda, outputPath) {
   message(sprintf("Writing cdm source info to: %s", writePath))
   andromeda$cdm_source_info %>%
     dplyr::collect() %>%
-    write.csv(writePath)
+    write.csv(writePath, row.names = FALSE)
 }
 
 #' exportPatientLevel
