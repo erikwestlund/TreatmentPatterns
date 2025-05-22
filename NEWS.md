@@ -1,3 +1,8 @@
+# TreatmentPatterns 3.0.4
+---------
+* Added `followUp` parameter to specify the follow up duration in days from the index date.
+* Added `concatTargets` parameter to specifiy if multiple target cohorts should be treated seperately, or continuously.
+
 # TreatmentPatterns 3.0.3
 ---------
 * Added compatibility with Andromeda 0.6.7 and 1.0.0
