@@ -1,7 +1,12 @@
-# TreatmentPatterns 3.0.4
+# TreatmentPatterns 3.1.0
 ---------
-* Added `followUp` parameter to specify the follow up duration in days from the index date.
-* Added `concatTargets` parameter to specifiy if multiple target cohorts should be treated seperately, or continuously.
+* Added `startAnchor` parameter to dictate the window of interest.
+* Added `windowStart` parameter to dictate the window of interest.
+* Added `endAnchor` parameter to dictate the window of interest.
+* Added `windowEnd` parameter to dictate the window of interest.
+* Added `concatTargets` parameter to specify if multiple target cohorts should be treated separately, or continuously.
+* Removed `indexOffset` parameter.
+* Removed `includeTreatments` parameter.
 
 # TreatmentPatterns 3.0.3
 ---------
