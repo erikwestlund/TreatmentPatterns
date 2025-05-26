@@ -1,0 +1,109 @@
+---
+title: "Computing Treatment Pathways"
+always_allow_html: yes
+output:
+  html_document:
+    toc: yes
+    toc_depth: '3'
+    df_print: paged
+  html_vignette:
+    toc: yes
+    toc_depth: 3
+    vignette: >
+      %\VignetteIndexEntry{ComputingTreatmentPathways}
+      %\VignetteEngine{knitr::rmarkdown}
+      %\VignetteEncoding{UTF-8}
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+withr::local_envvar(
+  R_USER_CACHE_DIR = tempfile(),
+  EUNOMIA_DATA_FOLDER = Sys.getenv("EUNOMIA_DATA_FOLDER", unset = tempfile())
+)
+```
+
+```{r readCohortSet}
+library(DBI)
+library(duckdb)
+library(CDMConnector)
+library(TreatmentPatterns)
+
+con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomiaDir())
+cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main")
+
+cohortSet <- readCohortSet(
+  path = system.file(package = "TreatmentPatterns", "exampleCohorts")
+)
+
+cdm <- generateCohortSet(
+  cdm = cdm,
+  cohortSet = cohortSet,
+  name = "cohort_table"
+)
+
+cohorts <- cohortSet %>%
+  # Remove 'cohort' and 'json' columns
+  select(-"cohort", -"json") %>%
+  mutate(type = c("event", "event", "event", "event", "exit", "event", "event", "target")) %>%
+  rename(
+    cohortId = "cohort_definition_id",
+    cohortName = "cohort_name",
+  ) %>%
+  select("cohortId", "cohortName", "type")
+```
+
+Cohort start to cohort end date
+```{r}
+outputEnv <- computePathways(
+  cohorts = cohorts,
+  cohortTableName = "cohort_table",
+  cdm = cdm,
+  startAnchor = "startDate",
+  windowStart = 0,
+  endAnchor = "endDate",
+  windowEnd = 0
+)
+```
+
+Month prior
+```{r}
+outputEnv <- computePathways(
+  cohorts = cohorts,
+  cohortTableName = "cohort_table",
+  cdm = cdm,
+  startAnchor = "startDate",
+  windowStart = -30,
+  endAnchor = "startDate",
+  windowEnd = -1
+)
+```
+
+Month after
+```{r}
+outputEnv <- computePathways(
+  cohorts = cohorts,
+  cohortTableName = "cohort_table",
+  cdm = cdm,
+  startAnchor = "endDate",
+  windowStart = 1,
+  endAnchor = "endDate",
+  windowEnd = 30
+)
+```
+
+Month after start date, to month before end date
+```{r}
+outputEnv <- computePathways(
+  cohorts = cohorts,
+  cohortTableName = "cohort_table",
+  cdm = cdm,
+  startAnchor = "startDate",
+  windowStart = 30,
+  endAnchor = "endDate",
+  windowEnd = -30
+)
+```
