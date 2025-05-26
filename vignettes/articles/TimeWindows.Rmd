@@ -1,5 +1,5 @@
 ---
-title: "Computing Treatment Pathways"
+title: "Time Windows"
 always_allow_html: yes
 output:
   html_document:
@@ -10,7 +10,7 @@ output:
     toc: yes
     toc_depth: 3
     vignette: >
-      %\VignetteIndexEntry{ComputingTreatmentPathways}
+      %\VignetteIndexEntry{Time Windows}
       %\VignetteEngine{knitr::rmarkdown}
       %\VignetteEncoding{UTF-8}
   pdf_document:
@@ -26,6 +26,49 @@ withr::local_envvar(
 )
 ```
 
+## Time Windows in TreatmentPatterns
+This vignette discusses how to dictate time windows for TreatmentPatterns.
+
+## Anchoring
+The `computePathways()` function has two 'anchor' arguments, `startAnchor` and `endAnchor`. These arguments dictate what point to use as a reference. The two values that you can set for both of these parameters are: `"startDate"` and `"endDate"`, referencing the `cohort_start_date` and `cohort_end_date` columns in the cohort table. By default they are set to: `startAnchor = "startDate"` and `endAnchor = "endDate"`
+
+## windowStart and windowEnd
+The `windowStart` and `windowEnd` parameters dictate an offset from their corresponding *anchor*. If we assuming the following parameters (defaults):
+
+```
+startAnchor = "startDate"
+windowStart = 0
+endAnchor = "endDate"
+windowEnd = 0
+```
+
+We will just use the `cohort_start_date` and `cohort_end_date` as our window of interest.
+
+We can extend our window with a 30 days on either side by altering the `windowStart` and `windowEnd` variables:
+
+```
+startAnchor = "startDate"
+windowStart = -30
+endAnchor = "endDate"
+windowEnd = 30
+```
+
+Note that `windowStart = -30`, as in we subtract 30 days from the `startAnchor`. `windowEnd = 30` as in we add 30 days to the `endAnchor`.
+
+## Changing the anchoring
+We can change the anchoring of `startAnchor` and `endAnchor` to set our window to a period prior to the index date:
+
+```
+startAnchor = "startDate"
+windowStart = -30
+endAnchor = "startDate"
+windowEnd = 0
+```
+
+Note that we set **both** the `startAnchor` and `endAnchor` are set to `"startDate"`. So we start -30 days from the index date, and end on the index date.
+
+## Code examples
+### Setup
 ```{r readCohortSet}
 library(DBI)
 library(duckdb)
@@ -56,7 +99,7 @@ cohorts <- cohortSet %>%
   select("cohortId", "cohortName", "type")
 ```
 
-Cohort start to cohort end date
+### Default scenario
 ```{r}
 outputEnv <- computePathways(
   cohorts = cohorts,
@@ -69,7 +112,7 @@ outputEnv <- computePathways(
 )
 ```
 
-Month prior
+### Month prior
 ```{r}
 outputEnv <- computePathways(
   cohorts = cohorts,
@@ -82,7 +125,7 @@ outputEnv <- computePathways(
 )
 ```
 
-Month after
+### Month after
 ```{r}
 outputEnv <- computePathways(
   cohorts = cohorts,
@@ -95,7 +138,7 @@ outputEnv <- computePathways(
 )
 ```
 
-Month after start date, to month before end date
+### Month after start date, to month before end date
 ```{r}
 outputEnv <- computePathways(
   cohorts = cohorts,
