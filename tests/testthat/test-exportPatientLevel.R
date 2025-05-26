@@ -2,13 +2,13 @@ test_that("exportPatientLevel", {
   testthat::skip_if_not_installed("CDMConnector")
 
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = CDMConnector::eunomiaDir())
-  cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main")
+  cdm <- CDMConnector::cdmFromCon(con, cdmSchema = "main", writeSchema = "main")
 
-  cohortSet <- readCohortSet(
+  cohortSet <- CDMConnector::readCohortSet(
     path = system.file(package = "TreatmentPatterns", "exampleCohorts")
   )
 
-  cdm <- generateCohortSet(
+  cdm <- CDMConnector::generateCohortSet(
     cdm = cdm,
     cohortSet = cohortSet,
     name = "cohort_table"
