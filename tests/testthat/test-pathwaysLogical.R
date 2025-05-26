@@ -1512,6 +1512,7 @@ test_that("FollowUp: A-B-C to A-B-C", {
     eraCollapseSize = 5,
     combinationWindow = 30,
     minPostCombinationDuration = 30,
+    overlapMethod = "keep",
     filterTreatments = "All",
     maxPathLength = 5
   )

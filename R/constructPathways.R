@@ -86,7 +86,8 @@ constructPathways <- function(settings, andromeda) {
       doCombinationWindow(
         andromeda = andromeda,
         combinationWindow = settings$combinationWindow,
-        minPostCombinationDuration = settings$minPostCombinationDuration
+        minPostCombinationDuration = settings$minPostCombinationDuration,
+        overlapMethod = settings$overlapMethod
       )
 
       doFilterTreatments(
@@ -451,9 +452,10 @@ doEraCollapse <- function(andromeda, eraCollapseSize) {
 doCombinationWindow <- function(
     andromeda,
     combinationWindow,
-    minPostCombinationDuration) {
+    minPostCombinationDuration,
+    overlapMethod) {
   # Find which rows contain some overlap
-  selectRowsCombinationWindow(andromeda, combinationWindow)
+  selectRowsCombinationWindow(andromeda, combinationWindow, overlapMethod)
 
   # While rows that need modification exist:
   iterations <- 1
@@ -554,11 +556,17 @@ doCombinationWindow <- function(
           order_by = .data$eventStartDate
         )
       ) %>%
-      dplyr::ungroup() # %>%
-    # dplyr::mutate(
-    #   eventEndDate = dplyr::case_when(
-    #     dplyr::lead(.data$switch) == 1 ~ .data$eventStartDateNext,
-    #     .default = .data$eventEndDate))
+      dplyr::ungroup()
+
+    if (overlapMethod == "truncate") {
+      andromeda$treatmentHistory <- andromeda$treatmentHistory %>%
+        dplyr::mutate(
+          eventEndDate = dplyr::case_when(
+            dplyr::lead(.data$switch) == 1 ~ .data$eventStartDateNext,
+            .default = .data$eventEndDate
+          )
+        )
+    }
 
     andromeda[[sprintf("addRowsFRFS_%s", iterations)]] <- andromeda$treatmentHistory %>%
       dplyr::filter(.data$combinationFRFS == 1)
@@ -648,7 +656,8 @@ doCombinationWindow <- function(
         "sex", "eventEndDate", "durationEra", "gapPrevious", "n_target"
       )
 
-    selectRowsCombinationWindow(andromeda, combinationWindow)
+    selectRowsCombinationWindow(andromeda, combinationWindow, overlapMethod)
+
     iterations <- iterations + 1
   }
 
@@ -678,7 +687,7 @@ doCombinationWindow <- function(
 #' @param andromeda (`Andromeda::andromeda()`)
 #'
 #' @return (`invisible(NULL)`)
-selectRowsCombinationWindow <- function(andromeda, combinationWindow) {
+selectRowsCombinationWindow <- function(andromeda, combinationWindow, overlapMethod) {
   # Order treatmentHistory by person_id, event_start_date, event_end_date
   # andromeda$treatmentHistory <- andromeda$treatmentHistory %>%
   #   arrange(.data$personId, .data$eventStartDate, .data$eventEndDate)
@@ -713,11 +722,23 @@ selectRowsCombinationWindow <- function(andromeda, combinationWindow) {
     dplyr::select("allRows") %>%
     dplyr::pull()
 
-  treatmentHistory <- andromeda$treatmentHistory %>%
-    dplyr::mutate(selectedRows = dplyr::case_when(
-      dplyr::row_number() %in% rows & -.data$gapPrevious >= combinationWindow ~ 1,
-      .default = 0
-    ))
+  if (overlapMethod == "truncate") {
+    treatmentHistory <- andromeda$treatmentHistory %>%
+      dplyr::mutate(
+        selectedRows = dplyr::case_when(
+          dplyr::row_number() %in% rows ~ 1,
+          .default = 0
+        )
+      )
+  } else if (overlapMethod == "keep") {
+    treatmentHistory <- andromeda$treatmentHistory %>%
+      dplyr::mutate(
+        selectedRows = dplyr::case_when(
+          dplyr::row_number() %in% rows & -.data$gapPrevious >= combinationWindow ~ 1,
+          .default = 0
+        )
+      )
+  }
 
   # treatmentHistory[, ALL_ROWS := NULL]
   andromeda$treatmentHistory <- treatmentHistory %>%

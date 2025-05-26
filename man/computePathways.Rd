@@ -26,6 +26,7 @@ computePathways(
   minPostCombinationDuration = 30,
   filterTreatments = "First",
   maxPathLength = 5,
+  overlapMethod = "truncate",
   concatTargets = TRUE
 )
 }
@@ -95,6 +96,11 @@ event cohorts (‘All’).}
 
 \item{maxPathLength}{(\code{integer(1)}: \code{5})\cr
 Maximum number of steps included in treatment pathway}
+
+\item{overlapMethod}{(\code{character(1)}: \code{"truncate"}) Method to decide how to deal
+with overlap that is not significant enough for combination. \code{"keep"} will
+keep the dates as is. \code{"truncate"} truncates the first occurring event to
+the start date of the next event.}
 
 \item{concatTargets}{(\code{logical(1)}: \code{TRUE}) Should multiple target cohorts for the same person be concatenated or not?}
 }

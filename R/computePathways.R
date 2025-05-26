@@ -36,6 +36,10 @@
 #' @template param_maxPathLength
 #' @param analysisId (`character(1)`) Identifier for the TreatmentPatterns analysis.
 #' @param description (`character(1)`) Description of the analysis.
+#' @param overlapMethod (`character(1)`: `"truncate"`) Method to decide how to deal
+#' with overlap that is not significant enough for combination. `"keep"` will
+#' keep the dates as is. `"truncate"` truncates the first occurring event to
+#' the start date of the next event.
 #' @param concatTargets (`logical(1)`: `TRUE`) Should multiple target cohorts for the same person be concatenated or not?
 #' @param startAnchor (`character(1)`: `"startDate"`) Start date anchor. One of: `"startDate"`, `"endDate"`
 #' @param windowStart (`numeric(1)`: `0`) Offset for `startAnchor` in days.
@@ -131,6 +135,7 @@ computePathways <- function(
     minPostCombinationDuration = 30,
     filterTreatments = "First",
     maxPathLength = 5,
+    overlapMethod = "truncate",
     concatTargets = TRUE) {
   validateComputePathways()
 
@@ -381,6 +386,14 @@ validateComputePathways <- function() {
     null.ok = TRUE,
     add = assertCol,
     .var.name = "cdm"
+  )
+
+  checkmate::assertChoice(
+    x = args$overlapMethod,
+    choices = c("truncate", "keep"),
+    null.ok = FALSE,
+    add = assertCol,
+    .var.name = "overlapMethod"
   )
 
   checkmate::assertChoice(
