@@ -94,7 +94,7 @@ test_that("windowStart", {
       cdm = globals$cdm,
       windowStart = Inf
     ),
-    "Must be finite"
+    "Must be of type.+'integerish'"
   )
 
   expect_message(
