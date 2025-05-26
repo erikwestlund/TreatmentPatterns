@@ -1,6 +1,14 @@
-# TreatmentPatterns 3.0.4
+# TreatmentPatterns 3.1.0
 ---------
 * Added `exportPatientLevel()` function to export patient level data.
+* Added `startAnchor` parameter to dictate the window of interest.
+* Added `windowStart` parameter to dictate the window of interest.
+* Added `endAnchor` parameter to dictate the window of interest.
+* Added `windowEnd` parameter to dictate the window of interest.
+* Added `concatTargets` parameter to specify if multiple target cohorts should be treated separately, or continuously.
+* Added `overlapMethod` parameter to pick a method how to deal with non-combination overlap between events.
+* Removed `indexOffset` parameter.
+* Removed `includeTreatments` parameter.
 
 # TreatmentPatterns 3.0.3
 ---------
