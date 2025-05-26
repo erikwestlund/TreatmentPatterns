@@ -1,0 +1,37 @@
+---
+title: "Computing Treatment Pathways"
+always_allow_html: yes
+output:
+  html_document:
+    toc: yes
+    toc_depth: '3'
+    df_print: paged
+  html_vignette:
+    toc: yes
+    toc_depth: 3
+    vignette: >
+      %\VignetteIndexEntry{ComputingTreatmentPathways}
+      %\VignetteEngine{knitr::rmarkdown}
+      %\VignetteEncoding{UTF-8}
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+withr::local_envvar(
+  R_USER_CACHE_DIR = tempfile(),
+  EUNOMIA_DATA_FOLDER = Sys.getenv("EUNOMIA_DATA_FOLDER", unset = tempfile())
+)
+```
+
+```{r, eval=FALSE}
+TreatmentPatterns::computePathways(
+  cohorts = cohorts,
+  cohortTableName = "cohort_table",
+  cdm = cdm,
+  combinationWindow = 30,
+  minPostCombinationDuration = 30
+)
+```

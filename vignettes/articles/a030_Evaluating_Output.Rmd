@@ -1,0 +1,86 @@
+---
+title: "Computing Treatment Pathways"
+always_allow_html: yes
+output:
+  html_document:
+    toc: yes
+    toc_depth: '3'
+    df_print: paged
+  html_vignette:
+    toc: yes
+    toc_depth: 3
+    vignette: >
+      %\VignetteIndexEntry{ComputingTreatmentPathways}
+      %\VignetteEngine{knitr::rmarkdown}
+      %\VignetteEncoding{UTF-8}
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+withr::local_envvar(
+  R_USER_CACHE_DIR = tempfile(),
+  EUNOMIA_DATA_FOLDER = Sys.getenv("EUNOMIA_DATA_FOLDER", unset = tempfile())
+)
+```
+
+## Evaluating output
+Now that we have exported our output, in various ways, we can evaluate the output. As you may have noticed the `export` function exports 6 csv-files: **1**) treatmentPathways.csv, **2**) countsAge.csv, **3**) countsSex.csv, **4**) countsYear.csv, **5**) summaryStatsTherapyDuraion.csv, and **6**) metadata.csv
+
+### treatmentPathways
+The treatmentPathways file contains all the pathways found, with a frequency, pairwise stratified by age group, sex and index year.
+```{r readTreatmentPathways}
+results$treatment_pathways
+```
+We can see the pathways contain the treatment names we provided in our event cohorts. Besides that we also see the paths are annoted with a `+` or `-`. The `+` indicates two treatments are a combination therapy, i.e. `Acetaminophen+Amoxicillin` is a combination of _Acetaminophen_ and _Amoxicillin_. The `-` indicates a switch between treatments, i.e. `Aspirin-Acetaminophen` is a switch from _Aspirin_ to _Acetaminophen_. Note that these combinations and switches can occur in the same pathway, i.e. `Amoxicillin+Clavulanate-Aspirin`. The first treatment is a combination of _Amoxicillin_ and _Clavulanate_ that switches to _Aspirin_.
+
+### countsAge, countsSex, and countsYear
+The countsAge, countsSex, and countsYear contain counts per age, sex, and index year.
+```{r counts}
+head(results$counts_age)
+head(results$counts_sex)
+head(results$counts_year)
+```
+
+### summaryStatsTherapyDuration
+The summaryEventDuration file contains summary statistics from different events, across all found "lines". A "line" is equal to the level in the Sunburst or Sankey diagrams. The summary statistics allow for plotting of boxplots with the `plotEventDuration()` function.
+```{r summaryStatsTherapyDuration}
+results$plotEventDuration()
+```
+Or we can use the function
+```{r}
+plotEventDuration(results$summary_event_duration)
+```
+
+### metadata
+The metadata file is a file that contains information about the circumstances the analysis was performed in, and information about R, and the CDM.
+```{r metadata}
+results$metadata
+```
+
+### Sunburst Plot & Sankey Diagram
+From the filtered treatmentPathways file we are able to create a sunburst plot.
+```{r sunburstPlot}
+results$plotSunburst()
+```
+
+Or a Sankey Diagram.
+```{r sankeyDiagram}
+results$plotSankey()
+```
+
+Both plots are interactive in an HTML-environment, and are easy to include in shiny applications.
+
+```{r cleanup, include=FALSE}
+# Close Andromeda objects
+Andromeda::close(defaultSettings)
+Andromeda::close(minEra60)
+Andromeda::close(splitAcuteTherapy)
+Andromeda::close(includeEndDate)
+
+# Close connection to CDM Reference
+DBI::dbDisconnect(conn = con)
+rm(defaultSettings, minEra60, splitAcuteTherapy, includeEndDate, con, cdm)
+```

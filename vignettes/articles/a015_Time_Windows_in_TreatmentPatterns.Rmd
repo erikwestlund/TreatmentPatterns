@@ -1,5 +1,5 @@
 ---
-title: "Time Windows"
+title: "Time Windows in TreatmentPatterns"
 always_allow_html: yes
 output:
   html_document:
@@ -10,7 +10,7 @@ output:
     toc: yes
     toc_depth: 3
     vignette: >
-      %\VignetteIndexEntry{Time Windows}
+      %\VignetteIndexEntry{Time Windows in TreatmentPatterns}
       %\VignetteEngine{knitr::rmarkdown}
       %\VignetteEncoding{UTF-8}
   pdf_document:
@@ -25,9 +25,6 @@ withr::local_envvar(
   EUNOMIA_DATA_FOLDER = Sys.getenv("EUNOMIA_DATA_FOLDER", unset = tempfile())
 )
 ```
-
-## Time Windows in TreatmentPatterns
-This vignette discusses how to dictate time windows for TreatmentPatterns.
 
 ## Anchoring
 The `computePathways()` function has two 'anchor' arguments, `startAnchor` and `endAnchor`. These arguments dictate what point to use as a reference. The two values that you can set for both of these parameters are: `"startDate"` and `"endDate"`, referencing the `cohort_start_date` and `cohort_end_date` columns in the cohort table. By default they are set to: `startAnchor = "startDate"` and `endAnchor = "endDate"`
@@ -44,6 +41,20 @@ windowEnd = 0
 
 We will just use the `cohort_start_date` and `cohort_end_date` as our window of interest.
 
+```{r, eval=FALSE}
+outputEnv <- computePathways(
+  cohorts = cohorts,
+  cohortTableName = "cohort_table",
+  cdm = cdm,
+  startAnchor = "startDate",
+  windowStart = 0,
+  endAnchor = "endDate",
+  windowEnd = 0
+)
+```
+
+![](figures/a03_window_1.png)
+
 We can extend our window with a 30 days on either side by altering the `windowStart` and `windowEnd` variables:
 
 ```
@@ -54,6 +65,20 @@ windowEnd = 30
 ```
 
 Note that `windowStart = -30`, as in we subtract 30 days from the `startAnchor`. `windowEnd = 30` as in we add 30 days to the `endAnchor`.
+
+```{r, eval=FALSE}
+outputEnv <- computePathways(
+  cohorts = cohorts,
+  cohortTableName = "cohort_table",
+  cdm = cdm,
+  startAnchor = "startDate",
+  windowStart = -30,
+  endAnchor = "endDate",
+  windowEnd = 30
+)
+```
+
+![](figures/a03_window_2.png)
 
 ## Changing the anchoring
 We can change the anchoring of `startAnchor` and `endAnchor` to set our window to a period prior to the index date:
@@ -67,53 +92,7 @@ windowEnd = 0
 
 Note that we set **both** the `startAnchor` and `endAnchor` are set to `"startDate"`. So we start -30 days from the index date, and end on the index date.
 
-## Code examples
-### Setup
-```{r readCohortSet}
-library(DBI)
-library(duckdb)
-library(CDMConnector)
-library(TreatmentPatterns)
-
-con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomiaDir())
-cdm <- cdmFromCon(con, cdmSchema = "main", writeSchema = "main")
-
-cohortSet <- readCohortSet(
-  path = system.file(package = "TreatmentPatterns", "exampleCohorts")
-)
-
-cdm <- generateCohortSet(
-  cdm = cdm,
-  cohortSet = cohortSet,
-  name = "cohort_table"
-)
-
-cohorts <- cohortSet %>%
-  # Remove 'cohort' and 'json' columns
-  select(-"cohort", -"json") %>%
-  mutate(type = c("event", "event", "event", "event", "exit", "event", "event", "target")) %>%
-  rename(
-    cohortId = "cohort_definition_id",
-    cohortName = "cohort_name",
-  ) %>%
-  select("cohortId", "cohortName", "type")
-```
-
-### Default scenario
-```{r}
-outputEnv <- computePathways(
-  cohorts = cohorts,
-  cohortTableName = "cohort_table",
-  cdm = cdm,
-  startAnchor = "startDate",
-  windowStart = 0,
-  endAnchor = "endDate",
-  windowEnd = 0
-)
-```
-
-### Month prior
-```{r}
+```{r, eval=FALSE}
 outputEnv <- computePathways(
   cohorts = cohorts,
   cohortTableName = "cohort_table",
@@ -121,32 +100,8 @@ outputEnv <- computePathways(
   startAnchor = "startDate",
   windowStart = -30,
   endAnchor = "startDate",
-  windowEnd = -1
+  windowEnd = 0
 )
 ```
 
-### Month after
-```{r}
-outputEnv <- computePathways(
-  cohorts = cohorts,
-  cohortTableName = "cohort_table",
-  cdm = cdm,
-  startAnchor = "endDate",
-  windowStart = 1,
-  endAnchor = "endDate",
-  windowEnd = 30
-)
-```
-
-### Month after start date, to month before end date
-```{r}
-outputEnv <- computePathways(
-  cohorts = cohorts,
-  cohortTableName = "cohort_table",
-  cdm = cdm,
-  startAnchor = "startDate",
-  windowStart = 30,
-  endAnchor = "endDate",
-  windowEnd = -30
-)
-```
+![](figures/a03_window_3.png)
