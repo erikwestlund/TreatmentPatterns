@@ -1,5 +1,6 @@
 # TreatmentPatterns 3.1.0
 ---------
+* Added `exportPatientLevel()` function to export patient level data.
 * Added `startAnchor` parameter to dictate the window of interest.
 * Added `windowStart` parameter to dictate the window of interest.
 * Added `endAnchor` parameter to dictate the window of interest.
