@@ -1,8 +1,3 @@
-library(CDMConnector)
-library(DBI)
-library(TreatmentPatterns)
-library(dplyr)
-
 test_that("exportPatientLevel", {
   testthat::skip_if_not_installed("CDMConnector")
 
