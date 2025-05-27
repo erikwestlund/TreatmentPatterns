@@ -99,3 +99,15 @@ resultsF <- export(
   archiveName = "output.zip"
 )
 ```
+
+## Patient-Level Export
+We can also export **patient-level** data to use for internal analyses. Obviously these results are not share-able. Currently the results are only exported as csv-files.
+
+```{r, eval=FALSE}
+exportPatientLevel(
+  andromeda = outputEnv,
+  outputPath = tempdir()
+)
+```
+
+We go into evaluating the output of the files in the **Evaluating Output** vignette.
