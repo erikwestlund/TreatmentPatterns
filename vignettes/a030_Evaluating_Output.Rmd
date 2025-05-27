@@ -28,7 +28,7 @@ withr::local_envvar(
 
 For this example we take the case of *Viral Sinusitis* and several treatments as events. We set our `minEraDuration = 7`, `minCombinationDuration = 7` and `combinationWindow = 7`. We treat multiple events of *Viral Sinusitis* as separate cases by setting `concatTargets = FALSE`. When set to `TRUE` it would append multiple cases, which might be useful for time invariant target cohorts like chronic conditions.
 
-```{r setup_treatment_patterns, eval=TRUE, warning=FALSE, error=FALSE}
+```{r setup_treatment_patterns, eval=require("CDMConnector", quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE), warning=FALSE, error=FALSE}
 library(CDMConnector)
 library(dplyr)
 library(TreatmentPatterns)
@@ -86,7 +86,7 @@ results <- export(
 Now that we ran our TreatmentPatterns analysis and have exported our results, we can evaluate the output. The `export()` function in TreatmentPatterns returns an R6 class of `TreatmentPatternsResults`. All results are query-able from this object. Additionally the files are written to the specified `outputPath`. If no `outputPath` is set, only the result object is returned, and no files are written.
 
 If you would like to save the results to csv-, or zip-file after the fact you can still do this. Or upload it to a database:
-```{r save}
+```{r save, eval=require("CDMConnector", quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE)}
 # Save to csv-, zip-file
 results$saveAsCsv(path = tempdir())
 results$saveAsZip(path = tempdir(), name = "tp-results.zip")
@@ -109,14 +109,14 @@ results$uploadResultsToDb(
 ## Evaluating Results
 ### treatmentPathways
 The treatmentPathways file contains all the pathways found, with a frequency, pairwise stratified by age group, sex and index year.
-```{r readTreatmentPathways}
+```{r readTreatmentPathways, eval=require("CDMConnector", quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE)}
 head(results$treatment_pathways)
 ```
 We can see the pathways contain the treatment names we provided in our event cohorts. Besides that we also see the paths are annoted with a `+` or `-`. The `+` indicates two treatments are a combination therapy, i.e. `amoxicillin+clavulanate` is a combination of _amoxicillin_ and _clavulanate_. The `-` indicates a switch between treatments, i.e. `acetaminophen-penicillinv` is a switch from _acetaminophen_ to _penicillin v_. Note that these combinations and switches can occur in the same pathway, i.e. `acetaminophen-amoxicillin+clavulanate`. The first treatment is _acetaminophen_ that *switches* to a combination of _amoxicillin_ and _clavulanate_.
 
 ### countsAge, countsSex, and countsYear
 The countsAge, countsSex, and countsYear contain counts per age, sex, and index year.
-```{r counts}
+```{r counts, eval=require("CDMConnector", quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE)}
 head(results$counts_age)
 head(results$counts_sex)
 head(results$counts_year)
@@ -124,7 +124,7 @@ head(results$counts_year)
 
 ### summaryStatsTherapyDuration
 The summaryEventDuration contains summary statistics from different events, across all found "lines". A "line" is equal to the level in the Sunburst or Sankey diagrams. The summary statistics allow for plotting of boxplots with the `plotEventDuration()` function.
-```{r summaryStatsTherapyDuration}
+```{r summaryStatsTherapyDuration, eval=require("CDMConnector", quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE)}
 results$plotEventDuration()
 ```
 
@@ -133,21 +133,21 @@ Not that besides our events there are two extra rows: *mono-event*, and *combina
 We see that most events last between 0 and 100 days. We can see that for *combination-events* and *amoxicillin+clavulanate* there is a tendency for events to last longer than that. *amoxicillin+clavulanate* most likely skews the duration in the *combination-events* group.
 
 We can alter the x-axis to get a clearer view of the durations of the events:
-```{r, warning=FALSE}
+```{r, warning=FALSE, eval=require("CDMConnector", quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE)}
 results$plotEventDuration() +
   ggplot2::xlim(0, 100)
 ```
 Now we can more clearly investigate particular treatments. We can see that *penicilin v* tends to last quite short across all treatment lines, while *aspirin* and *acetaminophen* seem to skew to a longer duration.
 
 Additionally we can also set a `minCellCount` for the individual events. 
-```{r, warning=FALSE}
+```{r, warning=FALSE, eval=require("CDMConnector", quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE)}
 results$plotEventDuration(minCellCount = 10) +
   ggplot2::xlim(0, 100)
 ```
 
 ### metadata
 The metadata file is a file that contains information about the circumstances the analysis was performed in, and information about R, and the CDM.
-```{r metadata}
+```{r metadata, eval=require("CDMConnector", quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE)}
 results$metadata
 ```
 
@@ -155,16 +155,16 @@ results$metadata
 From the filtered treatmentPathways file we are able to create a sunburst plot.
 
 The inner most layer is the first event that occurs, going outwards. This aligns with the event duration plot we looked at earlier.
-```{r sunburstPlot}
+```{r sunburstPlot, eval=require("CDMConnector", quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE)}
 results$plotSunburst()
 ```
 
 We can also create a Sankey Diagram, which in theory displays the same data. Additionally you see the *Stopped* node in the Sankey diagram. This indicates the end of the pathway. It is mostly a practical addition so that single layer Sankey diagrams can still be plotted.
-```{r sankeyDiagram}
+```{r sankeyDiagram, eval=require("CDMConnector", quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE)}
 results$plotSankey()
 ```
 
-```{r cleanup, include=FALSE}
+```{r cleanup, include=FALSE, eval=require("CDMConnector", quietly = TRUE, warn.conflicts = FALSE, character.only = TRUE)}
 # Close Andromeda objects
 Andromeda::close(outputEnv)
 
