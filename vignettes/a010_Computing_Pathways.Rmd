@@ -69,6 +69,7 @@ TreatmentPatterns can connect to a database with either `CDMConnector` using the
 It is worth noting that it does not matter how you create your cohorts. You can use any means to generate a cohort table your heart desires. You can use OHDSI tools like **ATLAS** or **Capr** to specify cohort definitions. You can generate them by executing the raw SQL from **Circe**, or generate them with `CohortGenerator` or `CDMConnector`. The only thing that matters is that the resulting cohort table:
 
 | cohort_definition_id | subject_id | cohort_start_date | cohort_end_date |
+| --- | --- | --- | --- |
 | 1 | 1 | 2020-01-01 | 2020-12-31 |
 | 2 | 1 | 2020-02-04 | 2020-06-27 |
 | 3 | 1 | 2020-07-03 | 2020-08-12 |
