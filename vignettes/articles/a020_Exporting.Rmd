@@ -1,5 +1,5 @@
 ---
-title: "Computing Treatment Pathways"
+title: "Exporing Results"
 always_allow_html: yes
 output:
   html_document:
@@ -10,7 +10,7 @@ output:
     toc: yes
     toc_depth: 3
     vignette: >
-      %\VignetteIndexEntry{ComputingTreatmentPathways}
+      %\VignetteIndexEntry{Exporing Results}
       %\VignetteEngine{knitr::rmarkdown}
       %\VignetteEncoding{UTF-8}
   pdf_document:
@@ -31,7 +31,7 @@ The `export` function allows us to export the generated result objects from `com
 
 ### minCellCount and censorType
 Let's say we are only able to share results of groups of subjects that have at least 5 subjects in them.
-```{r minCellCount}
+```{r minCellCount, eval=FALSE}
 results <- export(
   andromeda = defaultSettings,
   minCellCount = 5
@@ -41,7 +41,7 @@ results <- export(
 We can also choose between different methods how to handle pathways that fall below are specified `minCellCount`. These types are **1**) `"cellCount"`, **2**) `"remove"`, and **3**) `"mean"`.
 
 We could say we want to censor all pathways that fall below the `minCellCount` to be censored _to_ the `minCellCount`.
-```{r censorType_cellCount}
+```{r censorType_cellCount, eval=FALSE}
 resultsA <- export(
   andromeda = minEra60,
   minCellCount = 5,
@@ -50,7 +50,7 @@ resultsA <- export(
 ```
 
 Or we could completely remove them
-```{r censorType_remove}
+```{r censorType_remove, eval=FALSE}
 resultsB <- export(
   andromeda = minEra60,
   minCellCount = 5,
@@ -59,7 +59,7 @@ resultsB <- export(
 ```
 
 Or finally we can censor them as the mean of all the groups that fall below the `minCellCount`.
-```{r censorType_mean}
+```{r censorType_mean, eval=FALSE}
 resultsC <- export(
   andromeda = minEra60,
   minCellCount = 5,
@@ -69,7 +69,7 @@ resultsC <- export(
 
 ### ageWindow
 We can also specify an age window.
-```{r ageWindow3}
+```{r ageWindow3, eval=FALSE}
 resultsD <- export(
   andromeda = splitAcuteTherapy,
   minCellCount = 5,
@@ -79,7 +79,7 @@ resultsD <- export(
 ```
 
 Or a collection of ages.
-```{r ageWindowMultiple}
+```{r ageWindowMultiple, eval=FALSE}
 resultsE <- export(
   andromeda = splitAcuteTherapy,
   minCellCount = 5,
@@ -90,7 +90,7 @@ resultsE <- export(
 
 ### archiveName
 Finally we can also specify an `archiveName` which is the name of a zip-file to zip all our output csv-files to.
-```{r archiveName}
+```{r archiveName, eval=FALSE}
 resultsF <- export(
   andromeda = includeEndDate,
   minCellCount = 5,

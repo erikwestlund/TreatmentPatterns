@@ -1,5 +1,5 @@
 ---
-title: "Computing Treatment Pathways"
+title: "Evaluating Output"
 always_allow_html: yes
 output:
   html_document:
@@ -10,7 +10,7 @@ output:
     toc: yes
     toc_depth: 3
     vignette: >
-      %\VignetteIndexEntry{ComputingTreatmentPathways}
+      %\VignetteIndexEntry{Evaluating Output}
       %\VignetteEngine{knitr::rmarkdown}
       %\VignetteEncoding{UTF-8}
   pdf_document:
@@ -28,7 +28,7 @@ withr::local_envvar(
 
 For this example we take the case of *Viral Sinusitis* and several treatments as events. We set our `minEraDuration = 7`, `minCombinationDuration = 7` and `combinationWindow = 7`. We treat multiple events of *Viral Sinusitis* as separate cases by setting `concatTargets = FALSE`. When set to `TRUE` it would append multiple cases, which might be useful for time invariant target cohorts like chronic conditions.
 
-```{r setup, eval=TRUE, warning=FALSE, error=FALSE}
+```{r setup_treatment_patterns, eval=TRUE, warning=FALSE, error=FALSE}
 library(CDMConnector)
 library(dplyr)
 library(TreatmentPatterns)
@@ -166,10 +166,7 @@ results$plotSankey()
 
 ```{r cleanup, include=FALSE}
 # Close Andromeda objects
-Andromeda::close(defaultSettings)
-Andromeda::close(minEra60)
-Andromeda::close(splitAcuteTherapy)
-Andromeda::close(includeEndDate)
+Andromeda::close(outputEnv)
 
 # Close connection to CDM Reference
 DBI::dbDisconnect(conn = con)
