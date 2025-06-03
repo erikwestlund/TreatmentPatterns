@@ -8,9 +8,10 @@ test_that("void", {
 test_that("CohortGenerator", {
   skip_if_not(ableToRun()$CG)
   skip_on_os(os = "linux")
-  
+  skip_on_cran()
+
   global <- generateCohortTableCG()
-  
+
   result <- TreatmentPatterns::executeTreatmentPatterns(
     cohorts = global$cohorts,
     cohortTableName = global$cohortTableName,
@@ -24,16 +25,17 @@ test_that("CohortGenerator", {
 
 test_that("CDMConnector", {
   skip_if_not(ableToRun()$CDMC)
-  
+  skip_on_cran()
+
   globals <- generateCohortTableCDMC()
-  
+
   result <- TreatmentPatterns::executeTreatmentPatterns(
     cohorts = globals$cohorts,
     cohortTableName = globals$cohortTableName,
     cdm = globals$cdm
   )
-  
+
   expect_true("TreatmentPatternsResults" %in% class(result))
-  
+
   DBI::dbDisconnect(globals$con, shutdown = TRUE)
 })

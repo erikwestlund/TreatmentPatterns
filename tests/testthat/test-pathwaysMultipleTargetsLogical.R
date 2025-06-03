@@ -309,6 +309,7 @@ test_that("Events within target", {
 
 test_that("Events outside target", {
   skip_if_not(ableToRun()$CDMC)
+  skip_on_cran()
   con <- DBI::dbConnect(duckdb::duckdb(), dbdir = eunomiaDir())
 
   cohorts <- data.frame(

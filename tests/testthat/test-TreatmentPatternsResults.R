@@ -1,5 +1,6 @@
 test_that("Method: new(data.frame)", {
   skip_if_not(ableToRun()$CDMC)
+  skip_on_cran()
   globals <- suppressWarnings(generateCohortTableCDMC())
 
   result <- TreatmentPatterns::executeTreatmentPatterns(
@@ -90,7 +91,7 @@ test_that("Method: plotEventDuration()", {
 test_that("Method: plotSankey()", {
   results <- TreatmentPatternsResults$new()
   results$load(filePath = system.file(package = "TreatmentPatterns", "DummyOutput"))
-  
+
   sankey <- results$plotSankey(nonePaths = TRUE)
   expect_s3_class(sankey, class = c("sankeyNetwork", "htmlwidget"))
 
@@ -101,7 +102,7 @@ test_that("Method: plotSankey()", {
 test_that("Method: plotSunburst()", {
   results <- TreatmentPatternsResults$new()
   results$load(filePath = system.file(package = "TreatmentPatterns", "DummyOutput"))
-  
+
   sunburst <- results$plotSunburst(nonePaths = TRUE)
   expect_s3_class(sunburst, class = c("sunburst", "htmlwidget"))
 
@@ -112,13 +113,13 @@ test_that("Method: plotSunburst()", {
 test_that("Method: saveAsCsv()", {
   results <- TreatmentPatternsResults$new()
   results$load(filePath = system.file(package = "TreatmentPatterns", "DummyOutput"))
-  
+
   tempDir <- file.path(tempdir(), "saveAsCsv")
-  
+
   expect_message(
     results$saveAsCsv(path = tempDir)
   )
-  
+
   expect_true(all(
     list.files(tempDir) %in% c(
       "analyses.csv", "attrition.csv", "cdm_source_info.csv", "counts_age.csv",
@@ -133,13 +134,13 @@ test_that("Method: saveAsCsv()", {
 test_that("Method: saveAsZip()", {
   results <- TreatmentPatternsResults$new()
   results$load(filePath = system.file(package = "TreatmentPatterns", "DummyOutput"))
-  
+
   tempDir <- file.path(tempdir(), "saveAsZip")
-  
+
   expect_message(
     results$saveAsZip(path = tempDir, name = "output.zip")
   )
-  
+
   expect_true(all(
     list.files(tempDir) %in% "output.zip"
   ))
@@ -164,10 +165,10 @@ test_that("Method: uploadResultsToDb()", {
 
   suppressWarnings(
     results$uploadResultsToDb(
-    connectionDetails = connectionDetails,
-    schema = "main",
-    prefix = "tp_",
-    overwrite = TRUE
+      connectionDetails = connectionDetails,
+      schema = "main",
+      prefix = "tp_",
+      overwrite = TRUE
     )
   )
 
