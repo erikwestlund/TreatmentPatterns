@@ -2,9 +2,8 @@
 # skip_on_CI()
 
 run_on_cran <- function() {
-  skip_on_ci()
-  skip_on_covr()
   skip_on_bioc()
+  skip_on_ci()
   skip_on_covr()
   skip_on_travis()
 }
