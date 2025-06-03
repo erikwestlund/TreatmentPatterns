@@ -2,13 +2,14 @@ library(testthat)
 library(TreatmentPatterns)
 
 test_that("void", {
+  skip_on_cran()
   expect_error(TreatmentPatterns::executeTreatmentPatterns())
 })
 
 test_that("CohortGenerator", {
-  skip_if_not(ableToRun()$CG)
-  skip_on_os(os = "linux")
   skip_on_cran()
+  skip_on_os(os = "linux")
+  skip_if_not(ableToRun()$CG)
 
   global <- generateCohortTableCG()
 
@@ -24,8 +25,8 @@ test_that("CohortGenerator", {
 })
 
 test_that("CDMConnector", {
-  skip_if_not(ableToRun()$CDMC)
   skip_on_cran()
+  skip_if_not(ableToRun()$CDMC)
 
   globals <- generateCohortTableCDMC()
 
