@@ -373,9 +373,9 @@ doEraCollapse <- function(andromeda, eraCollapseSize) {
       nextEnd = dplyr::lead(.data$eventEndDate),
       gap = as.numeric(.data$nextStart - .data$eventEndDate)
     ) %>%
-    dplyr::mutate(row_person = row_number()) %>%
+    dplyr::mutate(row_person = dplyr::row_number()) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(row = row_number())
+    dplyr::mutate(row = dplyr::row_number())
 
   rows <- andromeda$treatmentHistory %>%
     dplyr::group_by(.data$eventCohortId, .data$personId) %>%
@@ -405,7 +405,7 @@ doEraCollapse <- function(andromeda, eraCollapseSize) {
 
   andromeda$treatmentHistory <- andromeda$treatmentHistory %>%
     dplyr::filter(!.data$row %in% rows) %>%
-    dplyr::select(-"nextStart", -"nextEnd", -"gap", -"row", "row_person")
+    dplyr::select(-"nextStart", -"nextEnd", -"gap", -"row", -"row_person")
 
   attrCounts <- fetchAttritionCounts(andromeda, "treatmentHistory")
   appendAttrition(
@@ -663,7 +663,7 @@ selectRowsCombinationWindow <- function(andromeda) {
   #   arrange(.data$personId, .data$eventStartDate, .data$eventEndDate)
   
   andromeda$treatmentHistory <- andromeda$treatmentHistory %>%
-    dplyr::mutate(sortOrder = as.numeric(.data$eventStartDate) + as.numeric(.data$eventEndDate) * row_number() / n() * 10^-6) %>%
+    dplyr::mutate(sortOrder = as.numeric(.data$eventStartDate) + as.numeric(.data$eventEndDate) * dplyr::row_number() / dplyr::n() * 10^-6) %>%
     dplyr::group_by(.data$personId) %>%
     dbplyr::window_order(.data$sortOrder) %>%
     dplyr::mutate(gapPrevious = .data$eventStartDate - dplyr::lag(.data$eventEndDate, order_by = .data$sortOrder)) %>%
